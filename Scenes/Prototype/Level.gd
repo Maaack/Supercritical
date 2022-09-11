@@ -45,6 +45,9 @@ func _filter_negative_vectors(vectors : Array) -> Array:
 			return_vectors.append(vector)
 	return return_vectors
 
+func _cell_is_growable(cellv : Vector2) -> bool:
+	return $Vines.get_cellv(cellv) == -1 and $Obstacles.get_cellv(cellv) == -1
+
 func _get_growable_cells():
 	var neighboring_directions : Array = [
 		Vector2.UP,
@@ -56,7 +59,7 @@ func _get_growable_cells():
 	for cell_position in $Vines.get_used_cells():
 		for direction in neighboring_directions:
 			var neighboring_cell = cell_position + direction
-			if $Vines.get_cellv(neighboring_cell) > -1:
+			if not _cell_is_growable(neighboring_cell):
 				continue
 			if not neighboring_cell in neighboring_cells:
 				neighboring_cells[neighboring_cell] = 0
