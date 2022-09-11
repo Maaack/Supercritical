@@ -96,11 +96,20 @@ func _get_growable_cells():
 	neighboring_cells = _filter_values_greater_than(neighboring_cells, 1)
 	return neighboring_cells.keys()
 
+func _controlled_autotile_dead_vine(cellv : Vector2) -> void:
+	var auto_tile_coord : Vector2 = vines.get_cell_autotile_coord(cellv.x, cellv.y)
+	dead_vines.set_cellv(cellv, DEAD_VINE_TILE, false, false, false, auto_tile_coord)
+	for direction in CARDINAL_DIRECTIONS:
+		var neighboring_cell = cellv + direction
+		if _is_cell_vine(neighboring_cell):
+			auto_tile_coord = vines.get_cell_autotile_coord(neighboring_cell.x, neighboring_cell.y)
+			dead_vines.set_cellv(neighboring_cell, DEAD_VINE_TILE, false, false, false, auto_tile_coord)
+
+
 func _grow_vine(cellv : Vector2):
 	vines.set_cellv(cellv, VINE_TILE)
 	vines.update_bitmask_area(cellv)
-	dead_vines.set_cellv(cellv, DEAD_VINE_TILE)
-	dead_vines.update_bitmask_area(cellv)
+	_controlled_autotile_dead_vine(cellv)
 	vines.update()
 
 func _vines_grow(grow_count : int):
