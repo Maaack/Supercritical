@@ -1,10 +1,15 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Scenes/Player/PlayerControlledCharacter.gd" type="Script" id=1]
-[ext_resource path="res://Assets/Sourced/Tilemaps/kenney_animalpackredux/Round (outline)/snake.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Sourced/Tilemaps/mappack/Tilesheet/mapPack_tilesheet.png" type="Texture" id=2]
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 30.0
+radius = 16.0
+
+[sub_resource type="AtlasTexture" id=2]
+flags = 4
+atlas = ExtResource( 2 )
+region = Rect2( 967.353, 514.447, 50, 56 )
 
 [node name="PlayerControlledCharacter" type="KinematicBody2D"]
 collision_layer = 2
@@ -16,7 +21,7 @@ shape = SubResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="."]
 scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 2 )
+texture = SubResource( 2 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
