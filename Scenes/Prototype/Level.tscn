@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Assets/Sourced/Tilemaps/mappack/Tilesheet/mapPack_tilesheet.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/Player/PlayerControlledCharacter.tscn" type="PackedScene" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://Scenes/Prototype/AStarDebug.gd" type="Script" id=4]
 [ext_resource path="res://Scenes/Prototype/Level.gd" type="Script" id=5]
 [ext_resource path="res://Scenes/Flower/Flower.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Scenes/TileHighlighter/TileHighlighter.tscn" type="PackedScene" id=7]
 
 [sub_resource type="TileSet" id=2]
 0/name = "mapPack_tilesheet.png 0"
@@ -317,5 +318,8 @@ autostart = true
 
 [node name="Nutrients" type="Node2D" parent="."]
 
+[node name="TileHighlighter" parent="." instance=ExtResource( 7 )]
+
+[connection signal="unit_moved" from="PlayerControlledCharacter" to="." method="_on_PlayerControlledCharacter_unit_moved"]
 [connection signal="timeout" from="HarvetTimer" to="." method="_on_HarvetTimer_timeout"]
 [connection signal="timeout" from="TransportTimer" to="." method="_on_TransportTimer_timeout"]

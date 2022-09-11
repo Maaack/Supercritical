@@ -48,6 +48,19 @@ func _filter_negative_vectors(vectors : Array) -> Array:
 func _cell_is_growable(cellv : Vector2) -> bool:
 	return $Vines.get_cellv(cellv) == -1 and $Obstacles.get_cellv(cellv) == -1
 
+func _cell_is_vine(cellv: Vector2) -> bool:
+	return $Vines.get_cellv(cellv) > -1
+
+func _highlight_tile_at_position(position : Vector2):
+	var cell_position =  (position / vines.cell_size).floor()
+	if not _cell_is_vine(cell_position):
+		$TileHighlighter.hide()
+		return
+	var tile_position = cell_position * vines.cell_size
+	tile_position += vines.cell_size / 2
+	$TileHighlighter.show()
+	$TileHighlighter.position = tile_position
+
 func _get_growable_cells():
 	var neighboring_directions : Array = [
 		Vector2.UP,
@@ -88,3 +101,5 @@ func _on_HarvetTimer_timeout():
 func _on_TransportTimer_timeout():
 	_vines_move_nutrients($TransportTimer.wait_time - 0.01)
 
+func _on_PlayerControlledCharacter_unit_moved():
+	_highlight_tile_at_position($PlayerControlledCharacter.position)

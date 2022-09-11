@@ -1,5 +1,7 @@
 extends KinematicBody2D
 
+signal unit_moved
+
 var velocity : Vector2
 var speed : float = 200
 
@@ -11,5 +13,9 @@ func _physics_process(delta):
 	
 	velocity = input_vector * speed
 	
+	if velocity == Vector2.ZERO:
+		return
+	
 	move_and_slide(velocity)
+	emit_signal("unit_moved")
 
