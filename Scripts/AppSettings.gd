@@ -13,8 +13,8 @@ const MUSIC_AUDIO_BUS = 'Music'
 const MUTE_SETTING = 'Mute'
 
 const INPUT_MAP : Dictionary = {
-	"move_forward" : "Forward",
-	"move_backward" : "Backward",
+	"move_up" : "Up",
+	"move_down" : "Down",
 	"move_left" : "Left",
 	"move_right" : "Right",
 	"run" : "Run",
