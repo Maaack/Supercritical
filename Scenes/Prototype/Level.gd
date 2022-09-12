@@ -1,5 +1,7 @@
 extends Node2D
 
+signal nutrients_updated(value)
+
 const VINE_TILE = 1
 const DEAD_VINE_TILE = 0
 const NO_TILE = -1
@@ -9,6 +11,9 @@ const CARDINAL_DIRECTIONS : Array = [
 		Vector2.LEFT,
 		Vector2.RIGHT
 	]
+
+export(int) var nutrients_at_flower : int = 0
+
 onready var flower = $Vines/Flower
 onready var vines = $Vines
 onready var dead_vines = $DeadVines
@@ -36,6 +41,22 @@ func _move_nutrient_along_vine_to_flower(nutrient : Node2D, delay : float):
 func _vines_move_nutrients(delay : float):
 	for nutrient in $Nutrients.get_children():
 		_move_nutrient_along_vine_to_flower(nutrient, delay)
+
+func _add_nutrients_to_flower(count : int = 1) -> void:
+	nutrients_at_flower += count
+	emit_signal("nutrients_updated", nutrients_at_flower)
+
+func _absorb_nutrients_at_flower():
+	for nutrient in $Nutrients.get_children():
+		if nutrient.position.floor() == flower.position.floor():
+			_add_nutrients_to_flower(1)
+			nutrient.queue_free()
+
+func _get_extra_food() -> int:
+	return nutrients_at_flower / 4
+
+func _eat_nutrients_at_flower() -> void:
+	nutrients_at_flower -= 1 + _get_extra_food()
 
 func _filter_values_greater_than(dict : Dictionary, max_value : int) -> Dictionary:
 	var return_dict : Dictionary = {}
@@ -105,7 +126,6 @@ func _controlled_autotile_dead_vine(cellv : Vector2) -> void:
 			auto_tile_coord = vines.get_cell_autotile_coord(neighboring_cell.x, neighboring_cell.y)
 			dead_vines.set_cellv(neighboring_cell, DEAD_VINE_TILE, false, false, false, auto_tile_coord)
 
-
 func _grow_vine(cellv : Vector2):
 	vines.set_cellv(cellv, VINE_TILE)
 	vines.update_bitmask_area(cellv)
@@ -113,7 +133,7 @@ func _grow_vine(cellv : Vector2):
 	vines.update()
 
 func _vines_grow(grow_count : int):
-	for i in range(grow_count):
+	for _i in range(grow_count):
 		var optional_cells : Array = _get_growable_cells()
 		optional_cells = _filter_negative_vectors(optional_cells)
 		if optional_cells.size() == 0:
@@ -139,12 +159,17 @@ func _vines_die():
 		_cull_vine(cell_position)
 
 func _on_HarvetTimer_timeout():
-	_vines_die()
 	_vines_make_nutrients()
-	_vines_grow(2)
 
 func _on_TransportTimer_timeout():
-	_vines_move_nutrients($TransportTimer.wait_time - 0.01)
+	_vines_die()
+	_absorb_nutrients_at_flower()
+	_vines_grow(_get_extra_food())
+	_eat_nutrients_at_flower()
+	_vines_move_nutrients($TransportTimer.wait_time - 0.05)
 
 func _on_PlayerControlledCharacter_unit_moved():
 	_highlight_tile_at_position($PlayerControlledCharacter.position)
+
+func _ready():
+	emit_signal("nutrients_updated", nutrients_at_flower)

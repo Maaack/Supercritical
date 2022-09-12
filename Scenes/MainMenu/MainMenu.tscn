@@ -296,7 +296,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 theme = ExtResource( 4 )
 script = ExtResource( 1 )
-game_scene = "res://Scenes/Prototype/Level.tscn"
+game_scene = "res://Scenes/MainGame/MainGameScene.tscn"
 
 [node name="Panel" type="Panel" parent="."]
 anchor_right = 1.0

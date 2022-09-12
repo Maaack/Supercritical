@@ -58,7 +58,7 @@ func _input(event):
 
 func _setup_for_web():
 	if OS.has_feature("web"):
-		$MarginContainer/Main/ButtonContainer/Exit.disabled = true
+		$MenuContainer/MainMenuButtons/ButtonsContainer/ExitButton.hide()
 
 func _setup_version_name():
 	AppLog.version_opened(version_name)
