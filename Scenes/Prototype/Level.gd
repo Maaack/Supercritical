@@ -13,12 +13,16 @@ const CARDINAL_DIRECTIONS : Array = [
 	]
 
 export(int) var nutrients_at_flower : int = 0
+export(float, 0.05, 2) var turn_time : float = 0.5
 
 onready var flower = $Vines/Flower
 onready var vines = $Vines
 onready var dead_vines = $DeadVines
+onready var cell_size = $Vines.cell_size
+onready var half_cell_size = $Vines.cell_size / 2
 
 var nuclear_nutrient_scene = preload("res://Scenes/NuclearNutrient/NuclearNutrient.tscn")
+var turn_counter : int = 0
 
 func _cull_vine(cellv : Vector2) -> void:
 	vines.set_cellv(cellv, NO_TILE)
@@ -29,12 +33,12 @@ func _input(event):
 		_cull_vine($TileHighlighter.cell_vector)
 
 func _move_nutrient_along_vine_to_flower(nutrient : Node2D, delay : float):
-	var start_cell = (nutrient.global_position - (vines.cell_size / 2)).floor()
-	var target_cell = ((flower.position - (vines.cell_size / 2)) / vines.cell_size).floor() * vines.cell_size
+	var start_cell = (nutrient.global_position - half_cell_size).floor()
+	var target_cell = ((flower.position - half_cell_size) / cell_size).floor() * cell_size
 	var path_points = vines.get_astar_path_avoiding_obstacles(start_cell, target_cell)
 	if path_points.size() < 2:
 		return
-	var path_point = path_points[1] + (vines.cell_size / 2)
+	var path_point = path_points[1] + half_cell_size
 	var tween = get_tree().create_tween()
 	tween.tween_property(nutrient, "position", path_point, delay)
 
@@ -73,8 +77,8 @@ func _filter_negative_vectors(vectors : Array) -> Array:
 	return return_vectors
 
 func _is_vine_connected_to_flower(cellv : Vector2):
-	var target_cell = ((flower.position - (vines.cell_size / 2)) / vines.cell_size).floor() * vines.cell_size
-	var start_cell = cellv * vines.cell_size
+	var target_cell = ((flower.position - half_cell_size) / cell_size).floor() * cell_size
+	var start_cell = cellv * cell_size
 	var path_points = vines.get_astar_path_avoiding_obstacles(start_cell, target_cell)
 	return path_points.size() > 0
 
@@ -88,17 +92,17 @@ func _vines_make_nutrients():
 	for cell_position in $Deposits.get_used_cells():
 		if _is_cell_vine(cell_position):
 			var nutrient_instance = nuclear_nutrient_scene.instance()
-			nutrient_instance.position = vines.map_to_world(cell_position) + (vines.cell_size / 2)
+			nutrient_instance.position = vines.map_to_world(cell_position) + half_cell_size
 			$Nutrients.add_child(nutrient_instance)
 
 func _highlight_tile_at_position(position : Vector2):
-	var cell_position =  (position / vines.cell_size).floor()
+	var cell_position =  (position / cell_size).floor()
 	if not _is_cell_vine(cell_position):
 		$TileHighlighter.hide()
 		return
 	$TileHighlighter.cell_vector = cell_position
-	var tile_position = cell_position * vines.cell_size
-	tile_position += vines.cell_size / 2
+	var tile_position = cell_position * cell_size
+	tile_position += half_cell_size
 	$TileHighlighter.show()
 	$TileHighlighter.position = tile_position
 
@@ -168,8 +172,26 @@ func _on_TransportTimer_timeout():
 	_eat_nutrients_at_flower()
 	_vines_move_nutrients($TransportTimer.wait_time - 0.05)
 
-func _on_PlayerControlledCharacter_unit_moved():
-	_highlight_tile_at_position($PlayerControlledCharacter.position)
+func _level_takes_turn(delay : float):
+	turn_counter += 1
+	if turn_counter % 2 == 0:
+		_vines_make_nutrients()
+	_vines_die()
+	_absorb_nutrients_at_flower()
+	_vines_grow(_get_extra_food())
+	_eat_nutrients_at_flower()
+	_vines_move_nutrients(delay - 0.05)
+	
+
+func _on_PlayerControlledCharacter_unit_moved(direction):
+	var tween = get_tree().create_tween()
+	var target_position = $PlayerControlledCharacter.position + (direction * cell_size)
+	tween.tween_property($PlayerControlledCharacter, "position", target_position, turn_time)
+	tween.play()
+	_level_takes_turn(turn_time)
+	yield(tween, "finished")
+	_highlight_tile_at_position(target_position)
+	$PlayerControlledCharacter.set_process_input(true)
 
 func _ready():
 	emit_signal("nutrients_updated", nutrients_at_flower)
