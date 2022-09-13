@@ -11,7 +11,7 @@ func load_scene(scene_path : String):
 	SceneLoader.load_scene(scene_path)
 
 func play_game():
-	GameLog.game_played()
+	GameLog.game_started()
 	SceneLoader.load_scene(game_scene)
 
 func _open_sub_menu(menu : Control):
@@ -58,7 +58,7 @@ func _input(event):
 
 func _setup_for_web():
 	if OS.has_feature("web"):
-		$MarginContainer/Main/ButtonContainer/Exit.disabled = true
+		$MenuContainer/MainMenuButtons/ButtonsContainer/ExitButton.hide()
 
 func _setup_version_name():
 	AppLog.version_opened(version_name)
