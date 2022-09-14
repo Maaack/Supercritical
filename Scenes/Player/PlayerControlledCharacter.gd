@@ -1,9 +1,6 @@
-extends KinematicBody2D
+extends Node2D
 
 signal unit_moved(direction)
-
-var velocity : Vector2
-var speed : float = 200
 
 func _input(event):
 	var direction : Vector2 = Vector2.ZERO

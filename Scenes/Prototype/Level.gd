@@ -2,8 +2,8 @@ extends Node2D
 
 signal nutrients_updated(value)
 
-const VINE_TILE = 1
-const DEAD_VINE_TILE = 0
+const VINE_TILE = 3
+const DEAD_VINE_TILE = 2
 const NO_TILE = -1
 const CARDINAL_DIRECTIONS : Array = [
 		Vector2.UP,
@@ -24,7 +24,17 @@ onready var half_cell_size = $Vines.cell_size / 2
 var nuclear_nutrient_scene = preload("res://Scenes/NuclearNutrient/NuclearNutrient.tscn")
 var turn_counter : int = 0
 
+func _controlled_autotile_dead_vine(cellv : Vector2) -> void:
+	var auto_tile_coord : Vector2 = vines.get_cell_autotile_coord(cellv.x, cellv.y)
+	dead_vines.set_cellv(cellv, DEAD_VINE_TILE, false, false, false, auto_tile_coord)
+	for direction in CARDINAL_DIRECTIONS:
+		var neighboring_cell = cellv + direction
+		if _is_cell_vine(neighboring_cell):
+			auto_tile_coord = vines.get_cell_autotile_coord(neighboring_cell.x, neighboring_cell.y)
+			dead_vines.set_cellv(neighboring_cell, DEAD_VINE_TILE, false, false, false, auto_tile_coord)
+
 func _cull_vine(cellv : Vector2) -> void:
+	_controlled_autotile_dead_vine(cellv)
 	vines.set_cellv(cellv, NO_TILE)
 	vines.update()
 
@@ -59,8 +69,8 @@ func _absorb_nutrients_at_flower():
 func _get_extra_food() -> int:
 	return nutrients_at_flower / 4
 
-func _eat_nutrients_at_flower() -> void:
-	nutrients_at_flower -= 1 + _get_extra_food()
+func _eat_nutrients_at_flower(extra : int) -> void:
+	nutrients_at_flower -= 1 + extra
 
 func _filter_values_greater_than(dict : Dictionary, max_value : int) -> Dictionary:
 	var return_dict : Dictionary = {}
@@ -96,7 +106,7 @@ func _vines_make_nutrients():
 			$Nutrients.add_child(nutrient_instance)
 
 func _highlight_tile_at_position(position : Vector2):
-	var cell_position =  (position / cell_size).floor()
+	var cell_position = (position / cell_size).floor()
 	if not _is_cell_vine(cell_position):
 		$TileHighlighter.hide()
 		return
@@ -121,29 +131,23 @@ func _get_growable_cells():
 	neighboring_cells = _filter_values_greater_than(neighboring_cells, 1)
 	return neighboring_cells.keys()
 
-func _controlled_autotile_dead_vine(cellv : Vector2) -> void:
-	var auto_tile_coord : Vector2 = vines.get_cell_autotile_coord(cellv.x, cellv.y)
-	dead_vines.set_cellv(cellv, DEAD_VINE_TILE, false, false, false, auto_tile_coord)
-	for direction in CARDINAL_DIRECTIONS:
-		var neighboring_cell = cellv + direction
-		if _is_cell_vine(neighboring_cell):
-			auto_tile_coord = vines.get_cell_autotile_coord(neighboring_cell.x, neighboring_cell.y)
-			dead_vines.set_cellv(neighboring_cell, DEAD_VINE_TILE, false, false, false, auto_tile_coord)
-
 func _grow_vine(cellv : Vector2):
 	vines.set_cellv(cellv, VINE_TILE)
 	vines.update_bitmask_area(cellv)
 	_controlled_autotile_dead_vine(cellv)
 	vines.update()
 
-func _vines_grow(grow_count : int):
+func _vines_grow(grow_count : int) -> int:
+	var grew : int = 0
 	for _i in range(grow_count):
 		var optional_cells : Array = _get_growable_cells()
 		optional_cells = _filter_negative_vectors(optional_cells)
 		if optional_cells.size() == 0:
-			return
+			break
 		optional_cells.shuffle()
 		_grow_vine(optional_cells.pop_front())
+		grew += 1
+	return grew
 
 func _is_cell_dead(cellv : Vector2) -> bool:
 	return not _is_cell_vine(cellv) and dead_vines.get_cellv(cellv) == DEAD_VINE_TILE
@@ -162,26 +166,15 @@ func _vines_die():
 	for cell_position in cullable_vines:
 		_cull_vine(cell_position)
 
-func _on_HarvetTimer_timeout():
-	_vines_make_nutrients()
-
-func _on_TransportTimer_timeout():
-	_vines_die()
-	_absorb_nutrients_at_flower()
-	_vines_grow(_get_extra_food())
-	_eat_nutrients_at_flower()
-	_vines_move_nutrients($TransportTimer.wait_time - 0.05)
-
 func _level_takes_turn(delay : float):
 	turn_counter += 1
 	if turn_counter % 2 == 0:
 		_vines_make_nutrients()
 	_vines_die()
 	_absorb_nutrients_at_flower()
-	_vines_grow(_get_extra_food())
-	_eat_nutrients_at_flower()
+	var vines_grew = _vines_grow(_get_extra_food())
+	_eat_nutrients_at_flower(vines_grew)
 	_vines_move_nutrients(delay - 0.05)
-	
 
 func _on_PlayerControlledCharacter_unit_moved(direction):
 	var tween = get_tree().create_tween()
