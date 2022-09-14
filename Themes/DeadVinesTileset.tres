@@ -1,6 +1,6 @@
 [gd_resource type="TileSet" load_steps=2 format=2]
 
-[ext_resource path="res://Assets/Original/Tilesets/pixil-frame-0_64.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Original/Tilesets/dead-vines.png" type="Texture" id=1]
 
 [resource]
 2/name = "pixil-frame-0_64.png 2"
