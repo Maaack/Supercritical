@@ -12,6 +12,7 @@ const CARDINAL_DIRECTIONS : Array = [
 		Vector2.RIGHT
 	]
 
+export(Vector2) var level_size : Vector2 = Vector2(16, 16)
 export(int) var nutrients_at_flower : int = 0
 export(float, 0.05, 2) var turn_time : float = 0.5
 
@@ -72,6 +73,9 @@ func _get_extra_food() -> int:
 func _eat_nutrients_at_flower(extra : int) -> void:
 	nutrients_at_flower -= 1 + extra
 
+func _is_in_bounds(cellv : Vector2) -> bool:
+	return cellv.x >= 0 and cellv.y >= 0 and cellv.x < level_size.x and cellv.y < level_size.y
+
 func _filter_values_greater_than(dict : Dictionary, max_value : int) -> Dictionary:
 	var return_dict : Dictionary = {}
 	for key in dict:
@@ -79,10 +83,10 @@ func _filter_values_greater_than(dict : Dictionary, max_value : int) -> Dictiona
 			return_dict[key] = dict[key]
 	return return_dict
 
-func _filter_negative_vectors(vectors : Array) -> Array:
+func _filter_out_of_bounds(vectors : Array) -> Array:
 	var return_vectors : Array = []
 	for vector in vectors:
-		if vector is Vector2 and vector.x >= 0 and vector.y >= 0:
+		if vector is Vector2 and _is_in_bounds(vector):
 			return_vectors.append(vector)
 	return return_vectors
 
@@ -141,7 +145,7 @@ func _vines_grow(grow_count : int) -> int:
 	var grew : int = 0
 	for _i in range(grow_count):
 		var optional_cells : Array = _get_growable_cells()
-		optional_cells = _filter_negative_vectors(optional_cells)
+		optional_cells = _filter_out_of_bounds(optional_cells)
 		if optional_cells.size() == 0:
 			break
 		optional_cells.shuffle()
@@ -177,8 +181,11 @@ func _level_takes_turn(delay : float):
 	_vines_move_nutrients(delay - 0.05)
 
 func _on_PlayerControlledCharacter_unit_moved(direction):
-	var tween = get_tree().create_tween()
 	var target_position = $PlayerControlledCharacter.position + (direction * cell_size)
+	if not _is_in_bounds(target_position / cell_size):
+		return
+	$PlayerControlledCharacter.set_process_input(false)
+	var tween = get_tree().create_tween()
 	tween.tween_property($PlayerControlledCharacter, "position", target_position, turn_time)
 	tween.play()
 	_level_takes_turn(turn_time)

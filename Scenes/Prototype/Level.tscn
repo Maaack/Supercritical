@@ -394,6 +394,7 @@ points = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
 
 [node name="LevelPrototype" type="Node2D"]
 script = ExtResource( 5 )
+level_size = Vector2( 20, 20 )
 nutrients_at_flower = 3
 
 [node name="Ground" type="TileMap" parent="."]

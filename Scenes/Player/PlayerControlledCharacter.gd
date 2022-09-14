@@ -15,5 +15,3 @@ func _input(event):
 			direction = Vector2.RIGHT
 	if direction != Vector2.ZERO:
 		emit_signal("unit_moved", direction)
-		set_process_input(false)
-
