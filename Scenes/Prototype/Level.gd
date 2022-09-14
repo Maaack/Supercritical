@@ -1,6 +1,7 @@
 extends Node2D
 
-signal nutrients_updated(value)
+signal nutrients_updated(value, delta, reason)
+signal turn_started
 
 const VINE_TILE = 3
 const DEAD_VINE_TILE = 2
@@ -57,21 +58,23 @@ func _vines_move_nutrients(delay : float):
 	for nutrient in $Nutrients.get_children():
 		_move_nutrient_along_vine_to_flower(nutrient, delay)
 
-func _add_nutrients_to_flower(count : int = 1) -> void:
-	nutrients_at_flower += count
-	emit_signal("nutrients_updated", nutrients_at_flower)
+func _add_nutrients_to_flower(delta : int = 1, reason : String = "") -> void:
+	nutrients_at_flower += delta
+	emit_signal("nutrients_updated", nutrients_at_flower, delta, reason)
 
+func _eat_nutrients_at_flower(extra_growth : int) -> void:
+	_add_nutrients_to_flower(-1, "Flower")
+	_add_nutrients_to_flower(-extra_growth, "Growth")
+	
 func _absorb_nutrients_at_flower():
 	for nutrient in $Nutrients.get_children():
 		if nutrient.position.floor() == flower.position.floor():
-			_add_nutrients_to_flower(1)
+			_add_nutrients_to_flower(1, "Harvested")
 			nutrient.queue_free()
 
 func _get_extra_food() -> int:
 	return nutrients_at_flower / 4
 
-func _eat_nutrients_at_flower(extra : int) -> void:
-	nutrients_at_flower -= 1 + extra
 
 func _is_in_bounds(cellv : Vector2) -> bool:
 	return cellv.x >= 0 and cellv.y >= 0 and cellv.x < level_size.x and cellv.y < level_size.y
@@ -171,6 +174,7 @@ func _vines_die():
 		_cull_vine(cell_position)
 
 func _level_takes_turn(delay : float):
+	emit_signal("turn_started")
 	turn_counter += 1
 	if turn_counter % 2 == 0:
 		_vines_make_nutrients()
