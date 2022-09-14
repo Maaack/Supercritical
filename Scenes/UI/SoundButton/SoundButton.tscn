@@ -1,11 +1,15 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scenes/UI/SoundButton/SoundButton.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Original/SFX/Bonsai_Button_Click_1.wav" type="AudioStream" id=2]
+[ext_resource path="res://Assets/Original/SFX/Bonsai_Button_Hover_1.wav" type="AudioStream" id=3]
 
 [sub_resource type="AudioStreamRandomPitch" id=1]
+audio_stream = ExtResource( 3 )
 random_pitch = 1.05
 
 [sub_resource type="AudioStreamRandomPitch" id=2]
+audio_stream = ExtResource( 2 )
 random_pitch = 1.05
 
 [node name="SoundButton" type="Button"]
