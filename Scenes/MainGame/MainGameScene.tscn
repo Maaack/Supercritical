@@ -50,19 +50,29 @@ margin_bottom = 592.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 
-[node name="NutrientCounterLabel" type="Label" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer"]
+[node name="TurnCounterLabel" type="Label" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer"]
 unique_name_in_owner = true
 margin_right = 344.0
 margin_bottom = 35.0
+rect_min_size = Vector2( 240, 0 )
+custom_fonts/font = ExtResource( 2 )
+text = "Turns Left: 0"
+align = 1
+
+[node name="NutrientCounterLabel" type="Label" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer"]
+unique_name_in_owner = true
+margin_top = 39.0
+margin_right = 344.0
+margin_bottom = 74.0
 rect_min_size = Vector2( 240, 0 )
 custom_fonts/font = ExtResource( 2 )
 text = "Flower: 0"
 align = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer"]
-margin_top = 39.0
+margin_top = 78.0
 margin_right = 344.0
-margin_bottom = 159.0
+margin_bottom = 198.0
 rect_min_size = Vector2( 0, 120 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer/HBoxContainer"]
@@ -117,28 +127,39 @@ custom_fonts/font = ExtResource( 4 )
 align = 1
 
 [node name="MinimumLabel" type="Label" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer"]
-margin_top = 163.0
+margin_top = 202.0
 margin_right = 344.0
-margin_bottom = 187.0
+margin_bottom = 226.0
 custom_fonts/font = ExtResource( 4 )
 text = "Stay above 0"
 align = 1
 
 [node name="MaximumLabel" type="Label" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer"]
-margin_top = 191.0
+margin_top = 230.0
 margin_right = 344.0
-margin_bottom = 215.0
+margin_bottom = 254.0
 custom_fonts/font = ExtResource( 4 )
-text = "Stay below 16"
+text = "Stay below 20"
 align = 1
 
 [node name="NextGoalLabel" type="Label" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer"]
-margin_top = 219.0
+margin_top = 258.0
 margin_right = 344.0
-margin_bottom = 270.0
+margin_bottom = 336.0
 custom_fonts/font = ExtResource( 4 )
 text = "Next Goal:
- 8 - 16 for 4 turns"
+ 8 - 16
+for"
+align = 1
+valign = 1
+
+[node name="TurnGoalLabel" type="Label" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer"]
+unique_name_in_owner = true
+margin_top = 340.0
+margin_right = 344.0
+margin_bottom = 364.0
+custom_fonts/font = ExtResource( 4 )
+text = "4 turns"
 align = 1
 valign = 1
 

@@ -1,7 +1,10 @@
 extends Node2D
 
-signal nutrients_updated(value, delta, reason)
+signal nutrients_changed(delta, reason)
+signal state_changed(nutrients, turns_left, goal_turns_left)
 signal turn_started
+signal success
+signal failure(reason)
 
 const VINE_TILE = 3
 const DEAD_VINE_TILE = 2
@@ -13,9 +16,22 @@ const CARDINAL_DIRECTIONS : Array = [
 		Vector2.RIGHT
 	]
 
+enum FAILURE_REASON{
+	STARVATION,
+	NUCLEAR_EXPLOSION,
+	TIMEOUT
+}
+
 export(Vector2) var level_size : Vector2 = Vector2(16, 16)
 export(int) var nutrients_at_flower : int = 0
 export(float, 0.05, 2) var turn_time : float = 0.5
+
+# Goals
+export(int) var level_turn_limit : int = 40
+export(int) var nutrient_goal_min : int = 8
+export(int) var nutrient_goal_max : int = 16
+export(int) var nutrient_goal_keep_time : int = 4
+export(int) var supercritical_limit : int = 20
 
 onready var flower = $Vines/Flower
 onready var vines = $Vines
@@ -25,6 +41,7 @@ onready var half_cell_size = $Vines.cell_size / 2
 
 var nuclear_nutrient_scene = preload("res://Scenes/NuclearNutrient/NuclearNutrient.tscn")
 var turn_counter : int = 0
+var goal_counter : int = 0
 
 func _controlled_autotile_dead_vine(cellv : Vector2) -> void:
 	var auto_tile_coord : Vector2 = vines.get_cell_autotile_coord(cellv.x, cellv.y)
@@ -60,7 +77,7 @@ func _vines_move_nutrients(delay : float):
 
 func _add_nutrients_to_flower(delta : int = 1, reason : String = "") -> void:
 	nutrients_at_flower += delta
-	emit_signal("nutrients_updated", nutrients_at_flower, delta, reason)
+	emit_signal("nutrients_changed", delta, reason)
 
 func _eat_nutrients_at_flower(extra_growth : int) -> void:
 	_add_nutrients_to_flower(-1, "Flower")
@@ -173,6 +190,20 @@ func _vines_die():
 	for cell_position in cullable_vines:
 		_cull_vine(cell_position)
 
+func _evauluate_goal():
+	if nutrients_at_flower > nutrient_goal_min and nutrients_at_flower < nutrient_goal_max:
+		goal_counter += 1
+	else:
+		goal_counter = 0
+	if goal_counter >= nutrient_goal_keep_time:
+		emit_signal("success")
+	if nutrients_at_flower <= 0:
+		emit_signal("failure", FAILURE_REASON.STARVATION)
+	if nutrients_at_flower >= supercritical_limit:
+		emit_signal("failure", FAILURE_REASON.NUCLEAR_EXPLOSION)
+	if turn_counter >= level_turn_limit:
+		emit_signal("failure", FAILURE_REASON.TIMEOUT)
+
 func _level_takes_turn(delay : float):
 	emit_signal("turn_started")
 	turn_counter += 1
@@ -182,7 +213,9 @@ func _level_takes_turn(delay : float):
 	_absorb_nutrients_at_flower()
 	var vines_grew = _vines_grow(_get_extra_food())
 	_eat_nutrients_at_flower(vines_grew)
+	_evauluate_goal()
 	_vines_move_nutrients(delay - 0.05)
+	emit_signal("state_changed", nutrients_at_flower, level_turn_limit - turn_counter, nutrient_goal_keep_time - goal_counter)
 
 func _on_PlayerControlledCharacter_unit_moved(direction):
 	var target_position = $PlayerControlledCharacter.position + (direction * cell_size)
@@ -198,4 +231,4 @@ func _on_PlayerControlledCharacter_unit_moved(direction):
 	$PlayerControlledCharacter.set_process_input(true)
 
 func _ready():
-	emit_signal("nutrients_updated", nutrients_at_flower)
+	emit_signal("state_changed", nutrients_at_flower, level_turn_limit, nutrient_goal_keep_time)
