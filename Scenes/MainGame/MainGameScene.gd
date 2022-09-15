@@ -87,7 +87,9 @@ func set_level_scene(value : PackedScene) -> void:
 func _ready():
 	if level_scene == null:
 		var next_level : int = GameLog.get_max_level_reached()
-		if next_level >= levels.size():
+		if next_level > levels.size():
 			next_level = levels.size()
+		if next_level == 0:
+			next_level = 1
 		level_scene = levels[next_level-1]
 	self.level_scene = level_scene
