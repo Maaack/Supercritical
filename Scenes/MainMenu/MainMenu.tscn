@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://Scenes/MainMenu/MainMenu.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/MainMenu/MainMenuButtons.tscn" type="PackedScene" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://Themes/Bitfantasy.ttf" type="DynamicFontData" id=6]
 [ext_resource path="res://Themes/Font48px.tres" type="DynamicFont" id=7]
 [ext_resource path="res://Scenes/Credits/Credits.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Assets/Original/Music/Bonsai_-_Music_4_-_Demo_2_Loopable_ShortLF.ogg" type="AudioStream" id=9]
 
 [sub_resource type="Animation" id=5]
 resource_name = "CloseSubMenu"
@@ -438,6 +439,11 @@ anchor_bottom = 1.0
 margin_top = -40.0
 margin_right = 62.0
 text = "Back"
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 9 )
+autoplay = true
+bus = "Music"
 
 [connection signal="pressed" from="MenuContainer/MainMenuButtons/ButtonsContainer/PlayButton" to="." method="_on_PlayButton_pressed"]
 [connection signal="pressed" from="MenuContainer/MainMenuButtons/ButtonsContainer/TutorialButton" to="." method="_on_TutorialButton_pressed"]

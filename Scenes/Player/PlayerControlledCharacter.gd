@@ -1,9 +1,6 @@
-extends KinematicBody2D
+extends Node2D
 
 signal unit_moved(direction)
-
-var velocity : Vector2
-var speed : float = 200
 
 func _input(event):
 	var direction : Vector2 = Vector2.ZERO
@@ -18,5 +15,3 @@ func _input(event):
 			direction = Vector2.RIGHT
 	if direction != Vector2.ZERO:
 		emit_signal("unit_moved", direction)
-		set_process_input(false)
-

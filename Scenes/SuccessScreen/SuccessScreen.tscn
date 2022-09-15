@@ -1,0 +1,87 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Scenes/OptionsMenu/OptionsMenu.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/SuccessScreen/SuccessScreen.gd" type="Script" id=2]
+[ext_resource path="res://Themes/MainMenuTheme.tres" type="Theme" id=3]
+[ext_resource path="res://Scenes/UI/SoundButton/SoundButton.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Themes/GameFont48px.tres" type="DynamicFont" id=5]
+
+[node name="SuccessScreen" type="CanvasLayer"]
+pause_mode = 2
+layer = 10
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_vertical_guides_": [ 512.0 ]
+}
+
+[node name="Control" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 3 )
+
+[node name="Background" type="ColorRect" parent="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.643137, 1, 0.611765, 0.470588 )
+
+[node name="Title" type="Label" parent="Control"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -180.0
+margin_top = 36.0
+margin_right = 180.0
+margin_bottom = 91.0
+custom_fonts/font = ExtResource( 5 )
+text = "You grew the flower!"
+align = 1
+
+[node name="ButtonsContainer" type="VBoxContainer" parent="Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -116.5
+margin_top = -84.0
+margin_right = 116.5
+margin_bottom = 84.0
+custom_constants/separation = 24
+
+[node name="RestartButton" parent="Control/ButtonsContainer" instance=ExtResource( 4 )]
+margin_right = 233.0
+margin_bottom = 40.0
+text = "Restart"
+
+[node name="MainMenuButton" parent="Control/ButtonsContainer" instance=ExtResource( 4 )]
+margin_top = 64.0
+margin_right = 233.0
+margin_bottom = 104.0
+text = "Return to Main Menu"
+
+[node name="ExitButton" parent="Control/ButtonsContainer" instance=ExtResource( 4 )]
+margin_top = 128.0
+margin_right = 233.0
+margin_bottom = 168.0
+text = "Exit Game"
+
+[node name="ConfirmMainMenu" type="ConfirmationDialog" parent="Control"]
+margin_right = 200.0
+margin_bottom = 70.0
+popup_exclusive = true
+window_title = "Confirm"
+dialog_text = "Go back to main menu?"
+
+[node name="ConfirmExit" type="ConfirmationDialog" parent="Control"]
+margin_right = 200.0
+margin_bottom = 70.0
+popup_exclusive = true
+window_title = "Confirm"
+dialog_text = "Quit the game?"
+
+[node name="OptionsMenu" parent="Control" instance=ExtResource( 1 )]
+visible = false
+
+[connection signal="pressed" from="Control/ButtonsContainer/RestartButton" to="." method="_on_RestartButton_pressed"]
+[connection signal="pressed" from="Control/ButtonsContainer/MainMenuButton" to="." method="_on_MainMenuButton_pressed"]
+[connection signal="pressed" from="Control/ButtonsContainer/ExitButton" to="." method="_on_ExitButton_pressed"]
+[connection signal="confirmed" from="Control/ConfirmMainMenu" to="." method="_on_ConfirmMainMenu_confirmed"]
+[connection signal="confirmed" from="Control/ConfirmExit" to="." method="_on_ConfirmExit_confirmed"]
