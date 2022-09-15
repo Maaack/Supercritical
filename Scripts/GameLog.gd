@@ -17,3 +17,6 @@ static func level_reached(level_number : int) -> void:
 
 static func reset_game_data() -> void:
 	Config.set_config(GAME_LOG_SECTION, MAX_LEVEL_REACHED, 0)
+
+static func get_max_level_reached() -> int:
+	return Config.get_config(GAME_LOG_SECTION, MAX_LEVEL_REACHED, 0)

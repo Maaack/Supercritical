@@ -4,7 +4,7 @@
 [ext_resource path="res://Scenes/Player/PlayerControlledCharacter.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/Vines/Vines.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scenes/Prototype/AStarDebug.gd" type="Script" id=4]
-[ext_resource path="res://Scenes/Prototype/Level.gd" type="Script" id=5]
+[ext_resource path="res://Scenes/BaseLevel/BaseLevel.gd" type="Script" id=5]
 [ext_resource path="res://Scenes/Flower/Flower.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Scenes/TileHighlighter/TileHighlighter.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Assets/Original/Tilesets/terrain.png" type="Texture" id=9]
@@ -394,7 +394,6 @@ points = PoolVector2Array( 64, 64, 0, 64, 0, 0, 64, 0 )
 
 [node name="LevelPrototype" type="Node2D"]
 script = ExtResource( 5 )
-level_size = Vector2( 24, 27 )
 nutrients_at_flower = 5
 level_turn_limit = 100
 
