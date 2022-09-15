@@ -54,10 +54,10 @@ func _level_failure(reason : int):
 
 func set_level_scene(value : PackedScene) -> void:
 	level_scene = value
-	var level_viewport_node = get_node_or_null("HBoxContainer/LevelViewportContainer/Viewport")
-	if level_viewport_node == null:
+	var level_container_node = get_node_or_null("%LevelContainer")
+	if level_container_node == null:
 		return
-	for child in level_viewport_node.get_children():
+	for child in level_container_node.get_children():
 		child.queue_free()
 	if level_scene == null:
 		return
@@ -67,4 +67,4 @@ func set_level_scene(value : PackedScene) -> void:
 	level_instance.connect("state_changed", self, "_level_state_changed")
 	level_instance.connect("success", self, "_level_success")
 	level_instance.connect("failure", self, "_level_failure")
-	level_viewport_node.add_child(level_instance)
+	level_container_node.add_child(level_instance)

@@ -49,6 +49,16 @@ InGameMenuController="*res://Scripts/InGameMenuController.gd"
 SceneLoader="*res://Scripts/SceneLoader.gd"
 AppLogger="*res://Scripts/AppLogger.gd"
 
+[display]
+
+window/size/width=512
+window/size/height=384
+window/size/resizable=false
+window/size/test_width=1024
+window/size/test_height=768
+window/stretch/mode="viewport"
+window/stretch/aspect="keep"
+
 [gui]
 
 common/drop_mouse_on_gui_input_disabled=true
@@ -126,4 +136,5 @@ common/enable_pause_aware_picking=true
 
 [rendering]
 
+2d/snapping/use_gpu_pixel_snap=true
 environment/default_environment="res://default_env.tres"

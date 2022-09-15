@@ -62,7 +62,7 @@ func _input(event):
 		_cull_vine($TileHighlighter.cell_vector)
 
 func _move_nutrient_along_vine_to_flower(nutrient : Node2D, delay : float):
-	var start_cell = (nutrient.global_position - half_cell_size).floor()
+	var start_cell = (nutrient.position - half_cell_size).floor()
 	var target_cell = ((flower.position - half_cell_size) / cell_size).floor() * cell_size
 	var path_points = vines.get_astar_path_avoiding_obstacles(start_cell, target_cell)
 	if path_points.size() < 2:
