@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://Assets/Sourced/Tilemaps/mappack/Tilesheet/mapPack_tilesheet.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/Player/PlayerControlledCharacter.tscn" type="PackedScene" id=2]
@@ -7,7 +7,6 @@
 [ext_resource path="res://Scenes/Prototype/Level.gd" type="Script" id=5]
 [ext_resource path="res://Scenes/Flower/Flower.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Scenes/TileHighlighter/TileHighlighter.tscn" type="PackedScene" id=7]
-[ext_resource path="res://Themes/LivingVinesTileset.tres" type="TileSet" id=8]
 [ext_resource path="res://Assets/Original/Tilesets/terrain.png" type="Texture" id=9]
 [ext_resource path="res://Themes/DeadVinesTileset.tres" type="TileSet" id=10]
 [ext_resource path="res://Assets/Original/Textures/nuclear-waste.png" type="Texture" id=11]
@@ -424,7 +423,6 @@ cell_size = Vector2( 14, 14 )
 format = 1
 
 [node name="Vines" parent="." instance=ExtResource( 3 )]
-tile_set = ExtResource( 8 )
 cell_size = Vector2( 14, 14 )
 tile_data = PoolIntArray( 131080, 3, 4, 196616, 3, 0, 262152, 3, 2, 262153, 3, 65537, 327686, 3, 65536, 327687, 3, 3, 327688, 3, 65538, 327689, 3, 131073, 393222, 3, 131072, 393223, 3, 65539, 458759, 3, 0, 458768, 3, 4, 524292, 3, 65536, 524293, 3, 1, 524294, 3, 1, 524295, 3, 65538, 524296, 3, 65537, 524303, 3, 65536, 524304, 3, 131073, 589828, 3, 0, 589832, 3, 131072, 589833, 3, 1, 589834, 3, 65537, 589839, 3, 0, 655364, 3, 0, 655370, 3, 2, 655371, 3, 65537, 655374, 3, 65536, 655375, 3, 131073, 720900, 3, 131072, 720901, 3, 1, 720902, 3, 65537, 720906, 3, 131072, 720907, 3, 65538, 720908, 3, 1, 720909, 3, 1, 720910, 3, 131073, 786438, 3, 131072, 786439, 3, 65537, 851975, 3, 65540 )
 
