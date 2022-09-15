@@ -239,11 +239,6 @@
 
 [node name="BaseLevel" type="Node2D"]
 script = ExtResource( 5 )
-nutrients_at_flower = 36
-nutrient_goal_min = 40
-nutrient_goal_max = 40
-nutrient_goal_keep_time = 10
-supercritical_limit = 40
 
 [node name="Ground" type="TileMap" parent="."]
 tile_set = SubResource( 2 )

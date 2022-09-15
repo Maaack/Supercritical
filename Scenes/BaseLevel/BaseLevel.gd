@@ -6,6 +6,7 @@ signal state_changed(nutrients, turns_left, goal_turns_left)
 signal turn_started
 signal success
 signal failure(reason)
+signal goals_updated(level_turn_limit, supercritical_limit, nutrient_goal_keep_time, nutrient_goal_min, nutrient_goal_max)
 
 const VINE_TILE = 3
 const DEAD_VINE_TILE = 2
@@ -209,7 +210,7 @@ func _evauluate_goal():
 		goal_counter += 1
 	else:
 		goal_counter = 0
-	if goal_counter >= nutrient_goal_keep_time:
+	if nutrient_goal_keep_time > 0 and goal_counter >= nutrient_goal_keep_time:
 		_complete_level()
 	if nutrients_at_flower <= 0:
 		emit_signal("failure", FAILURE_REASON.STARVATION)
@@ -246,6 +247,7 @@ func _on_PlayerControlledCharacter_unit_moved(direction):
 
 func _ready():
 	_grow_vine(_get_flower_cellv())
+	emit_signal("goals_updated", level_turn_limit, supercritical_limit, nutrient_goal_keep_time, nutrient_goal_min, nutrient_goal_max)
 	emit_signal("state_changed", nutrients_at_flower, level_turn_limit, nutrient_goal_keep_time)
 
 func _input(event):

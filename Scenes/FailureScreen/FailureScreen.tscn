@@ -26,24 +26,28 @@ color = Color( 1, 0.611765, 0.611765, 0.470588 )
 [node name="Title" type="Label" parent="Control"]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -180.0
-margin_top = 36.0
-margin_right = 180.0
-margin_bottom = 91.0
+margin_left = -240.0
+margin_top = 16.0
+margin_right = 240.0
+margin_bottom = 172.0
 custom_fonts/font = ExtResource( 5 )
 text = "You failed..."
 align = 1
+autowrap = true
 
 [node name="ButtonsContainer" type="VBoxContainer" parent="Control"]
 anchor_left = 0.5
-anchor_top = 0.5
+anchor_top = 1.0
 anchor_right = 0.5
-anchor_bottom = 0.5
+anchor_bottom = 1.0
 margin_left = -116.5
-margin_top = -84.0
+margin_top = -182.0
 margin_right = 116.5
-margin_bottom = 84.0
+margin_bottom = -14.0
 custom_constants/separation = 24
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="RestartButton" parent="Control/ButtonsContainer" instance=ExtResource( 4 )]
 margin_right = 233.0

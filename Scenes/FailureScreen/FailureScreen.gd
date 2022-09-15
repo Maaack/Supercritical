@@ -1,7 +1,7 @@
 extends CanvasLayer
 
 const TIMEOUT_TEXT : String = "Ran out of time!"
-const NUCLEAR_EXPLOSION_TEXT : String = "Nutrients went supercritical\nand exploded!"
+const NUCLEAR_EXPLOSION_TEXT : String = "Nutrients went\nsupercritical\nand exploded!"
 const STARVATION_TEXT : String = "Flower starved..."
 const FAILURE_TEXT : String = "You failed..."
 
