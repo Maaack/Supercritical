@@ -1,0 +1,66 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Scenes/TutorialScreen/TutorialScreen.gd" type="Script" id=2]
+[ext_resource path="res://Themes/MainMenuTheme.tres" type="Theme" id=3]
+[ext_resource path="res://Scenes/UI/SoundButton/SoundButton.tscn" type="PackedScene" id=4]
+
+[node name="TutorialScreen" type="CanvasLayer"]
+pause_mode = 2
+layer = 10
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_vertical_guides_": [ 512.0 ]
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 0.313726 )
+
+[node name="Control" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 3 )
+
+[node name="Panel" type="Panel" parent="Control"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -137.5
+margin_top = -104.0
+margin_right = 137.5
+margin_bottom = 104.0
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 4
+custom_constants/margin_top = 4
+custom_constants/margin_left = 4
+custom_constants/margin_bottom = 4
+
+[node name="PanelContainer" type="VBoxContainer" parent="Control/Panel/MarginContainer"]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 271.0
+margin_bottom = 204.0
+custom_constants/separation = 24
+
+[node name="TutorialText" type="Label" parent="Control/Panel/MarginContainer/PanelContainer"]
+margin_right = 267.0
+margin_bottom = 136.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "You grew the flower!"
+align = 1
+valign = 1
+autowrap = true
+
+[node name="ResumeButton" parent="Control/Panel/MarginContainer/PanelContainer" instance=ExtResource( 4 )]
+margin_top = 160.0
+margin_right = 267.0
+margin_bottom = 200.0
+text = "Resume"
+
+[connection signal="pressed" from="Control/Panel/MarginContainer/PanelContainer/ResumeButton" to="." method="_on_ResumeButton_pressed"]

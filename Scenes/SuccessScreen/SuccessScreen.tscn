@@ -1,6 +1,5 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://Scenes/OptionsMenu/OptionsMenu.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/SuccessScreen/SuccessScreen.gd" type="Script" id=2]
 [ext_resource path="res://Themes/MainMenuTheme.tres" type="Theme" id=3]
 [ext_resource path="res://Scenes/UI/SoundButton/SoundButton.tscn" type="PackedScene" id=4]
@@ -46,9 +45,16 @@ margin_right = 116.5
 margin_bottom = 84.0
 custom_constants/separation = 24
 
-[node name="RestartButton" parent="Control/ButtonsContainer" instance=ExtResource( 4 )]
+[node name="NextLevelButton" parent="Control/ButtonsContainer" instance=ExtResource( 4 )]
 margin_right = 233.0
 margin_bottom = 40.0
+text = "Next Level"
+
+[node name="RestartButton" parent="Control/ButtonsContainer" instance=ExtResource( 4 )]
+visible = false
+margin_top = 64.0
+margin_right = 233.0
+margin_bottom = 104.0
 text = "Restart"
 
 [node name="MainMenuButton" parent="Control/ButtonsContainer" instance=ExtResource( 4 )]
@@ -77,9 +83,7 @@ popup_exclusive = true
 window_title = "Confirm"
 dialog_text = "Quit the game?"
 
-[node name="OptionsMenu" parent="Control" instance=ExtResource( 1 )]
-visible = false
-
+[connection signal="pressed" from="Control/ButtonsContainer/NextLevelButton" to="." method="_on_NextLevelButton_pressed"]
 [connection signal="pressed" from="Control/ButtonsContainer/RestartButton" to="." method="_on_RestartButton_pressed"]
 [connection signal="pressed" from="Control/ButtonsContainer/MainMenuButton" to="." method="_on_MainMenuButton_pressed"]
 [connection signal="pressed" from="Control/ButtonsContainer/ExitButton" to="." method="_on_ExitButton_pressed"]
