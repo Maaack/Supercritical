@@ -31,13 +31,6 @@ export(float, 0.05, 2) var turn_time : float = 0.5
 
 # Goals
 export(Array, Resource) var level_goals : Array = []
-export(int) var level_turn_limit : int = 40
-export(bool) var failure_on_turn_limit : bool = true
-export(int) var nutrient_goal_min : int = 8
-export(int) var nutrient_goal_max : int = 16
-export(int) var nutrient_goal_keep_time : int = 4
-export(int) var supercritical_limit : int = 20
-export(int) var growth_nutrient_divider : int = 4
 
 onready var flower = $Vines/Flower
 onready var vines = $Vines
@@ -130,6 +123,9 @@ func _is_vine_connected_to_flower(cellv : Vector2):
 	var start_cell = cellv * cell_size
 	var path_points = vines.get_astar_path_avoiding_obstacles(start_cell, target_cell)
 	return path_points.size() > 0
+
+func _is_cell_walkable(cellv : Vector2) -> bool:
+	return _is_in_bounds(cellv) and $Obstacles.get_cellv(cellv) == -1
 
 func _is_cell_growable(cellv : Vector2) -> bool:
 	return vines.get_cellv(cellv) == -1 and dead_vines.get_cellv(cellv) == -1 and $Obstacles.get_cellv(cellv) == -1
@@ -281,7 +277,7 @@ func _level_takes_turn(delay : float):
 
 func _move_player(direction):
 	var target_position = $PlayerControlledCharacter.position + (direction * cell_size)
-	if not _is_in_bounds(target_position / cell_size):
+	if not _is_cell_walkable(target_position / cell_size):
 		return
 	var tween = get_tree().create_tween()
 	tween.tween_property($PlayerControlledCharacter, "position", target_position, turn_time)
