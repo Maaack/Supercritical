@@ -279,5 +279,3 @@ current = true
 __meta__ = {
 "_edit_lock_": true
 }
-
-[connection signal="unit_moved" from="PlayerControlledCharacter" to="." method="_on_PlayerControlledCharacter_unit_moved"]

@@ -19,6 +19,7 @@ const INPUT_MAP : Dictionary = {
 	"move_right" : "Right",
 	"run" : "Run",
 	"interact" : "Interact",
+	"skip_turn" : "Skip Turn",
 }
 
 # Input

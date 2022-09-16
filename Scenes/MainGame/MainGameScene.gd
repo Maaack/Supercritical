@@ -54,14 +54,16 @@ func _level_failure(reason : int):
 	if InGameMenuController.current_menu.has_method("set_failure_reason"):
 		InGameMenuController.current_menu.set_failure_reason(reason)
 
-func _level_goals_updated(level_turn_limit : int, supercritical_limit : int, nutrient_goal_keep_time : int, nutrient_goal_min : int, nutrient_goal_max : int):
+func _level_goals_updated(level_turn_limit : int, supercritical_limit : int, nutrient_goal_rounds : int, nutrient_goal_min : int, nutrient_goal_max : int):
 	get_node("%SupercriticalLimitLabel").text = "Stay below %d" % supercritical_limit
-	if nutrient_goal_keep_time > 0:
+	if nutrient_goal_rounds > 0:
+		get_node("%StayAliveGoalLabel").hide()
 		get_node("%NextGoalRangeLabel").show()
 		get_node("%NextGoalRangeLabel").text = "%d - %d nutrients" % [nutrient_goal_min, nutrient_goal_max]
 		get_node("%TurnGoalCountLabel").show()
-		get_node("%TurnGoalCountLabel").text = "for %d turns" % nutrient_goal_keep_time
+		get_node("%TurnGoalCountLabel").text = "for %d turns" % nutrient_goal_rounds
 	else:
+		get_node("%NextGoalRangeLabel").hide()
 		get_node("%StayAliveGoalLabel").show()
 		get_node("%TurnGoalCountLabel").show()
 		get_node("%TurnGoalCountLabel").text = "for %d turns" % level_turn_limit

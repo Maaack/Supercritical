@@ -5,6 +5,4 @@
 [node name="TutorialScreen" instance=ExtResource( 1 )]
 
 [node name="TutorialText" parent="Control/Panel/MarginContainer/PanelContainer" index="0"]
-text = "This flower could bloom into something bigger, but it is being suffocated by the dead vines of its predecessor.
-
-Clear out the dead vines to allow the new flower to grow and bloom. Don't give it access to too many nutrients or it'll explode!"
+text = "Wow! You got the flower to bloom to the next stage. A larger flower means a higher supercritical limit. Try to keep it alive a little longer..."

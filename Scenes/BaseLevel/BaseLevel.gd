@@ -6,7 +6,7 @@ signal state_changed(nutrients, turns_left, goal_turns_left)
 signal turn_started
 signal success
 signal failure(reason)
-signal goals_updated(level_turn_limit, supercritical_limit, nutrient_goal_keep_time, nutrient_goal_min, nutrient_goal_max)
+signal goals_updated(level_turn_limit, supercritical_limit, nutrient_goal_rounds, nutrient_goal_min, nutrient_goal_max)
 
 const VINE_TILE = 3
 const DEAD_VINE_TILE = 2
@@ -30,6 +30,7 @@ export(int) var nutrients_at_flower : int = 6
 export(float, 0.05, 2) var turn_time : float = 0.5
 
 # Goals
+export(Array, Resource) var level_goals : Array = []
 export(int) var level_turn_limit : int = 40
 export(bool) var failure_on_turn_limit : bool = true
 export(int) var nutrient_goal_min : int = 8
@@ -47,6 +48,7 @@ onready var half_cell_size = $Vines.cell_size / 2
 var nuclear_nutrient_scene = preload("res://Scenes/NuclearNutrient/NuclearNutrient.tscn")
 var turn_counter : int = 0
 var goal_counter : int = 0
+var current_level_goal : int = 0
 
 func _controlled_autotile_dead_vine(cellv : Vector2) -> void:
 	var auto_tile_coord : Vector2 = vines.get_cell_autotile_coord(cellv.x, cellv.y)
@@ -57,11 +59,14 @@ func _controlled_autotile_dead_vine(cellv : Vector2) -> void:
 			auto_tile_coord = vines.get_cell_autotile_coord(neighboring_cell.x, neighboring_cell.y)
 			dead_vines.set_cellv(neighboring_cell, DEAD_VINE_TILE, false, false, false, auto_tile_coord)
 
-func _cull_vine(cellv : Vector2) -> void:
-	$PlayerControlledCharacter.cut_vine()
+func _kill_vine(cellv : Vector2) -> void:
 	_controlled_autotile_dead_vine(cellv)
 	vines.set_cellv(cellv, NO_TILE)
 	vines.update()
+
+func _cull_vine(cellv : Vector2) -> void:
+	$PlayerControlledCharacter.cut_vine()
+	_kill_vine(cellv)
 
 func _clear_dead_vine(cellv : Vector2) -> void:
 	$PlayerControlledCharacter.cut_vine()
@@ -99,7 +104,8 @@ func _absorb_nutrients_at_flower():
 			nutrient.queue_free()
 
 func _get_extra_food() -> int:
-	return nutrients_at_flower / growth_nutrient_divider
+	var current_goal : LevelGoals = _get_current_level_goals()
+	return nutrients_at_flower / current_goal.growth_nutrient_divider
 
 func _is_in_bounds(cellv : Vector2) -> bool:
 	return cellv.x >= 0 and cellv.y >= 0 and cellv.x < level_size.x and cellv.y < level_size.y
@@ -125,7 +131,7 @@ func _is_vine_connected_to_flower(cellv : Vector2):
 	return path_points.size() > 0
 
 func _is_cell_growable(cellv : Vector2) -> bool:
-	return dead_vines.get_cellv(cellv) == -1 and $Obstacles.get_cellv(cellv) == -1
+	return vines.get_cellv(cellv) == -1 and dead_vines.get_cellv(cellv) == -1 and $Obstacles.get_cellv(cellv) == -1
 
 func _is_cell_vine(cellv: Vector2) -> bool:
 	return vines.get_cellv(cellv) == VINE_TILE
@@ -153,6 +159,8 @@ func _highlight_tile_at_position(position : Vector2):
 
 func _get_growable_cells():
 	var neighboring_cells : Dictionary = {}
+	var growable_cells : Dictionary = {}
+	var filter_crowd : int = 1
 	for cell_position in vines.get_used_cells():
 		if not _is_vine_connected_to_flower(cell_position):
 			continue
@@ -163,8 +171,10 @@ func _get_growable_cells():
 			if not neighboring_cell in neighboring_cells:
 				neighboring_cells[neighboring_cell] = 0
 			neighboring_cells[neighboring_cell] += 1
-	neighboring_cells = _filter_values_greater_than(neighboring_cells, 1)
-	return neighboring_cells.keys()
+	while growable_cells.empty() and filter_crowd < 5:
+		growable_cells = _filter_values_greater_than(neighboring_cells, filter_crowd)
+		filter_crowd += 1
+	return growable_cells.keys()
 
 func _grow_vine(cellv : Vector2):
 	vines.set_cellv(cellv, VINE_TILE)
@@ -195,11 +205,27 @@ func _vines_die():
 		if has_dead_neighbor and not _is_vine_connected_to_flower(cell_position):
 			cullable_vines.append(cell_position)
 	for cell_position in cullable_vines:
-		_cull_vine(cell_position)
+		_kill_vine(cell_position)
+
+func update_goals():
+	var current_goal : LevelGoals = _get_current_level_goals()
+	emit_signal("goals_updated", current_goal.turn_limit, current_goal.supercritical_limit, current_goal.nutrient_goal_rounds, current_goal.nutrient_goal_min, current_goal.nutrient_goal_max)
+
+func update_state():
+	var current_goal : LevelGoals = _get_current_level_goals()
+	emit_signal("state_changed", nutrients_at_flower, current_goal.turn_limit - turn_counter, current_goal.nutrient_goal_rounds - goal_counter)
 
 func _complete_level():
 	GameLog.level_reached(level_number + 1)
 	emit_signal("success")
+
+func _complete_goal(goal : LevelGoals):
+	if goal.advance_flower:
+		$Vines/Flower.current_stage += 1
+	current_level_goal += 1
+	if current_level_goal >= level_goals.size():
+		_complete_level()
+	update_goals()
 
 func _supercritical_limit_reached():
 	$PlayerControlledCharacter.set_process_input(false)
@@ -207,29 +233,37 @@ func _supercritical_limit_reached():
 	yield(get_tree().create_timer(1), "timeout")
 	emit_signal("failure", FAILURE_REASON.NUCLEAR_EXPLOSION)
 
-func _turn_limit_reached():
-	if failure_on_turn_limit:
-		emit_signal("failure", FAILURE_REASON.TIMEOUT)
+func _turn_limit_reached(goal : LevelGoals):
+	if goal.turn_limit_success:
+		_complete_goal(goal)
 	else: 
-		_complete_level()
+		emit_signal("failure", FAILURE_REASON.TIMEOUT)
+
+func _get_current_level_goals() -> LevelGoals:
+	if current_level_goal < 0 or current_level_goal >= level_goals.size():
+		current_level_goal = 0
+	return level_goals[current_level_goal]
 
 func _evauluate_goal():
-	if nutrient_goal_keep_time > 0 and nutrients_at_flower > nutrient_goal_min and nutrients_at_flower < nutrient_goal_max:
+	if nutrients_at_flower <= 0:
+		emit_signal("failure", FAILURE_REASON.STARVATION)
+		return
+	var current_goal : LevelGoals = _get_current_level_goals()
+	$Vines/Flower.danger_zone = current_goal.check_nutrients_danger(nutrients_at_flower)
+	if current_goal.check_nutrient_goal(nutrients_at_flower):
 		goal_counter += 1
 		$Vines.success()
 	else:
 		goal_counter = 0
-	if nutrient_goal_keep_time > 0 and goal_counter >= nutrient_goal_keep_time:
-		_complete_level()
-	if nutrients_at_flower <= 0:
-		emit_signal("failure", FAILURE_REASON.STARVATION)
-	$Vines/Flower.danger_zone = nutrients_at_flower >= round(supercritical_limit * 0.75)
-	if nutrients_at_flower >= supercritical_limit:
+	if current_goal.check_nutrients_supercritical(nutrients_at_flower):
 		_supercritical_limit_reached()
-	if turn_counter >= level_turn_limit:
-		_turn_limit_reached()
+	elif current_goal.check_nutrient_goal_complete(goal_counter):
+		_complete_goal(current_goal)
+	elif current_goal.check_turn_limit(turn_counter):
+		_turn_limit_reached(current_goal)
 
 func _level_takes_turn(delay : float):
+	set_process_input(false)
 	emit_signal("turn_started")
 	turn_counter += 1
 	if turn_counter % 2 == 0:
@@ -240,37 +274,45 @@ func _level_takes_turn(delay : float):
 	_eat_nutrients_at_flower(vines_grew)
 	_evauluate_goal()
 	_vines_move_nutrients(delay - 0.05)
-	emit_signal("state_changed", nutrients_at_flower, level_turn_limit - turn_counter, nutrient_goal_keep_time - goal_counter)
+	update_state()
+	yield(get_tree().create_timer(turn_time), "timeout")
+	set_process_input(true)
 
-func _on_PlayerControlledCharacter_unit_moved(direction):
+func _move_player(direction):
 	var target_position = $PlayerControlledCharacter.position + (direction * cell_size)
 	if not _is_in_bounds(target_position / cell_size):
 		return
-	$PlayerControlledCharacter.set_process_input(false)
 	var tween = get_tree().create_tween()
 	tween.tween_property($PlayerControlledCharacter, "position", target_position, turn_time)
 	tween.play()
 	_level_takes_turn(turn_time)
 	yield(tween, "finished")
 	_highlight_tile_at_position(target_position)
-	$PlayerControlledCharacter.set_process_input(true)
 
 func _ready():
 	_grow_vine(_get_flower_cellv())
-	emit_signal("goals_updated", level_turn_limit, supercritical_limit, nutrient_goal_keep_time, nutrient_goal_min, nutrient_goal_max)
-	emit_signal("state_changed", nutrients_at_flower, level_turn_limit, nutrient_goal_keep_time)
+	update_goals()
+	update_state()
 
 func _input(event):
+	var direction : Vector2 = Vector2.ZERO
+	if event is InputEventKey:
+		if event.is_action_pressed("move_up"):
+			direction = Vector2.UP
+		elif event.is_action_pressed("move_down"):
+			direction = Vector2.DOWN
+		elif event.is_action_pressed("move_left"):
+			direction = Vector2.LEFT
+		elif event.is_action_pressed("move_right"):
+			direction = Vector2.RIGHT
+	if direction != Vector2.ZERO:
+		_move_player(direction)
+	if event.is_action_pressed("skip_turn"):
+		_level_takes_turn(turn_time)
 	if event.is_action_pressed("interact") and $TileHighlighter.visible:
 		if _is_cell_vine($TileHighlighter.cell_vector):
-			$PlayerControlledCharacter.set_process_input(false)
 			_level_takes_turn(turn_time)
 			_cull_vine($TileHighlighter.cell_vector)
-			yield(get_tree().create_timer(turn_time), "timeout")
-			$PlayerControlledCharacter.set_process_input(true)
 		elif _is_cell_dead_vine($TileHighlighter.cell_vector):
-			$PlayerControlledCharacter.set_process_input(false)
 			_level_takes_turn(turn_time)
 			_clear_dead_vine($TileHighlighter.cell_vector)
-			yield(get_tree().create_timer(turn_time), "timeout")
-			$PlayerControlledCharacter.set_process_input(true)
