@@ -26,6 +26,7 @@ unique_name_in_owner = true
 size = Vector2( 336, 384 )
 handle_input_locally = false
 render_target_update_mode = 3
+audio_listener_enable_2d = true
 
 [node name="Panel" type="Panel" parent="HBoxContainer"]
 margin_left = 336.0

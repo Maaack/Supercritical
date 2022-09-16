@@ -15,3 +15,6 @@ func _input(event):
 			direction = Vector2.RIGHT
 	if direction != Vector2.ZERO:
 		emit_signal("unit_moved", direction)
+
+func cut_vine():
+	$AudioStreamPlayer2D.play()

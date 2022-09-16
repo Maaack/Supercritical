@@ -58,11 +58,13 @@ func _controlled_autotile_dead_vine(cellv : Vector2) -> void:
 			dead_vines.set_cellv(neighboring_cell, DEAD_VINE_TILE, false, false, false, auto_tile_coord)
 
 func _cull_vine(cellv : Vector2) -> void:
+	$PlayerControlledCharacter.cut_vine()
 	_controlled_autotile_dead_vine(cellv)
 	vines.set_cellv(cellv, NO_TILE)
 	vines.update()
 
 func _clear_dead_vine(cellv : Vector2) -> void:
+	$PlayerControlledCharacter.cut_vine()
 	dead_vines.set_cellv(cellv, NO_TILE)
 
 func _get_flower_cellv() -> Vector2:
@@ -261,6 +263,14 @@ func _ready():
 func _input(event):
 	if event.is_action_pressed("interact") and $TileHighlighter.visible:
 		if _is_cell_vine($TileHighlighter.cell_vector):
+			$PlayerControlledCharacter.set_process_input(false)
+			_level_takes_turn(turn_time)
 			_cull_vine($TileHighlighter.cell_vector)
+			yield(get_tree().create_timer(turn_time), "timeout")
+			$PlayerControlledCharacter.set_process_input(true)
 		elif _is_cell_dead_vine($TileHighlighter.cell_vector):
+			$PlayerControlledCharacter.set_process_input(false)
+			_level_takes_turn(turn_time)
 			_clear_dead_vine($TileHighlighter.cell_vector)
+			yield(get_tree().create_timer(turn_time), "timeout")
+			$PlayerControlledCharacter.set_process_input(true)

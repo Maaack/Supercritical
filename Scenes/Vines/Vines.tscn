@@ -35,3 +35,4 @@ anims/Success = ExtResource( 3 )
 [node name="Explosion" type="AudioStreamPlayer" parent="."]
 pause_mode = 2
 stream = ExtResource( 5 )
+bus = "SFX"
