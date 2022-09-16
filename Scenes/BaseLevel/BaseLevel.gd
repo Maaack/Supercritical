@@ -199,23 +199,31 @@ func _complete_level():
 	GameLog.level_reached(level_number + 1)
 	emit_signal("success")
 
+func _supercritical_limit_reached():
+	$PlayerControlledCharacter.set_process_input(false)
+	$Vines.critical_failure()
+	yield(get_tree().create_timer(1), "timeout")
+	emit_signal("failure", FAILURE_REASON.NUCLEAR_EXPLOSION)
+
 func _turn_limit_reached():
 	if failure_on_turn_limit:
 		emit_signal("failure", FAILURE_REASON.TIMEOUT)
 	else: 
 		_complete_level()
-		
+
 func _evauluate_goal():
-	if nutrients_at_flower > nutrient_goal_min and nutrients_at_flower < nutrient_goal_max:
+	if nutrient_goal_keep_time > 0 and nutrients_at_flower > nutrient_goal_min and nutrients_at_flower < nutrient_goal_max:
 		goal_counter += 1
+		$Vines.success()
 	else:
 		goal_counter = 0
 	if nutrient_goal_keep_time > 0 and goal_counter >= nutrient_goal_keep_time:
 		_complete_level()
 	if nutrients_at_flower <= 0:
 		emit_signal("failure", FAILURE_REASON.STARVATION)
+	$Vines/Flower.danger_zone = nutrients_at_flower >= round(supercritical_limit * 0.75)
 	if nutrients_at_flower >= supercritical_limit:
-		emit_signal("failure", FAILURE_REASON.NUCLEAR_EXPLOSION)
+		_supercritical_limit_reached()
 	if turn_counter >= level_turn_limit:
 		_turn_limit_reached()
 

@@ -1,9 +1,37 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Themes/LivingVinesTileset.tres" type="TileSet" id=1]
 [ext_resource path="res://Scenes/Vines/Vines.gd" type="Script" id=2]
+[ext_resource path="res://Scenes/Vines/AnimateSuccess.tres" type="Animation" id=3]
+[ext_resource path="res://Scenes/Vines/AnimateCriticalFailure.tres" type="Animation" id=4]
+[ext_resource path="res://Assets/Original/SFX/Bonsai_Main_Explosion_v3.wav" type="AudioStream" id=5]
+
+[sub_resource type="Animation" id=1]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Explosion:playing")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ false ]
+}
 
 [node name="Vines" type="TileMap"]
 tile_set = ExtResource( 1 )
+cell_size = Vector2( 14, 14 )
 format = 1
 script = ExtResource( 2 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/CriticalFailure = ExtResource( 4 )
+anims/RESET = SubResource( 1 )
+anims/Success = ExtResource( 3 )
+
+[node name="Explosion" type="AudioStreamPlayer" parent="."]
+pause_mode = 2
+stream = ExtResource( 5 )

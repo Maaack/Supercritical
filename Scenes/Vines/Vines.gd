@@ -188,3 +188,9 @@ func connect_cardinals(point_position) -> void:
 func get_grid_distance(distance: Vector2) -> float:
 	var vec := world_to_map(distance).abs().floor()
 	return vec.x + vec.y
+
+func success() -> void:
+	$AnimationPlayer.play("Success")
+
+func critical_failure() -> void:
+	$AnimationPlayer.play("CriticalFailure")

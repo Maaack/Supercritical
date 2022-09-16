@@ -261,7 +261,6 @@ cell_size = Vector2( 14, 14 )
 format = 1
 
 [node name="Vines" parent="." instance=ExtResource( 3 )]
-cell_size = Vector2( 14, 14 )
 
 [node name="Flower" parent="Vines" instance=ExtResource( 6 )]
 position = Vector2( 175, 133 )
