@@ -84,6 +84,7 @@ func stop_path_at_unit(potential_path_points: Array) -> Array:
 
 func get_astar_path(start_position: Vector2, end_position: Vector2, max_distance := -1) -> Array:
 	if not astar.has_point(get_point(start_position)) or not astar.has_point(get_point(end_position)):
+		
 		return []
 	var astar_path := astar.get_point_path(get_point(start_position), get_point(end_position))
 	return set_path_length(astar_path, max_distance)
@@ -173,7 +174,7 @@ func get_used_cell_global_positions() -> Array:
 	var cells = get_used_cells()
 	var cell_positions := []
 	for cell in cells:
-		var cell_position := global_position + map_to_world(cell)
+		var cell_position := map_to_world(cell)
 		cell_positions.append(cell_position)
 	return cell_positions
 
@@ -187,3 +188,9 @@ func connect_cardinals(point_position) -> void:
 func get_grid_distance(distance: Vector2) -> float:
 	var vec := world_to_map(distance).abs().floor()
 	return vec.x + vec.y
+
+func success() -> void:
+	$AnimationPlayer.play("Success")
+
+func critical_failure() -> void:
+	$AnimationPlayer.play("CriticalFailure")

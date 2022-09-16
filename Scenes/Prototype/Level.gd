@@ -57,12 +57,11 @@ func _cull_vine(cellv : Vector2) -> void:
 	vines.set_cellv(cellv, NO_TILE)
 	vines.update()
 
-func _input(event):
-	if event.is_action_pressed("interact") and $TileHighlighter.visible:
-		_cull_vine($TileHighlighter.cell_vector)
+func _clear_dead_vine(cellv : Vector2) -> void:
+	dead_vines.set_cellv(cellv, NO_TILE)
 
 func _move_nutrient_along_vine_to_flower(nutrient : Node2D, delay : float):
-	var start_cell = (nutrient.global_position - half_cell_size).floor()
+	var start_cell = (nutrient.position - half_cell_size).floor()
 	var target_cell = ((flower.position - half_cell_size) / cell_size).floor() * cell_size
 	var path_points = vines.get_astar_path_avoiding_obstacles(start_cell, target_cell)
 	if path_points.size() < 2:
@@ -91,7 +90,6 @@ func _absorb_nutrients_at_flower():
 
 func _get_extra_food() -> int:
 	return nutrients_at_flower / 4
-
 
 func _is_in_bounds(cellv : Vector2) -> bool:
 	return cellv.x >= 0 and cellv.y >= 0 and cellv.x < level_size.x and cellv.y < level_size.y
@@ -122,6 +120,9 @@ func _is_cell_growable(cellv : Vector2) -> bool:
 func _is_cell_vine(cellv: Vector2) -> bool:
 	return vines.get_cellv(cellv) == VINE_TILE
 
+func _is_cell_dead_vine(cellv: Vector2) -> bool:
+	return dead_vines.get_cellv(cellv) == DEAD_VINE_TILE
+
 func _vines_make_nutrients():
 	for cell_position in $Deposits.get_used_cells():
 		if _is_cell_vine(cell_position):
@@ -131,7 +132,7 @@ func _vines_make_nutrients():
 
 func _highlight_tile_at_position(position : Vector2):
 	var cell_position = (position / cell_size).floor()
-	if not _is_cell_vine(cell_position):
+	if not _is_cell_vine(cell_position) and not _is_cell_dead_vine(cell_position):
 		$TileHighlighter.hide()
 		return
 	$TileHighlighter.cell_vector = cell_position
@@ -173,16 +174,13 @@ func _vines_grow(grow_count : int) -> int:
 		grew += 1
 	return grew
 
-func _is_cell_dead(cellv : Vector2) -> bool:
-	return not _is_cell_vine(cellv) and dead_vines.get_cellv(cellv) == DEAD_VINE_TILE
-
 func _vines_die():
 	var cullable_vines : Array = []
 	for cell_position in vines.get_used_cells():
 		var has_dead_neighbor = false
 		for direction in CARDINAL_DIRECTIONS:
 			var neighboring_cell = cell_position + direction
-			if _is_cell_dead(neighboring_cell):
+			if _is_cell_dead_vine(neighboring_cell):
 				has_dead_neighbor = true
 				break
 		if has_dead_neighbor and not _is_vine_connected_to_flower(cell_position):
@@ -232,3 +230,10 @@ func _on_PlayerControlledCharacter_unit_moved(direction):
 
 func _ready():
 	emit_signal("state_changed", nutrients_at_flower, level_turn_limit, nutrient_goal_keep_time)
+
+func _input(event):
+	if event.is_action_pressed("interact") and $TileHighlighter.visible:
+		if _is_cell_vine($TileHighlighter.cell_vector):
+			_cull_vine($TileHighlighter.cell_vector)
+		elif _is_cell_dead_vine($TileHighlighter.cell_vector):
+			_clear_dead_vine($TileHighlighter.cell_vector)

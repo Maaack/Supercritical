@@ -1,50 +1,52 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scenes/MainGame/MainGameScene.gd" type="Script" id=1]
-[ext_resource path="res://Themes/GameFont48px.tres" type="DynamicFont" id=2]
-[ext_resource path="res://Scenes/Prototype/Level.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Themes/GameFont32px.tres" type="DynamicFont" id=4]
+[ext_resource path="res://Themes/GameFont16px.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Assets/Original/Music/Bonsai_-_Music_1b_Calm_-_Demo_1.ogg" type="AudioStream" id=3]
+[ext_resource path="res://Themes/GameFont24px.tres" type="DynamicFont" id=4]
 [ext_resource path="res://Scripts/PauseMenuController.gd" type="Script" id=5]
 
 [node name="MainGameScene" type="Node"]
 script = ExtResource( 1 )
-level_scene = ExtResource( 3 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+custom_constants/separation = 0
 
-[node name="LevelViewportContainer" type="ViewportContainer" parent="HBoxContainer"]
-margin_right = 660.0
-margin_bottom = 600.0
+[node name="ViewportContainer" type="ViewportContainer" parent="HBoxContainer"]
+margin_right = 336.0
+margin_bottom = 384.0
 size_flags_horizontal = 3
+size_flags_vertical = 3
 stretch = true
 
-[node name="Viewport" type="Viewport" parent="HBoxContainer/LevelViewportContainer"]
-size = Vector2( 660, 600 )
+[node name="LevelContainer" type="Viewport" parent="HBoxContainer/ViewportContainer"]
+unique_name_in_owner = true
+size = Vector2( 336, 384 )
 handle_input_locally = false
-usage = 0
 render_target_update_mode = 3
+audio_listener_enable_2d = true
 
 [node name="Panel" type="Panel" parent="HBoxContainer"]
-margin_left = 664.0
-margin_right = 1024.0
-margin_bottom = 600.0
-rect_min_size = Vector2( 360, 0 )
+margin_left = 336.0
+margin_right = 512.0
+margin_bottom = 384.0
+rect_min_size = Vector2( 176, 0 )
 
 [node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/Panel"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_constants/margin_right = 8
-custom_constants/margin_top = 8
-custom_constants/margin_left = 8
-custom_constants/margin_bottom = 8
+custom_constants/margin_right = 4
+custom_constants/margin_top = 4
+custom_constants/margin_left = 4
+custom_constants/margin_bottom = 4
 
 [node name="Control" type="Control" parent="HBoxContainer/Panel/MarginContainer"]
-margin_left = 8.0
-margin_top = 8.0
-margin_right = 352.0
-margin_bottom = 592.0
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 172.0
+margin_bottom = 380.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/Panel/MarginContainer/Control"]
 anchor_right = 1.0
@@ -52,114 +54,136 @@ anchor_bottom = 1.0
 
 [node name="TurnCounterLabel" type="Label" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer"]
 unique_name_in_owner = true
-margin_right = 344.0
-margin_bottom = 35.0
-rect_min_size = Vector2( 240, 0 )
-custom_fonts/font = ExtResource( 2 )
+margin_right = 168.0
+margin_bottom = 18.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 4 )
 text = "Turns Left: 0"
 align = 1
 
 [node name="NutrientCounterLabel" type="Label" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer"]
 unique_name_in_owner = true
-margin_top = 39.0
-margin_right = 344.0
-margin_bottom = 74.0
-rect_min_size = Vector2( 240, 0 )
-custom_fonts/font = ExtResource( 2 )
+margin_top = 22.0
+margin_right = 168.0
+margin_bottom = 40.0
+size_flags_horizontal = 3
+custom_fonts/font = ExtResource( 4 )
 text = "Flower: 0"
 align = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer"]
-margin_top = 78.0
-margin_right = 344.0
-margin_bottom = 198.0
+margin_top = 44.0
+margin_right = 168.0
+margin_bottom = 164.0
 rect_min_size = Vector2( 0, 120 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer/HBoxContainer"]
 modulate = Color( 0.796078, 1, 0.643137, 1 )
-margin_right = 170.0
+margin_right = 82.0
 margin_bottom = 120.0
 size_flags_horizontal = 3
 
 [node name="GainLabel" type="Label" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer/HBoxContainer/VBoxContainer"]
-margin_right = 170.0
-margin_bottom = 24.0
+margin_right = 82.0
+margin_bottom = 12.0
 size_flags_horizontal = 3
 size_flags_vertical = 5
-custom_fonts/font = ExtResource( 4 )
+custom_fonts/font = ExtResource( 2 )
 text = "Gain"
 align = 1
 
 [node name="GainList" type="Label" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
-margin_top = 28.0
-margin_right = 170.0
+margin_top = 16.0
+margin_right = 82.0
 margin_bottom = 120.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_fonts/font = ExtResource( 4 )
+custom_fonts/font = ExtResource( 2 )
 align = 1
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer/HBoxContainer"]
 modulate = Color( 1, 0.686275, 0.686275, 1 )
-margin_left = 174.0
-margin_right = 344.0
+margin_left = 86.0
+margin_right = 168.0
 margin_bottom = 120.0
 size_flags_horizontal = 3
 
 [node name="LossLabel" type="Label" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer/HBoxContainer/VBoxContainer2"]
-margin_right = 170.0
-margin_bottom = 24.0
+margin_right = 82.0
+margin_bottom = 12.0
 size_flags_horizontal = 3
 size_flags_vertical = 5
-custom_fonts/font = ExtResource( 4 )
+custom_fonts/font = ExtResource( 2 )
 text = "Loss"
 align = 1
 
 [node name="LossList" type="Label" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer/HBoxContainer/VBoxContainer2"]
 unique_name_in_owner = true
-margin_top = 28.0
-margin_right = 170.0
+margin_top = 16.0
+margin_right = 82.0
 margin_bottom = 120.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_fonts/font = ExtResource( 4 )
+custom_fonts/font = ExtResource( 2 )
 align = 1
 
 [node name="MinimumLabel" type="Label" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer"]
-margin_top = 202.0
-margin_right = 344.0
-margin_bottom = 226.0
-custom_fonts/font = ExtResource( 4 )
+margin_top = 168.0
+margin_right = 168.0
+margin_bottom = 180.0
+custom_fonts/font = ExtResource( 2 )
 text = "Stay above 0"
 align = 1
 
-[node name="MaximumLabel" type="Label" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer"]
-margin_top = 230.0
-margin_right = 344.0
-margin_bottom = 254.0
-custom_fonts/font = ExtResource( 4 )
+[node name="SupercriticalLimitLabel" type="Label" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer"]
+unique_name_in_owner = true
+margin_top = 184.0
+margin_right = 168.0
+margin_bottom = 196.0
+custom_fonts/font = ExtResource( 2 )
 text = "Stay below 20"
 align = 1
 
 [node name="NextGoalLabel" type="Label" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer"]
-margin_top = 258.0
-margin_right = 344.0
-margin_bottom = 336.0
-custom_fonts/font = ExtResource( 4 )
-text = "Next Goal:
- 8 - 16
-for"
+margin_top = 200.0
+margin_right = 168.0
+margin_bottom = 212.0
+custom_fonts/font = ExtResource( 2 )
+text = "Next Goal:"
 align = 1
 valign = 1
 
-[node name="TurnGoalLabel" type="Label" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer"]
+[node name="NextGoalRangeLabel" type="Label" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer"]
 unique_name_in_owner = true
-margin_top = 340.0
-margin_right = 344.0
-margin_bottom = 364.0
-custom_fonts/font = ExtResource( 4 )
-text = "4 turns"
+visible = false
+margin_top = 216.0
+margin_right = 168.0
+margin_bottom = 228.0
+custom_fonts/font = ExtResource( 2 )
+text = " 8 - 16 nutrients"
+align = 1
+valign = 1
+
+[node name="StayAliveGoalLabel" type="Label" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+margin_top = 216.0
+margin_right = 168.0
+margin_bottom = 228.0
+custom_fonts/font = ExtResource( 2 )
+text = "Keep the plant alive"
+align = 1
+valign = 1
+
+[node name="TurnGoalCountLabel" type="Label" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+margin_top = 216.0
+margin_right = 168.0
+margin_bottom = 228.0
+custom_fonts/font = ExtResource( 2 )
+text = "for 4 turns"
 align = 1
 valign = 1
 
@@ -168,3 +192,9 @@ margin_right = 40.0
 margin_bottom = 40.0
 mouse_filter = 2
 script = ExtResource( 5 )
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+pause_mode = 2
+stream = ExtResource( 3 )
+autoplay = true
+bus = "Music"

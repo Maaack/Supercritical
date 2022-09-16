@@ -11,37 +11,90 @@ script = ExtResource( 4 )
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 theme = ExtResource( 6 )
 scroll_horizontal_enabled = false
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
-margin_right = 1024.0
-margin_bottom = 2071.0
-rect_min_size = Vector2( 1024, 0 )
+margin_right = 512.0
+margin_bottom = 413.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="HeaderSpace" type="Control" parent="ScrollContainer/VBoxContainer"]
-margin_right = 1024.0
-margin_bottom = 1024.0
-rect_min_size = Vector2( 0, 1024 )
+margin_right = 512.0
 
 [node name="RichTextLabel" type="RichTextLabel" parent="ScrollContainer/VBoxContainer"]
-margin_top = 1028.0
-margin_right = 1024.0
-margin_bottom = 1043.0
-rect_min_size = Vector2( 1024, 0 )
+margin_top = 4.0
+margin_right = 512.0
+margin_bottom = 409.0
 focus_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 5
 bbcode_enabled = true
+bbcode_text = "[center]
+## Collaborators
+
+### Role
+Person 1  
+Person 2  
+[url=]Person w/ Link[/url]  
+
+
+## Sourced / Unaffiliated
+### Asset Type
+#### Use Case
+Author: [url=]Name[/url]  
+Source: [url=]Domain : webpage.html[/url]  
+License: [url=]License[/url]
+
+
+## Tools
+#### Godot
+Author: [url=https://godotengine.org/contact]Juan Linietsky, Ariel Manzur, and contributors[/url]  
+Source: [url=https://godotengine.org/]godotengine.org[/url]  
+License: [url=https://github.com/godotengine/godot/blob/master/LICENSE.txt]MIT License[/url] 
+
+#### Git
+Author: [url=https://github.com/torvalds]Linus Torvalds[/url]  
+Source: [url=https://git-scm.com/downloads]git-scm.com[/url]  
+License: [url=https://opensource.org/licenses/GPL-2.0]GNU General Public License version 2[/url][/center]"
+text = "
+## Collaborators
+
+### Role
+Person 1  
+Person 2  
+Person w/ Link  
+
+
+## Sourced / Unaffiliated
+### Asset Type
+#### Use Case
+Author: Name  
+Source: Domain : webpage.html  
+License: License
+
+
+## Tools
+#### Godot
+Author: Juan Linietsky, Ariel Manzur, and contributors  
+Source: godotengine.org  
+License: MIT License 
+
+#### Git
+Author: Linus Torvalds  
+Source: git-scm.com  
+License: GNU General Public License version 2"
 fit_content_height = true
 scroll_active = false
 selection_enabled = true
 
 [node name="FooterSpace" type="Control" parent="ScrollContainer/VBoxContainer"]
-margin_top = 1047.0
-margin_right = 1024.0
-margin_bottom = 2071.0
-rect_min_size = Vector2( 0, 1024 )
+margin_top = 413.0
+margin_right = 512.0
+margin_bottom = 413.0
 
 [node name="ScrollResetTimer" type="Timer" parent="."]
 wait_time = 1.5
