@@ -305,6 +305,8 @@ func _input(event):
 			direction = Vector2.LEFT
 		elif event.is_action_pressed("move_right"):
 			direction = Vector2.RIGHT
+	if Input.is_action_pressed("run"):
+		direction *= 2
 	if direction != Vector2.ZERO:
 		_move_player(direction)
 	if event.is_action_pressed("skip_turn"):
