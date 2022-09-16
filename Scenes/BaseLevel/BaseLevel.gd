@@ -94,7 +94,8 @@ func _add_nutrients_to_flower(delta : int = 1, reason : String = "") -> void:
 	emit_signal("nutrients_changed", delta, reason)
 
 func _eat_nutrients_at_flower(extra_growth : int) -> void:
-	_add_nutrients_to_flower(-1, "Flower")
+	var current_goals : LevelGoals = _get_current_level_goals()
+	_add_nutrients_to_flower(-(current_goals.flower_consumption), "Flower")
 	_add_nutrients_to_flower(-extra_growth, "Growth")
 	
 func _absorb_nutrients_at_flower():
