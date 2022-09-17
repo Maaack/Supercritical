@@ -307,7 +307,7 @@ func _input(event):
 	if direction != Vector2.ZERO:
 		_move_player(direction)
 	if event.is_action_pressed("skip_turn"):
-		_level_takes_turn(turn_time)
+		_level_takes_turn(turn_time * 0.75)
 	if event.is_action_pressed("interact") and $TileHighlighter.visible:
 		if _is_cell_vine($TileHighlighter.cell_vector):
 			_level_takes_turn(turn_time)
