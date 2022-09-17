@@ -4,6 +4,7 @@ extends Node
 export(PackedScene) var level_scene : PackedScene setget set_level_scene
 
 var levels : Array = [
+	preload("res://Scenes/Levels/Level0.tscn"),
 	preload("res://Scenes/Levels/Level1.tscn"),
 	preload("res://Scenes/Levels/Level2.tscn"),
 	preload("res://Scenes/Levels/Level3.tscn"),
@@ -91,8 +92,6 @@ func _ready():
 	if level_scene == null:
 		var next_level : int = GameLog.get_max_level_reached()
 		if next_level > levels.size():
-			next_level = levels.size()
-		if next_level == 0:
-			next_level = 1
-		level_scene = levels[next_level-1]
+			next_level = levels.size() - 1
+		level_scene = levels[next_level]
 	self.level_scene = level_scene
