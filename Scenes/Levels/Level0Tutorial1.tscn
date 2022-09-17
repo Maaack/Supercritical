@@ -4,7 +4,7 @@
 
 [node name="Level0Tutorial1" instance=ExtResource( 1 )]
 
-[node name="TutorialText" parent="Control/Panel/MarginContainer/PanelContainer" index="0"]
+[node name="TutorialText" parent="Control/NinePatchRect/MarginContainer/PanelContainer" index="0"]
 text = "Welcome, minion, to the nuclear gardens of...
 GARDENZILLA.
 

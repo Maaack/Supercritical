@@ -4,5 +4,5 @@
 
 [node name="TutorialScreen" instance=ExtResource( 1 )]
 
-[node name="TutorialText" parent="Control/Panel/MarginContainer/PanelContainer" index="0"]
+[node name="TutorialText" parent="Control/NinePatchRect/MarginContainer/PanelContainer" index="0"]
 text = "Wow! You got the flower to bloom to the next stage. A larger flower means a higher supercritical limit. Try to keep it alive a little longer..."

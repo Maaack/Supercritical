@@ -4,7 +4,7 @@
 
 [node name="Level0Tutorial1" instance=ExtResource( 1 )]
 
-[node name="TutorialText" parent="Control/Panel/MarginContainer/PanelContainer" index="0"]
+[node name="TutorialText" parent="Control/NinePatchRect/MarginContainer/PanelContainer" index="0"]
 text = "The panel on the right will tell you how many nutrients the flower has now, as well as how that changed from the previous round.
 
 It will also list your goals at each stage. Usually something like \"grow the flower\" or just \"keep it alive\" a little longer.

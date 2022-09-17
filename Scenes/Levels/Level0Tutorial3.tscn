@@ -14,7 +14,7 @@ region = Rect2( 17, 1, 14, 14 )
 
 [node name="Level0Tutorial1" instance=ExtResource( 1 )]
 
-[node name="TutorialText" parent="Control/Panel/MarginContainer/PanelContainer" index="0"]
+[node name="TutorialText" parent="Control/NinePatchRect/MarginContainer/PanelContainer" index="0"]
 text = "The nutrients will travel down the shortest path of vines towards the flower.
 
 
@@ -22,26 +22,26 @@ text = "The nutrients will travel down the shortest path of vines towards the fl
 
 Nutrients accumulate in the flower each turn. A flower spends some nutrients each turn to survive and grow, as well."
 
-[node name="Living-vines" type="TextureRect" parent="Control/Panel/MarginContainer/PanelContainer/TutorialText" index="0"]
-margin_left = 66.5
-margin_top = 49.0
-margin_right = 94.5
-margin_bottom = 77.0
+[node name="Living-vines" type="TextureRect" parent="Control/NinePatchRect/MarginContainer/PanelContainer/TutorialText" index="0"]
+margin_left = 104.0
+margin_top = 61.5
+margin_right = 132.0
+margin_bottom = 89.5
 texture = SubResource( 1 )
 expand = true
 
-[node name="Living-vines2" type="TextureRect" parent="Control/Panel/MarginContainer/PanelContainer/TutorialText" index="1"]
-margin_left = 108.0
-margin_top = 49.0
-margin_right = 136.0
-margin_bottom = 77.0
+[node name="Living-vines2" type="TextureRect" parent="Control/NinePatchRect/MarginContainer/PanelContainer/TutorialText" index="1"]
+margin_left = 145.5
+margin_top = 61.5
+margin_right = 173.5
+margin_bottom = 89.5
 texture = SubResource( 2 )
 expand = true
 
-[node name="Flower-small" type="TextureRect" parent="Control/Panel/MarginContainer/PanelContainer/TutorialText" index="2"]
-margin_left = 150.0
-margin_top = 41.0
-margin_right = 192.0
-margin_bottom = 83.0
+[node name="Flower-small" type="TextureRect" parent="Control/NinePatchRect/MarginContainer/PanelContainer/TutorialText" index="2"]
+margin_left = 187.5
+margin_top = 53.5
+margin_right = 229.5
+margin_bottom = 95.5
 texture = ExtResource( 2 )
 expand = true
