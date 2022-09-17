@@ -11,6 +11,7 @@ signal goals_updated(level_turn_limit, supercritical_limit, nutrient_goal_rounds
 const VINE_TILE = 3
 const DEAD_VINE_TILE = 2
 const NO_TILE = -1
+const VINE_TAX = 16
 const CARDINAL_DIRECTIONS : Array = [
 		Vector2.UP,
 		Vector2.DOWN,
@@ -42,6 +43,9 @@ var nuclear_nutrient_scene = preload("res://Scenes/NuclearNutrient/NuclearNutrie
 var turn_counter : int = 0
 var goal_counter : int = 0
 var current_level_goal : int = 0
+var vine_distance_map : Dictionary = {}
+var furthest_vine_distance : int = 0
+var connected_vines : Array = []
 
 func _controlled_autotile_dead_vine(cellv : Vector2) -> void:
 	var auto_tile_coord : Vector2 = vines.get_cell_autotile_coord(cellv.x, cellv.y)
@@ -53,6 +57,8 @@ func _controlled_autotile_dead_vine(cellv : Vector2) -> void:
 			dead_vines.set_cellv(neighboring_cell, DEAD_VINE_TILE, false, false, false, auto_tile_coord)
 
 func _kill_vine(cellv : Vector2) -> void:
+	if not _is_cell_vine(cellv):
+		return
 	_controlled_autotile_dead_vine(cellv)
 	vines.set_cellv(cellv, NO_TILE)
 	vines.update()
@@ -68,6 +74,23 @@ func _clear_dead_vine(cellv : Vector2) -> void:
 func _get_flower_cellv() -> Vector2:
 	return ((flower.position - half_cell_size) / cell_size).floor()
 
+func _map_vines_connected_to_flower():
+	connected_vines.clear()
+	vine_distance_map.clear()
+	furthest_vine_distance = 0
+	var target_cell : Vector2 = ((flower.position - half_cell_size) / cell_size).floor() * cell_size
+	var start_cell : Vector2
+	for cellv in vines.get_used_cells():
+		start_cell = cellv * cell_size
+		var distance = vines.get_astar_path_avoiding_obstacles(start_cell, target_cell).size()
+		if distance > 0:
+			connected_vines.append(cellv)
+		if distance > furthest_vine_distance:
+			furthest_vine_distance = distance
+		if not distance in vine_distance_map:
+			vine_distance_map[distance] = []
+		vine_distance_map[distance].append(cellv)
+
 func _move_nutrient_along_vine_to_flower(nutrient : Node2D, delay : float):
 	var start_cell = (nutrient.position - half_cell_size).floor()
 	var target_cell = _get_flower_cellv() * cell_size
@@ -78,6 +101,23 @@ func _move_nutrient_along_vine_to_flower(nutrient : Node2D, delay : float):
 	var tween = get_tree().create_tween()
 	tween.tween_property(nutrient, "position", path_point, delay)
 
+func _get_furthest_connected_vines(offset : int = 0) -> Array:
+	if (furthest_vine_distance - offset) in vine_distance_map:
+		return vine_distance_map[furthest_vine_distance - offset]
+	else:
+		return []
+
+func _get_distant_vines(desired : int):
+	var distant_vines : Array = []
+	var offset = 0
+	while(distant_vines.size() < desired):
+		var vines = _get_furthest_connected_vines(offset)
+		if vines.empty():
+			break
+		distant_vines.append_array(vines)
+		offset += 1
+	return distant_vines.slice(0, desired)
+
 func _vines_move_nutrients(delay : float):
 	for nutrient in $Nutrients.get_children():
 		_move_nutrient_along_vine_to_flower(nutrient, delay)
@@ -86,15 +126,32 @@ func _add_nutrients_to_flower(delta : int = 1, reason : String = "") -> void:
 	nutrients_at_flower += delta
 	emit_signal("nutrients_changed", delta, reason)
 
-func _eat_nutrients_at_flower(extra_growth : int) -> void:
-	var current_goals : LevelGoals = _get_current_level_goals()
-	_add_nutrients_to_flower(-(current_goals.flower_consumption), "Flower")
-	_add_nutrients_to_flower(-extra_growth, "Growth")
+func _consume_nutrients_for_flower() -> void:
+	var flower_consumption = pow(2, $Vines/Flower.current_stage)
+	_add_nutrients_to_flower(-flower_consumption, "Flower")
+
+func _consume_nutrients_for_vines() -> void:
+	var vine_cost : int = floor(connected_vines.size() / VINE_TAX)
+	var final_vine_cost : int = vine_cost
+	if vine_cost >= nutrients_at_flower:
+		final_vine_cost = max(nutrients_at_flower - 1, 0)
+		var vine_debt = (vine_cost - final_vine_cost) * VINE_TAX
+		var vines_to_kill = _get_distant_vines(vine_debt)
+		for vine_to_kill in vines_to_kill:
+			_kill_vine(vine_to_kill)
+	_add_nutrients_to_flower(-final_vine_cost, "Vines")
+
+func _consume_nutrients_for_growth(growth : int) -> void:
+	_add_nutrients_to_flower(-growth, "Growth")
 	
+func _consume_base_nutrients() -> void:
+	_consume_nutrients_for_flower()
+	_consume_nutrients_for_vines()
+
 func _absorb_nutrients_at_flower():
 	for nutrient in $Nutrients.get_children():
 		if nutrient.position.floor() == flower.position.floor():
-			_add_nutrients_to_flower(1, "Harvested")
+			_add_nutrients_to_flower(1, "Harvest")
 			nutrient.queue_free()
 
 func _get_extra_food() -> int:
@@ -178,9 +235,14 @@ func _grow_vine(cellv : Vector2):
 	vines.update_bitmask_area(cellv)
 	vines.update()
 
-func _vines_grow(grow_count : int) -> int:
+func _vines_grow(growth_max : int = 0) -> int:
+	var extra_food = _get_extra_food()
+	if growth_max == 0:
+		growth_max = extra_food
+	else:
+		growth_max = min(extra_food, growth_max)
 	var grew : int = 0
-	for _i in range(grow_count):
+	for _i in range(growth_max):
 		var optional_cells : Array = _get_growable_cells()
 		optional_cells = _filter_out_of_bounds(optional_cells)
 		if optional_cells.size() == 0:
@@ -188,18 +250,21 @@ func _vines_grow(grow_count : int) -> int:
 		optional_cells.shuffle()
 		_grow_vine(optional_cells.pop_front())
 		grew += 1
+	_consume_nutrients_for_growth(grew)
 	return grew
 
 func _vines_die():
 	var cullable_vines : Array = []
-	for cell_position in vines.get_used_cells():
+	if not 0 in vine_distance_map:
+		return
+	for cell_position in vine_distance_map[0]:
 		var has_dead_neighbor = false
 		for direction in CARDINAL_DIRECTIONS:
 			var neighboring_cell = cell_position + direction
 			if _is_cell_dead_vine(neighboring_cell):
 				has_dead_neighbor = true
 				break
-		if has_dead_neighbor and not _is_vine_connected_to_flower(cell_position):
+		if has_dead_neighbor:
 			cullable_vines.append(cell_position)
 	for cell_position in cullable_vines:
 		_kill_vine(cell_position)
@@ -265,14 +330,15 @@ func _level_takes_turn(delay : float):
 	turn_counter += 1
 	if turn_counter % 2 == 0:
 		_vines_make_nutrients()
+	_map_vines_connected_to_flower()
 	_vines_die()
-	_absorb_nutrients_at_flower()
-	var vines_grew = _vines_grow(_get_extra_food())
-	_eat_nutrients_at_flower(vines_grew)
-	_evauluate_goal()
+	_consume_base_nutrients()
+	_vines_grow()
 	_vines_move_nutrients(delay - 0.05)
+	yield(get_tree().create_timer(delay), "timeout")
+	_absorb_nutrients_at_flower()
 	update_state()
-	yield(get_tree().create_timer(turn_time), "timeout")
+	_evauluate_goal()
 	set_process_input(true)
 
 func _move_player(direction):

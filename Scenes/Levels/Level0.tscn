@@ -1,19 +1,71 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Scenes/BaseLevel/BaseLevel.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Resources/Level0-1.tres" type="Resource" id=2]
 [ext_resource path="res://Scenes/Levels/Level0.gd" type="Script" id=3]
+[ext_resource path="res://Scenes/NuclearNutrient/NuclearNutrient.tscn" type="PackedScene" id=4]
 
 [node name="Level0" instance=ExtResource( 1 )]
 script = ExtResource( 3 )
-nutrients_at_flower = 32
+nutrients_at_flower = 60
 level_goals = [ ExtResource( 2 ) ]
 
 [node name="Deposits" parent="." index="1"]
-tile_data = PoolIntArray( 262153, 0, 0, 262156, 0, 0, 262159, 0, 0, 393223, 0, 0, 393227, 0, 0, 393229, 0, 0, 393233, 0, 0, 458764, 0, 0, 524298, 0, 0, 524302, 0, 0, 589829, 0, 0, 589843, 0, 0, 655370, 0, 0, 655374, 0, 0, 720908, 0, 0, 786439, 0, 0, 786443, 0, 0, 786445, 0, 0, 786449, 0, 0, 917513, 0, 0, 917516, 0, 0, 917519, 0, 0 )
+tile_data = PoolIntArray( 262153, 0, 0, 262156, 0, 0, 262159, 0, 0, 327692, 0, 0, 393223, 0, 0, 393225, 0, 0, 393227, 0, 0, 393229, 0, 0, 393231, 0, 0, 393233, 0, 0, 458764, 0, 0, 524298, 0, 0, 524300, 0, 0, 524302, 0, 0, 589829, 0, 0, 589831, 0, 0, 589833, 0, 0, 589835, 0, 0, 589837, 0, 0, 589839, 0, 0, 589841, 0, 0, 589843, 0, 0, 655370, 0, 0, 655372, 0, 0, 655374, 0, 0, 720908, 0, 0, 786439, 0, 0, 786441, 0, 0, 786443, 0, 0, 786445, 0, 0, 786447, 0, 0, 786449, 0, 0, 851980, 0, 0, 917513, 0, 0, 917516, 0, 0, 917519, 0, 0 )
+
+[node name="Obstacles" parent="." index="2"]
+tile_data = PoolIntArray( 1376266, 2, 0, 1376270, 2, 0, 1441802, 0, 0, 1441806, 0, 0, 1507337, 1, 0, 1507338, 0, 0, 1507342, 0, 0, 1507343, 1, 0, 1572872, 2, 0, 1572873, 4, 0, 1572874, 4, 0, 1572878, 3, 0, 1572879, 0, 0, 1572880, 2, 0, 1638408, 1, 0, 1638409, 0, 0, 1638410, 3, 0, 1638414, 4, 0, 1638415, 5, 0, 1638416, 0, 0, 1703943, 2, 0, 1703944, 0, 0, 1703945, 0, 0, 1703946, 4, 0, 1703950, 3, 0, 1703951, 0, 0, 1703952, 0, 0, 1703953, 2, 0 )
 
 [node name="Vines" parent="." index="4"]
-tile_data = PoolIntArray( 131081, 3, 4, 131087, 3, 4, 196617, 3, 0, 196623, 3, 0, 262151, 3, 65541, 262152, 3, 1, 262153, 3, 131074, 262154, 3, 1, 262155, 3, 5, 262157, 3, 65541, 262158, 3, 1, 262159, 3, 131074, 262160, 3, 1, 262161, 3, 5, 327689, 3, 0, 327695, 3, 0, 393224, 3, 65541, 393225, 3, 131074, 393226, 3, 5, 393228, 3, 4, 393230, 3, 65541, 393231, 3, 131074, 393232, 3, 5, 458759, 3, 4, 458761, 3, 0, 458763, 3, 65541, 458764, 3, 131074, 458765, 3, 5, 458767, 3, 0, 458769, 3, 4, 524293, 3, 4, 524295, 3, 0, 524297, 3, 0, 524300, 3, 0, 524303, 3, 0, 524305, 3, 0, 524307, 3, 4, 589828, 3, 65541, 589829, 3, 131074, 589830, 3, 1, 589831, 3, 131074, 589832, 3, 1, 589833, 3, 131074, 589834, 3, 1, 589835, 3, 1, 589836, 3, 131074, 589837, 3, 1, 589838, 3, 1, 589839, 3, 131074, 589840, 3, 1, 589841, 3, 131074, 589842, 3, 1, 589843, 3, 131074, 589844, 3, 5, 655365, 3, 65540, 655367, 3, 0, 655369, 3, 0, 655372, 3, 0, 655375, 3, 0, 655377, 3, 0, 655379, 3, 65540, 720903, 3, 65540, 720905, 3, 0, 720907, 3, 65541, 720908, 3, 131074, 720909, 3, 5, 720911, 3, 0, 720913, 3, 65540, 786440, 3, 65541, 786441, 3, 131074, 786442, 3, 5, 786444, 3, 65540, 786446, 3, 65541, 786447, 3, 131074, 786448, 3, 5, 851977, 3, 0, 851983, 3, 0, 917511, 3, 65541, 917512, 3, 1, 917513, 3, 131074, 917514, 3, 1, 917515, 3, 5, 917517, 3, 65541, 917518, 3, 1, 917519, 3, 131074, 917520, 3, 1, 917521, 3, 5, 983049, 3, 0, 983055, 3, 0, 1048585, 3, 65540, 1048591, 3, 65540 )
+tile_data = PoolIntArray( 131081, 3, 4, 131087, 3, 4, 196617, 3, 0, 196623, 3, 0, 262151, 3, 65541, 262152, 3, 1, 262153, 3, 131074, 262154, 3, 1, 262155, 3, 5, 262157, 3, 65541, 262158, 3, 1, 262159, 3, 131074, 262160, 3, 1, 262161, 3, 5, 327689, 3, 0, 327692, 3, 4, 327695, 3, 0, 393224, 3, 65541, 393225, 3, 131074, 393226, 3, 5, 393228, 3, 0, 393230, 3, 65541, 393231, 3, 131074, 393232, 3, 5, 458759, 3, 4, 458761, 3, 0, 458763, 3, 65541, 458764, 3, 131074, 458765, 3, 5, 458767, 3, 0, 458769, 3, 4, 524293, 3, 4, 524295, 3, 0, 524297, 3, 0, 524300, 3, 0, 524303, 3, 0, 524305, 3, 0, 524307, 3, 4, 589828, 3, 65541, 589829, 3, 131074, 589830, 3, 1, 589831, 3, 131074, 589832, 3, 1, 589833, 3, 131074, 589834, 3, 1, 589835, 3, 1, 589836, 3, 131074, 589837, 3, 1, 589838, 3, 1, 589839, 3, 131074, 589840, 3, 1, 589841, 3, 131074, 589842, 3, 1, 589843, 3, 131074, 589844, 3, 5, 655365, 3, 65540, 655367, 3, 0, 655369, 3, 0, 655372, 3, 0, 655375, 3, 0, 655377, 3, 0, 655379, 3, 65540, 720903, 3, 65540, 720905, 3, 0, 720907, 3, 65541, 720908, 3, 131074, 720909, 3, 5, 720911, 3, 0, 720913, 3, 65540, 786440, 3, 65541, 786441, 3, 131074, 786442, 3, 5, 786444, 3, 0, 786446, 3, 65541, 786447, 3, 131074, 786448, 3, 5, 851977, 3, 0, 851980, 3, 65540, 851983, 3, 0, 917511, 3, 65541, 917512, 3, 1, 917513, 3, 131074, 917514, 3, 1, 917515, 3, 5, 917517, 3, 65541, 917518, 3, 1, 917519, 3, 131074, 917520, 3, 1, 917521, 3, 5, 983049, 3, 0, 983055, 3, 0, 1048585, 3, 65540, 1048591, 3, 65540 )
 
 [node name="Flower" parent="Vines" index="2"]
-current_stage = 1
+current_stage = 2
+
+[node name="NuclearNutrient" parent="Nutrients" index="0" instance=ExtResource( 4 )]
+position = Vector2( 133, 133 )
+
+[node name="NuclearNutrient2" parent="Nutrients" index="1" instance=ExtResource( 4 )]
+position = Vector2( 217, 133 )
+
+[node name="NuclearNutrient3" parent="Nutrients" index="2" instance=ExtResource( 4 )]
+position = Vector2( 175, 105 )
+
+[node name="NuclearNutrient4" parent="Nutrients" index="3" instance=ExtResource( 4 )]
+position = Vector2( 175, 161 )
+
+[node name="NuclearNutrient5" parent="Nutrients" index="4" instance=ExtResource( 4 )]
+position = Vector2( 175, 119 )
+
+[node name="NuclearNutrient6" parent="Nutrients" index="5" instance=ExtResource( 4 )]
+position = Vector2( 175, 147 )
+
+[node name="NuclearNutrient7" parent="Nutrients" index="6" instance=ExtResource( 4 )]
+position = Vector2( 161, 133 )
+
+[node name="NuclearNutrient8" parent="Nutrients" index="7" instance=ExtResource( 4 )]
+position = Vector2( 189, 133 )
+
+[node name="NuclearNutrient9" parent="Nutrients" index="8" instance=ExtResource( 4 )]
+position = Vector2( 175, 77 )
+
+[node name="NuclearNutrient10" parent="Nutrients" index="9" instance=ExtResource( 4 )]
+position = Vector2( 175, 189 )
+
+[node name="NuclearNutrient11" parent="Nutrients" index="10" instance=ExtResource( 4 )]
+position = Vector2( 105, 133 )
+
+[node name="NuclearNutrient12" parent="Nutrients" index="11" instance=ExtResource( 4 )]
+position = Vector2( 245, 133 )
+
+[node name="NuclearNutrient13" parent="Nutrients" index="12" instance=ExtResource( 4 )]
+position = Vector2( 133, 91 )
+
+[node name="NuclearNutrient14" parent="Nutrients" index="13" instance=ExtResource( 4 )]
+position = Vector2( 217, 91 )
+
+[node name="NuclearNutrient15" parent="Nutrients" index="14" instance=ExtResource( 4 )]
+position = Vector2( 133, 175 )
+
+[node name="NuclearNutrient16" parent="Nutrients" index="15" instance=ExtResource( 4 )]
+position = Vector2( 217, 175 )

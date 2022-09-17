@@ -17,6 +17,9 @@ tile_data = PoolIntArray( 0, 7, 0, 1, 7, 0, 2, 7, 0, 3, 7, 0, 4, 7, 0, 65536, 7,
 [node name="Deposits" parent="." index="1"]
 tile_data = PoolIntArray( 524288, 0, 0, 524292, 0, 0, 589825, 0, 0, 589827, 0, 0, 655362, 0, 0 )
 
+[node name="Obstacles" parent="." index="2"]
+tile_data = PoolIntArray( 0, 1, 0, 4, 4, 0, 262145, 1, 0, 589824, 4, 0, 589828, 2, 0, 720899, 1, 0 )
+
 [node name="Vines" parent="." index="4"]
 tile_data = PoolIntArray( 131074, 3, 4, 196610, 3, 0, 262146, 3, 0, 327681, 3, 65541, 327682, 3, 131074, 327683, 3, 5, 393218, 3, 0, 458753, 3, 65541, 458754, 3, 131074, 458755, 3, 5, 524290, 3, 65540 )
 

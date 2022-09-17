@@ -20,7 +20,7 @@ text = "The nutrients will travel down the shortest path of vines towards the fl
 
 
 
-Nutrients accumulate in the flower each turn. A flower spends some nutrients each turn to survive and grow, as well."
+Nutrients accumulate in the flower each turn. A flower spends some nutrients each turn to survive, support vines, and grow."
 
 [node name="Living-vines" type="TextureRect" parent="Control/NinePatchRect/MarginContainer/PanelContainer/TutorialText" index="0"]
 margin_left = 104.0

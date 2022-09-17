@@ -7,8 +7,8 @@ var tutorial_3_screen = preload("res://Scenes/Levels/Level0Tutorial3.tscn")
 var tutorial_4_screen = preload("res://Scenes/Levels/Level0Tutorial4.tscn")
 var tutorial_5_screen = preload("res://Scenes/Levels/Level0Tutorial5.tscn")
 
-func _vines_grow(grow_count : int) -> int:
-	return ._vines_grow(min(grow_count, 1))
+func _vines_grow(growth_max : int = 0) -> int:
+	return ._vines_grow(1)
 
 func _ready():
 	yield(get_tree().create_timer(0.1), "timeout")
