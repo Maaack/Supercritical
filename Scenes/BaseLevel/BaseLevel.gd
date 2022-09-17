@@ -136,6 +136,8 @@ func _consume_nutrients_for_vines() -> void:
 	if vine_cost >= nutrients_at_flower:
 		final_vine_cost = max(nutrients_at_flower - 1, 0)
 		var vine_debt = (vine_cost - final_vine_cost) * VINE_TAX
+		vine_debt -= VINE_TAX - 1
+		vine_debt = max(vine_debt, 0)
 		var vines_to_kill = _get_distant_vines(vine_debt)
 		for vine_to_kill in vines_to_kill:
 			_kill_vine(vine_to_kill)
