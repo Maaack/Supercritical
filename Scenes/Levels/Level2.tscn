@@ -8,7 +8,7 @@
 script = ExtResource( 2 )
 level_number = 2
 level_size = Vector2( 12, 20 )
-nutrients_at_flower = 12
+nutrients_at_flower = 16
 level_goals = [ ExtResource( 3 ) ]
 
 [node name="Ground" parent="." index="0"]

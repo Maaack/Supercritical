@@ -26,7 +26,7 @@ func _on_ExitButton_pressed():
 
 func _ready():
 	if OS.has_feature("web"):
-		$Control/ButtonsContainer/ExitButton.hide()
+		get_node("%ExitButton").hide()
 
 func _on_NextLevelButton_pressed():
 	SceneLoader.reload_current_scene()

@@ -15,13 +15,13 @@ func _input(event):
 func set_failure_reason(rest_stops : int = 0) -> void:
 	match(rest_stops):
 		0:
-			$Control/Title.text = STARVATION_TEXT
+			get_node("%Title").text = STARVATION_TEXT
 		1:
-			$Control/Title.text = NUCLEAR_EXPLOSION_TEXT
+			get_node("%Title").text = NUCLEAR_EXPLOSION_TEXT
 		2:
-			$Control/Title.text = TIMEOUT_TEXT
+			get_node("%Title").text = TIMEOUT_TEXT
 		_:
-			$Control/Title.text = FAILURE_TEXT
+			get_node("%Title").text = FAILURE_TEXT
 
 func _on_ConfirmMainMenu_confirmed():
 	InGameMenuController.close_menu()
@@ -42,4 +42,4 @@ func _on_ExitButton_pressed():
 
 func _ready():
 	if OS.has_feature("web"):
-		$Control/ButtonsContainer/ExitButton.hide()
+		get_node("%ExitButton").hide()
