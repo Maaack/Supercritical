@@ -1,5 +1,6 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
+[ext_resource path="res://Assets/Original/Textures/menu9patch_3.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/SuccessScreen/SuccessScreen.gd" type="Script" id=2]
 [ext_resource path="res://Themes/MainMenuTheme.tres" type="Theme" id=3]
 [ext_resource path="res://Scenes/UI/SoundButton/SoundButton.tscn" type="PackedScene" id=4]
@@ -21,49 +22,84 @@ theme = ExtResource( 3 )
 [node name="Background" type="ColorRect" parent="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color( 0.643137, 1, 0.611765, 0.470588 )
+color = Color( 0.713726, 0.937255, 1, 0.501961 )
 
-[node name="Title" type="Label" parent="Control"]
-anchor_left = 0.5
-anchor_right = 0.5
-margin_left = -180.0
-margin_top = 36.0
-margin_right = 180.0
-margin_bottom = 91.0
+[node name="MarginContainer" type="MarginContainer" parent="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 64
+custom_constants/margin_top = 64
+custom_constants/margin_left = 64
+custom_constants/margin_bottom = 64
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Control/MarginContainer"]
+margin_left = 64.0
+margin_top = 64.0
+margin_right = 448.0
+margin_bottom = 320.0
+texture = ExtResource( 1 )
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/MarginContainer/NinePatchRect"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 8
+custom_constants/margin_top = 12
+custom_constants/margin_left = 8
+custom_constants/margin_bottom = 12
+
+[node name="Control" type="Control" parent="Control/MarginContainer/NinePatchRect/MarginContainer"]
+margin_left = 8.0
+margin_top = 12.0
+margin_right = 376.0
+margin_bottom = 244.0
+
+[node name="Title" type="Label" parent="Control/MarginContainer/NinePatchRect/MarginContainer/Control"]
+unique_name_in_owner = true
+anchor_right = 1.0
+margin_bottom = 152.0
+custom_colors/font_color = Color( 0.12549, 0.12549, 0.12549, 1 )
 custom_fonts/font = ExtResource( 5 )
-text = "You grew the flower!"
+text = "Success!"
 align = 1
+autowrap = true
 
-[node name="ButtonsContainer" type="VBoxContainer" parent="Control"]
+[node name="ButtonsContainer" type="VBoxContainer" parent="Control/MarginContainer/NinePatchRect/MarginContainer/Control"]
 anchor_left = 0.5
-anchor_top = 0.5
+anchor_top = 1.0
 anchor_right = 0.5
-anchor_bottom = 0.5
+anchor_bottom = 1.0
 margin_left = -116.5
-margin_top = -84.0
+margin_top = -168.0
 margin_right = 116.5
-margin_bottom = 84.0
 custom_constants/separation = 24
+__meta__ = {
+"_edit_group_": true
+}
 
-[node name="NextLevelButton" parent="Control/ButtonsContainer" instance=ExtResource( 4 )]
+[node name="NextLevelButton" parent="Control/MarginContainer/NinePatchRect/MarginContainer/Control/ButtonsContainer" instance=ExtResource( 4 )]
 margin_right = 233.0
 margin_bottom = 40.0
 text = "Next Level"
 
-[node name="RestartButton" parent="Control/ButtonsContainer" instance=ExtResource( 4 )]
+[node name="RestartButton" parent="Control/MarginContainer/NinePatchRect/MarginContainer/Control/ButtonsContainer" instance=ExtResource( 4 )]
 visible = false
 margin_top = 64.0
 margin_right = 233.0
 margin_bottom = 104.0
 text = "Restart"
 
-[node name="MainMenuButton" parent="Control/ButtonsContainer" instance=ExtResource( 4 )]
+[node name="MainMenuButton" parent="Control/MarginContainer/NinePatchRect/MarginContainer/Control/ButtonsContainer" instance=ExtResource( 4 )]
 margin_top = 64.0
 margin_right = 233.0
 margin_bottom = 104.0
 text = "Return to Main Menu"
 
-[node name="ExitButton" parent="Control/ButtonsContainer" instance=ExtResource( 4 )]
+[node name="ExitButton" parent="Control/MarginContainer/NinePatchRect/MarginContainer/Control/ButtonsContainer" instance=ExtResource( 4 )]
+unique_name_in_owner = true
 margin_top = 128.0
 margin_right = 233.0
 margin_bottom = 168.0
@@ -83,9 +119,8 @@ popup_exclusive = true
 window_title = "Confirm"
 dialog_text = "Quit the game?"
 
-[connection signal="pressed" from="Control/ButtonsContainer/NextLevelButton" to="." method="_on_NextLevelButton_pressed"]
-[connection signal="pressed" from="Control/ButtonsContainer/RestartButton" to="." method="_on_RestartButton_pressed"]
-[connection signal="pressed" from="Control/ButtonsContainer/MainMenuButton" to="." method="_on_MainMenuButton_pressed"]
-[connection signal="pressed" from="Control/ButtonsContainer/ExitButton" to="." method="_on_ExitButton_pressed"]
+[connection signal="pressed" from="Control/MarginContainer/NinePatchRect/MarginContainer/Control/ButtonsContainer/NextLevelButton" to="." method="_on_NextLevelButton_pressed"]
+[connection signal="pressed" from="Control/MarginContainer/NinePatchRect/MarginContainer/Control/ButtonsContainer/MainMenuButton" to="." method="_on_MainMenuButton_pressed"]
+[connection signal="pressed" from="Control/MarginContainer/NinePatchRect/MarginContainer/Control/ButtonsContainer/ExitButton" to="." method="_on_ExitButton_pressed"]
 [connection signal="confirmed" from="Control/ConfirmMainMenu" to="." method="_on_ConfirmMainMenu_confirmed"]
 [connection signal="confirmed" from="Control/ConfirmExit" to="." method="_on_ConfirmExit_confirmed"]

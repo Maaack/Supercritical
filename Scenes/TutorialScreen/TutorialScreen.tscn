@@ -41,21 +41,21 @@ patch_margin_bottom = 4
 [node name="MarginContainer" type="MarginContainer" parent="Control/NinePatchRect"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_constants/margin_right = 4
-custom_constants/margin_top = 4
-custom_constants/margin_left = 4
-custom_constants/margin_bottom = 4
+custom_constants/margin_right = 8
+custom_constants/margin_top = 8
+custom_constants/margin_left = 8
+custom_constants/margin_bottom = 8
 
 [node name="PanelContainer" type="VBoxContainer" parent="Control/NinePatchRect/MarginContainer"]
-margin_left = 4.0
-margin_top = 4.0
-margin_right = 346.0
-margin_bottom = 229.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 342.0
+margin_bottom = 225.0
 custom_constants/separation = 24
 
 [node name="TutorialText" type="Label" parent="Control/NinePatchRect/MarginContainer/PanelContainer"]
-margin_right = 342.0
-margin_bottom = 161.0
+margin_right = 334.0
+margin_bottom = 153.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_colors/font_color = Color( 0, 0, 0, 1 )
@@ -65,9 +65,9 @@ valign = 1
 autowrap = true
 
 [node name="ResumeButton" parent="Control/NinePatchRect/MarginContainer/PanelContainer" instance=ExtResource( 4 )]
-margin_top = 185.0
-margin_right = 342.0
-margin_bottom = 225.0
+margin_top = 177.0
+margin_right = 334.0
+margin_bottom = 217.0
 text = "Resume"
 
 [connection signal="pressed" from="Control/NinePatchRect/MarginContainer/PanelContainer/ResumeButton" to="." method="_on_ResumeButton_pressed"]
