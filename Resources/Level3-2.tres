@@ -11,5 +11,4 @@ nutrient_goal_min = 8
 nutrient_goal_max = 16
 supercritical_limit = 40
 growth_nutrient_divider = 8
-flower_consumption = 2
 advance_flower = false

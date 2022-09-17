@@ -16,6 +16,7 @@ func _ready():
 
 func _level_takes_turn(delay : float):
 	._level_takes_turn(delay)
+	yield(get_tree().create_timer(delay), "timeout")
 	match turn_counter:
 		3:
 			InGameMenuController.open_menu(tutorial_2_screen)

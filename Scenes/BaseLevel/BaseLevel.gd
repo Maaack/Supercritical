@@ -327,7 +327,7 @@ func _evauluate_goal():
 		_turn_limit_reached(current_goal)
 
 func _level_takes_turn(delay : float):
-	set_process_input(false)
+	set_process_unhandled_input(false)
 	emit_signal("turn_started")
 	turn_counter += 1
 	if turn_counter % 2 == 0:
@@ -341,7 +341,7 @@ func _level_takes_turn(delay : float):
 	_absorb_nutrients_at_flower()
 	update_state()
 	_evauluate_goal()
-	set_process_input(true)
+	set_process_unhandled_input(true)
 
 func _move_player(direction):
 	var target_position = $PlayerControlledCharacter.position + (direction * cell_size)
@@ -359,7 +359,7 @@ func _ready():
 	update_goals()
 	update_state()
 
-func _input(event):
+func _unhandled_input(event):
 	var direction : Vector2 = Vector2.ZERO
 	if event is InputEventKey:
 		if event.is_action_pressed("move_up"):
