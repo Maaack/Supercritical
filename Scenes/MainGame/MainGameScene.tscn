@@ -55,7 +55,7 @@ anchor_bottom = 1.0
 [node name="TurnCounterLabel" type="Label" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer"]
 unique_name_in_owner = true
 margin_right = 168.0
-margin_bottom = 18.0
+margin_bottom = 21.0
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 4 )
 text = "Turns Left: 0"
@@ -63,18 +63,18 @@ align = 1
 
 [node name="NutrientCounterLabel" type="Label" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer"]
 unique_name_in_owner = true
-margin_top = 22.0
+margin_top = 25.0
 margin_right = 168.0
-margin_bottom = 40.0
+margin_bottom = 46.0
 size_flags_horizontal = 3
 custom_fonts/font = ExtResource( 4 )
 text = "Flower: 0"
 align = 1
 
 [node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer"]
-margin_top = 44.0
+margin_top = 50.0
 margin_right = 168.0
-margin_bottom = 164.0
+margin_bottom = 170.0
 rect_min_size = Vector2( 0, 120 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer/HBoxContainer"]
@@ -85,7 +85,7 @@ size_flags_horizontal = 3
 
 [node name="GainLabel" type="Label" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer/HBoxContainer/VBoxContainer"]
 margin_right = 82.0
-margin_bottom = 12.0
+margin_bottom = 14.0
 size_flags_horizontal = 3
 size_flags_vertical = 5
 custom_fonts/font = ExtResource( 2 )
@@ -94,7 +94,7 @@ align = 1
 
 [node name="GainList" type="Label" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
-margin_top = 16.0
+margin_top = 18.0
 margin_right = 82.0
 margin_bottom = 120.0
 size_flags_horizontal = 3
@@ -111,7 +111,7 @@ size_flags_horizontal = 3
 
 [node name="LossLabel" type="Label" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer/HBoxContainer/VBoxContainer2"]
 margin_right = 82.0
-margin_bottom = 12.0
+margin_bottom = 14.0
 size_flags_horizontal = 3
 size_flags_vertical = 5
 custom_fonts/font = ExtResource( 2 )
@@ -120,7 +120,7 @@ align = 1
 
 [node name="LossList" type="Label" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer/HBoxContainer/VBoxContainer2"]
 unique_name_in_owner = true
-margin_top = 16.0
+margin_top = 18.0
 margin_right = 82.0
 margin_bottom = 120.0
 size_flags_horizontal = 3
@@ -129,26 +129,26 @@ custom_fonts/font = ExtResource( 2 )
 align = 1
 
 [node name="MinimumLabel" type="Label" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer"]
-margin_top = 168.0
+margin_top = 174.0
 margin_right = 168.0
-margin_bottom = 180.0
+margin_bottom = 188.0
 custom_fonts/font = ExtResource( 2 )
 text = "Stay above 0"
 align = 1
 
 [node name="SupercriticalLimitLabel" type="Label" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer"]
 unique_name_in_owner = true
-margin_top = 184.0
+margin_top = 192.0
 margin_right = 168.0
-margin_bottom = 196.0
+margin_bottom = 206.0
 custom_fonts/font = ExtResource( 2 )
 text = "Stay below 20"
 align = 1
 
 [node name="NextGoalLabel" type="Label" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer"]
-margin_top = 200.0
+margin_top = 210.0
 margin_right = 168.0
-margin_bottom = 212.0
+margin_bottom = 224.0
 custom_fonts/font = ExtResource( 2 )
 text = "Next Goal:"
 align = 1
