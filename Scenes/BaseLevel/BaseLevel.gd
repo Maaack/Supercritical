@@ -29,6 +29,7 @@ export(int, 0, 20) var level_number : int
 export(Vector2) var level_size : Vector2 = Vector2(24, 27)
 export(int) var nutrients_at_flower : int = 6
 export(float, 0.05, 2) var turn_time : float = 0.5
+export(PackedScene) var onready_message : PackedScene
 
 # Goals
 export(Array, Resource) var level_goals : Array = []
@@ -358,6 +359,10 @@ func _ready():
 	_grow_vine(_get_flower_cellv())
 	update_goals()
 	update_state()
+	if not onready_message == null:
+		yield(get_tree().create_timer(0.1), "timeout")
+		InGameMenuController.open_menu(onready_message)
+
 
 func _unhandled_input(event):
 	var direction : Vector2 = Vector2.ZERO

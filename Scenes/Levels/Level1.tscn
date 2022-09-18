@@ -1,14 +1,16 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Scenes/BaseLevel/BaseLevel.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Levels/Level1.gd" type="Script" id=2]
 [ext_resource path="res://Resources/Level1-1.tres" type="Resource" id=3]
+[ext_resource path="res://Scenes/Levels/Level1Tutorial.tscn" type="PackedScene" id=4]
 
 [node name="Level1" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 level_number = 1
 level_size = Vector2( 5, 12 )
 nutrients_at_flower = 38
+onready_message = ExtResource( 4 )
 level_goals = [ ExtResource( 3 ) ]
 
 [node name="Ground" parent="." index="0"]

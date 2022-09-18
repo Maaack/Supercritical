@@ -1,0 +1,14 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://Resources/LevelGoals.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+turn_limit = 60
+turn_limit_success = true
+nutrient_goal_rounds = 8
+nutrient_goal_min = 32
+nutrient_goal_max = 64
+supercritical_limit = 80
+growth_nutrient_divider = 16
+advance_flower = true
