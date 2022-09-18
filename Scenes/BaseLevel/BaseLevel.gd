@@ -42,6 +42,7 @@ onready var half_cell_size = $Vines.cell_size / 2
 
 var nuclear_nutrient_scene = preload("res://Scenes/NuclearNutrient/NuclearNutrient.tscn")
 var turn_counter : int = 0
+var stage_counter : int = 0
 var goal_counter : int = 0
 var current_level_goal : int = 0
 var vine_distance_map : Dictionary = {}
@@ -274,11 +275,12 @@ func _vines_die():
 
 func update_goals():
 	var current_goal : LevelGoals = _get_current_level_goals()
+	stage_counter = 0
 	emit_signal("goals_updated", current_goal.turn_limit, current_goal.supercritical_limit, current_goal.nutrient_goal_rounds, current_goal.nutrient_goal_min, current_goal.nutrient_goal_max)
 
 func update_state():
 	var current_goal : LevelGoals = _get_current_level_goals()
-	emit_signal("state_changed", nutrients_at_flower, current_goal.turn_limit - turn_counter, current_goal.nutrient_goal_rounds - goal_counter)
+	emit_signal("state_changed", nutrients_at_flower, current_goal.turn_limit - stage_counter, current_goal.nutrient_goal_rounds - goal_counter)
 
 func _complete_level():
 	GameLog.level_reached(level_number + 1)
@@ -324,13 +326,14 @@ func _evauluate_goal():
 		_supercritical_limit_reached()
 	elif current_goal.check_nutrient_goal_complete(goal_counter):
 		_complete_goal(current_goal)
-	elif current_goal.check_turn_limit(turn_counter):
+	elif current_goal.check_turn_limit(stage_counter):
 		_turn_limit_reached(current_goal)
 
 func _level_takes_turn(delay : float):
 	set_process_unhandled_input(false)
 	emit_signal("turn_started")
 	turn_counter += 1
+	stage_counter += 1
 	if turn_counter % 2 == 0:
 		_vines_make_nutrients()
 	_map_vines_connected_to_flower()
