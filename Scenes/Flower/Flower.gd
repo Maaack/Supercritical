@@ -3,9 +3,10 @@ extends Node2D
 
 
 enum STAGE{FIRST, SECOND, THIRD}
+enum DANGER_LEVEL{NONE, LOW, MID, HIGH}
 
 export(STAGE) var current_stage : int = STAGE.FIRST setget set_current_stage
-export(bool) var danger_zone : bool = false setget set_danger_zone
+export(DANGER_LEVEL) var danger_level : int = DANGER_LEVEL.NONE setget set_danger_level
 
 var small_flower = preload("res://Assets/Original/Textures/flower-small.png")
 
@@ -20,10 +21,22 @@ func set_current_stage(value : int) -> void:
 	if current_stage >= 0 and current_stage < stage_textures.size():
 		$Sprite.texture = stage_textures[current_stage]
 
-func set_danger_zone(value : bool) -> void:
-	danger_zone = value
-	if danger_zone:
-		$DangerPlayer.play("Danger")
-	elif $DangerPlayer.is_playing():
-		$DangerPlayer.seek(0, true)
-		$DangerPlayer.stop()
+func set_danger_level(value : int) -> void:
+	danger_level = value
+	$GeigerCounter1.stop()
+	$GeigerCounter2.stop()
+	$GeigerCounter3.stop()
+	match danger_level:
+		DANGER_LEVEL.NONE:
+			$DangerPlayer.seek(0, true)
+			$DangerPlayer.stop()
+		DANGER_LEVEL.LOW:
+			$DangerPlayer.seek(0, true)
+			$DangerPlayer.stop()
+			$GeigerCounter1.play()
+		DANGER_LEVEL.MID:
+			$DangerPlayer.play("Danger")
+			$GeigerCounter2.play()
+		DANGER_LEVEL.HIGH:
+			$DangerPlayer.play("Danger")
+			$GeigerCounter3.play()

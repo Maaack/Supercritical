@@ -324,7 +324,7 @@ func _evauluate_goal():
 		emit_signal("failure", FAILURE_REASON.STARVATION)
 		return
 	var current_goal : LevelGoals = _get_current_level_goals()
-	$Vines/Flower.danger_zone = current_goal.check_nutrients_danger(nutrients_at_flower)
+	$Vines/Flower.danger_level = current_goal.get_nutrients_danger(nutrients_at_flower)
 	if current_goal.check_nutrient_goal(nutrients_at_flower):
 		goal_counter += 1
 		$Vines.success()
