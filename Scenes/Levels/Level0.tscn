@@ -80,7 +80,7 @@ position = Vector2( 133, 175 )
 position = Vector2( 217, 175 )
 
 [node name="PlayerControlledCharacter" parent="." index="7"]
-position = Vector2( 176, 232 )
+position = Vector2( 175, 217 )
 
 [node name="Timer" type="Timer" parent="." index="12"]
 wait_time = 0.01

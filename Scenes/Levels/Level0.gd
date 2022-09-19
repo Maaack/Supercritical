@@ -34,9 +34,11 @@ func _process(delta):
 func _complete_goal(goal : LevelGoals):
 	._complete_goal(goal)
 	if current_level_goal == 1:
-		$Control/Label2.hide()
+		$Control/Label2.text = "Shift: Run"
 		$Control/InGameMessageBox/MarginContainer/Label.text = "Good minion. You are not as useless as you seem.\nTry cutting another."
 	elif current_level_goal == 2:
+		$Control/Label2.text = "S: Skip Turn"
 		$Control/InGameMessageBox/MarginContainer/Label.text = "You will be given tasks by the great GARDENZILLA to keep her bonsai's healthy.\nFail her... at your own peril."
 	elif current_level_goal == 3:
+		$Control/Label2.hide()
 		$Control/InGameMessageBox/MarginContainer/Label.text = "For now, keep the flower alive and do not starve it!."
