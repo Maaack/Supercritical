@@ -347,16 +347,26 @@ func _level_takes_turn(delay : float):
 	_evauluate_goal()
 	set_process_unhandled_input(true)
 
-func _move_player(direction):
+func _highlight_tile_on_finished_tween(tween : SceneTreeTween, highlight_cellv : Vector2):
+	yield(tween, "finished")
+	_highlight_tile_at_position(highlight_cellv)
+
+func _can_move_player(direction) -> bool:
 	var target_position = $PlayerControlledCharacter.position + (direction * cell_size)
 	if not _is_cell_walkable(target_position / cell_size):
-		return
+		return false
+	return true
+
+func _move_player(direction) -> bool:
+	if not _can_move_player(direction):
+		return false
+	var target_position = $PlayerControlledCharacter.position + (direction * cell_size)
 	var tween = get_tree().create_tween()
 	tween.tween_property($PlayerControlledCharacter, "position", target_position, turn_time)
 	tween.play()
 	_level_takes_turn(turn_time)
-	yield(tween, "finished")
-	_highlight_tile_at_position(target_position)
+	_highlight_tile_on_finished_tween(tween, target_position)
+	return true
 
 func _ready():
 	_grow_vine(_get_flower_cellv())
@@ -378,10 +388,15 @@ func _unhandled_input(event):
 			direction = Vector2.LEFT
 		elif event.is_action_pressed("move_right"):
 			direction = Vector2.RIGHT
-	if Input.is_action_pressed("run"):
-		direction *= 2
 	if direction != Vector2.ZERO:
-		_move_player(direction)
+		var can_move = _can_move_player(direction)
+		if can_move and Input.is_action_pressed("run"):
+			var can_move_2 = _can_move_player(direction * 2)
+			if can_move_2:
+				direction *= 2
+		var moved = _move_player(direction)
+		if moved:
+			$PlayerControlledCharacter.walk()
 	if event.is_action_pressed("skip_turn"):
 		_level_takes_turn(turn_time * 0.75)
 	if event.is_action_pressed("interact") and $TileHighlighter.visible:
