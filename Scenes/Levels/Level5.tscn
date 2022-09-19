@@ -36,4 +36,4 @@ position = Vector2( 175, 203 )
 
 [node name="Music" parent="." index="11"]
 stream = ExtResource( 7 )
-volume_db = -10.0
+volume_db = -16.0

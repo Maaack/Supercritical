@@ -1,47 +1,36 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Scenes/TutorialScreen/TutorialScreen.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Assets/Original/Textures/flower-small.png" type="Texture" id=2]
-[ext_resource path="res://Assets/Original/Tilesets/living-vines.png" type="Texture" id=3]
-
-[sub_resource type="AtlasTexture" id=1]
-atlas = ExtResource( 3 )
-region = Rect2( 1, 1, 14, 14 )
-
-[sub_resource type="AtlasTexture" id=2]
-atlas = ExtResource( 3 )
-region = Rect2( 17, 1, 14, 14 )
+[ext_resource path="res://Assets/Original/Textures/flower-mid.png" type="Texture" id=3]
 
 [node name="Level0Tutorial1" instance=ExtResource( 1 )]
+__meta__ = {
+"_edit_horizontal_guides_": [ 147.0 ],
+"_edit_vertical_guides_": [ 512.0 ]
+}
 
 [node name="TutorialText" parent="Control/NinePatchRect/MarginContainer/PanelContainer" index="0"]
-text = "The nutrients will travel down the shortest path of vines towards the flower.
+text = "A flower needs nutrients to survive and grow.
 
 
 
 
-Nutrients accumulate in the flower each turn. A flower spends some nutrients each turn to survive, support vines, and grow."
 
-[node name="Living-vines" type="TextureRect" parent="Control/NinePatchRect/MarginContainer/PanelContainer/TutorialText" index="0"]
-margin_left = 104.0
-margin_top = 61.5
-margin_right = 132.0
-margin_bottom = 89.5
-texture = SubResource( 1 )
-expand = true
+If a flower needs more nutrients than it can get from deposits, it will starve."
 
-[node name="Living-vines2" type="TextureRect" parent="Control/NinePatchRect/MarginContainer/PanelContainer/TutorialText" index="1"]
-margin_left = 145.5
-margin_top = 61.5
-margin_right = 173.5
-margin_bottom = 89.5
-texture = SubResource( 2 )
-expand = true
-
-[node name="Flower-small" type="TextureRect" parent="Control/NinePatchRect/MarginContainer/PanelContainer/TutorialText" index="2"]
-margin_left = 187.5
-margin_top = 53.5
-margin_right = 229.5
-margin_bottom = 95.5
+[node name="Flower-small" type="TextureRect" parent="Control/NinePatchRect/MarginContainer/PanelContainer/TutorialText" index="0"]
+margin_left = 100.0
+margin_top = 52.0
+margin_right = 128.0
+margin_bottom = 80.0
 texture = ExtResource( 2 )
+expand = true
+
+[node name="Flower-mid" type="TextureRect" parent="Control/NinePatchRect/MarginContainer/PanelContainer/TutorialText" index="1"]
+margin_left = 184.0
+margin_top = 35.0
+margin_right = 250.0
+margin_bottom = 99.0
+texture = ExtResource( 3 )
 expand = true

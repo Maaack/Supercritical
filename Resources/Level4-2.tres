@@ -12,3 +12,4 @@ nutrient_goal_max = 16
 supercritical_limit = 80
 growth_nutrient_divider = 16
 advance_flower = false
+trim_vine = Vector2( -1, -1 )

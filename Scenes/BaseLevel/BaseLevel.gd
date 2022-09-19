@@ -281,9 +281,17 @@ func _vines_die():
 	for cell_position in cullable_vines:
 		_kill_vine(cell_position)
 
+func _crosshair_on_target(current_goal : LevelGoals):
+	if current_goal.must_trim_vine():
+		$Crosshair.position = (current_goal.trim_vine * cell_size) + half_cell_size
+		$Crosshair.show()
+	else:
+		$Crosshair.hide()
+
 func update_goals():
 	var current_goal : LevelGoals = _get_current_level_goals()
 	stage_counter = 0
+	_crosshair_on_target(current_goal)
 	emit_signal("goals_updated", current_goal.turn_limit, current_goal.supercritical_limit, current_goal.nutrient_goal_rounds, current_goal.nutrient_goal_min, current_goal.nutrient_goal_max)
 
 func update_state():
@@ -303,7 +311,7 @@ func _complete_goal(goal : LevelGoals):
 	update_goals()
 
 func _supercritical_limit_reached():
-	$PlayerControlledCharacter.set_process_input(false)
+	set_process_unhandled_input(false)
 	$Vines.critical_failure()
 	yield(get_tree().create_timer(1), "timeout")
 	emit_signal("failure", FAILURE_REASON.NUCLEAR_EXPLOSION)
@@ -334,6 +342,9 @@ func _evauluate_goal():
 		_supercritical_limit_reached()
 	elif current_goal.check_nutrient_goal_complete(goal_counter):
 		_complete_goal(current_goal)
+	elif current_goal.must_trim_vine():
+		if not _is_cell_vine(current_goal.trim_vine):
+			_complete_goal(current_goal)
 	elif current_goal.check_turn_limit(stage_counter):
 		_turn_limit_reached(current_goal)
 
@@ -383,14 +394,16 @@ func _move_player(direction) -> bool:
 	_highlight_tile_on_finished_tween(tween, target_position)
 	return true
 
+func _show_on_ready_message() -> void:
+	if not onready_message == null:
+		InGameMenuController.open_menu(onready_message)
+
 func _ready():
 	_grow_vine(_get_flower_cellv(), 0)
 	update_goals()
 	update_state()
-	if not onready_message == null:
-		yield(get_tree().create_timer(0.1), "timeout")
-		InGameMenuController.open_menu(onready_message)
-
+	yield(get_tree().create_timer(0.1), "timeout")
+	_show_on_ready_message()
 
 func _unhandled_input(event):
 	var direction : Vector2 = Vector2.ZERO

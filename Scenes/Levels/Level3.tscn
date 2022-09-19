@@ -39,9 +39,9 @@ position = Vector2( 203, 133 )
 [node name="PlayerControlledCharacter" parent="." index="7"]
 position = Vector2( 147, 161 )
 
-[node name="Camera2D" parent="." index="9"]
+[node name="Camera2D" parent="." index="10"]
 position = Vector2( -21, -21 )
 
-[node name="Music" parent="." index="11"]
+[node name="Music" parent="." index="12"]
 stream = ExtResource( 7 )
-volume_db = -8.0
+volume_db = -12.0
