@@ -234,10 +234,13 @@ func _get_growable_cells():
 		filter_crowd += 1
 	return growable_cells.keys()
 
-func _grow_vine(cellv : Vector2):
+func _grow_vine(cellv : Vector2, iter : int = 0):
+	if _is_cell_vine(cellv):
+		return
 	vines.set_cellv(cellv, VINE_TILE)
 	vines.update_bitmask_area(cellv)
 	vines.update()
+	vines.grow_vine(cellv * cell_size, iter)
 
 func _vines_grow(growth_max : int = 0) -> int:
 	var extra_food = _get_extra_food()
@@ -246,13 +249,13 @@ func _vines_grow(growth_max : int = 0) -> int:
 	else:
 		growth_max = min(extra_food, growth_max)
 	var grew : int = 0
-	for _i in range(growth_max):
+	for i in range(growth_max):
 		var optional_cells : Array = _get_growable_cells()
 		optional_cells = _filter_out_of_bounds(optional_cells)
 		if optional_cells.size() == 0:
 			break
 		optional_cells.shuffle()
-		_grow_vine(optional_cells.pop_front())
+		_grow_vine(optional_cells.pop_front(), i)
 		grew += 1
 	_consume_nutrients_for_growth(grew)
 	return grew
@@ -369,7 +372,7 @@ func _move_player(direction) -> bool:
 	return true
 
 func _ready():
-	_grow_vine(_get_flower_cellv())
+	_grow_vine(_get_flower_cellv(), 0)
 	update_goals()
 	update_state()
 	if not onready_message == null:

@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Themes/LivingVinesTileset.tres" type="TileSet" id=1]
 [ext_resource path="res://Scenes/Vines/Vines.gd" type="Script" id=2]
 [ext_resource path="res://Scenes/Vines/AnimateSuccess.tres" type="Animation" id=3]
 [ext_resource path="res://Scenes/Vines/AnimateCriticalFailure.tres" type="Animation" id=4]
 [ext_resource path="res://Assets/Original/SFX/Bonsai_Main_Explosion_v3.wav" type="AudioStream" id=5]
+[ext_resource path="res://Assets/Original/SFX/Bonsai_NewVine.ogg" type="AudioStream" id=6]
 
 [sub_resource type="Animation" id=1]
 length = 0.001
@@ -21,6 +22,10 @@ tracks/0/keys = {
 "values": [ false ]
 }
 
+[sub_resource type="AudioStreamRandomPitch" id=2]
+audio_stream = ExtResource( 6 )
+random_pitch = 1.05
+
 [node name="Vines" type="TileMap"]
 tile_set = ExtResource( 1 )
 cell_size = Vector2( 14, 14 )
@@ -35,4 +40,26 @@ anims/Success = ExtResource( 3 )
 [node name="Explosion" type="AudioStreamPlayer" parent="."]
 pause_mode = 2
 stream = ExtResource( 5 )
+bus = "SFX"
+
+[node name="GrowVineStreams" type="Node2D" parent="."]
+
+[node name="GrowVine1" type="AudioStreamPlayer2D" parent="GrowVineStreams"]
+stream = SubResource( 2 )
+volume_db = -4.0
+bus = "SFX"
+
+[node name="GrowVine2" type="AudioStreamPlayer2D" parent="GrowVineStreams"]
+stream = SubResource( 2 )
+volume_db = -4.0
+bus = "SFX"
+
+[node name="GrowVine3" type="AudioStreamPlayer2D" parent="GrowVineStreams"]
+stream = SubResource( 2 )
+volume_db = -4.0
+bus = "SFX"
+
+[node name="GrowVine4" type="AudioStreamPlayer2D" parent="GrowVineStreams"]
+stream = SubResource( 2 )
+volume_db = -3.0
 bus = "SFX"

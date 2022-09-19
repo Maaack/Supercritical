@@ -194,3 +194,9 @@ func success() -> void:
 
 func critical_failure() -> void:
 	$AnimationPlayer.play("CriticalFailure")
+
+func grow_vine(growth_location : Vector2, iter : int = 0):
+	iter %= $GrowVineStreams.get_child_count()
+	var audio_stream : AudioStreamPlayer2D = $GrowVineStreams.get_child(iter)
+	audio_stream.position = growth_location
+	audio_stream.play()
