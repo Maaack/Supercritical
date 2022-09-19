@@ -11,7 +11,7 @@
 script = ExtResource( 2 )
 level_number = 5
 level_size = Vector2( 24, 26 )
-nutrients_at_flower = 15
+nutrients_at_flower = 10
 onready_message = ExtResource( 6 )
 level_goals = [ ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ) ]
 
@@ -30,5 +30,5 @@ tile_data = PoolIntArray( -131060, 2, 4, -65524, 2, 0, 6, 2, 65536, 7, 2, 1, 8, 
 [node name="Vines" parent="." index="4"]
 tile_data = PoolIntArray( 524300, 3, 4, 589835, 3, 65541, 589836, 3, 131074, 589837, 3, 5, 655372, 3, 65540 )
 
-[node name="PlayerControlledCharacter" parent="." index="6"]
+[node name="PlayerControlledCharacter" parent="." index="7"]
 position = Vector2( 175, 203 )
