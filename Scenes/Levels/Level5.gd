@@ -1,6 +1,6 @@
 extends BaseLevel
 
-var goal_1_screen = preload("res://Scenes/Levels/Level3Goal1.tscn")
+var goal_1_screen = preload("res://Scenes/Levels/Level5Goal1.tscn")
 
 func _complete_goal(goal : LevelGoals):
 	._complete_goal(goal)

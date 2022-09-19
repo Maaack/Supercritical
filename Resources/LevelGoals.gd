@@ -8,7 +8,6 @@ export(int) var nutrient_goal_min : int = 8
 export(int) var nutrient_goal_max : int = 16
 export(int) var supercritical_limit : int = 20
 export(int) var growth_nutrient_divider : int = 4
-export(int) var flower_consumption : int = 1
 export(bool) var advance_flower : bool = false
 
 func check_nutrient_goal(nutrients : int) -> bool:
