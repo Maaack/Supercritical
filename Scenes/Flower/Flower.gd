@@ -28,11 +28,13 @@ func set_danger_level(value : int) -> void:
 	$GeigerCounter3.stop()
 	match danger_level:
 		DANGER_LEVEL.NONE:
-			$DangerPlayer.seek(0, true)
-			$DangerPlayer.stop()
+			if $DangerPlayer.is_playing():
+				$DangerPlayer.seek(0, true)
+				$DangerPlayer.stop()
 		DANGER_LEVEL.LOW:
-			$DangerPlayer.seek(0, true)
-			$DangerPlayer.stop()
+			if $DangerPlayer.is_playing():
+				$DangerPlayer.seek(0, true)
+				$DangerPlayer.stop()
 			$GeigerCounter1.play()
 		DANGER_LEVEL.MID:
 			$DangerPlayer.play("Danger")
