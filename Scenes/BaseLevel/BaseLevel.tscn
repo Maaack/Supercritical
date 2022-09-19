@@ -1,8 +1,9 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Assets/Original/Tilesets/obstacles.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/Player/PlayerControlledCharacter.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scenes/Vines/Vines.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Themes/HarvestVinesTileset.tres" type="TileSet" id=4]
 [ext_resource path="res://Scenes/BaseLevel/BaseLevel.gd" type="Script" id=5]
 [ext_resource path="res://Scenes/Flower/Flower.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Scenes/TileHighlighter/TileHighlighter.tscn" type="PackedScene" id=7]
@@ -353,6 +354,11 @@ format = 1
 
 [node name="Flower" parent="Vines" instance=ExtResource( 6 )]
 position = Vector2( 175, 133 )
+
+[node name="HarvestVines" type="TileMap" parent="."]
+tile_set = ExtResource( 4 )
+cell_size = Vector2( 14, 14 )
+format = 1
 
 [node name="Nutrients" type="Node2D" parent="."]
 

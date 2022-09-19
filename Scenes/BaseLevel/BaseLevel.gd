@@ -10,6 +10,8 @@ signal goals_updated(level_turn_limit, supercritical_limit, nutrient_goal_rounds
 
 const VINE_TILE = 3
 const DEAD_VINE_TILE = 2
+const NUCLEAR_DEPOSIT_TILE = 0
+const HARVEST_VINE_TILE = 2
 const NO_TILE = -1
 const VINE_TAX = 16
 const CARDINAL_DIRECTIONS : Array = [
@@ -197,11 +199,14 @@ func _is_cell_vine(cellv: Vector2) -> bool:
 func _is_cell_dead_vine(cellv: Vector2) -> bool:
 	return dead_vines.get_cellv(cellv) == DEAD_VINE_TILE
 
+func _is_cell_harvestable(cellv: Vector2) -> bool:
+	return $Deposits.get_cellv(cellv) == NUCLEAR_DEPOSIT_TILE
+
 func _vines_make_nutrients():
-	for cell_position in $Deposits.get_used_cells():
-		if _is_cell_vine(cell_position):
+	for cellv in $Deposits.get_used_cells():
+		if _is_cell_vine(cellv):
 			var nutrient_instance = nuclear_nutrient_scene.instance()
-			nutrient_instance.position = vines.map_to_world(cell_position) + half_cell_size
+			nutrient_instance.position = vines.map_to_world(cellv) + half_cell_size
 			$Nutrients.add_child(nutrient_instance)
 
 func _highlight_tile_at_position(position : Vector2):
@@ -332,6 +337,12 @@ func _evauluate_goal():
 	elif current_goal.check_turn_limit(stage_counter):
 		_turn_limit_reached(current_goal)
 
+func _update_harvest_vines():
+	$HarvestVines.clear()
+	for cellv in vines.get_used_cells():
+		if _is_cell_harvestable(cellv):
+			$HarvestVines.set_cellv(cellv, HARVEST_VINE_TILE, false, false, false, vines.get_cell_autotile_coord(cellv.x, cellv.y))
+
 func _level_takes_turn(delay : float):
 	set_process_unhandled_input(false)
 	emit_signal("turn_started")
@@ -343,6 +354,7 @@ func _level_takes_turn(delay : float):
 	_vines_die()
 	_consume_base_nutrients()
 	_vines_grow()
+	_update_harvest_vines()
 	_vines_move_nutrients(delay - 0.05)
 	yield(get_tree().create_timer(delay), "timeout")
 	_absorb_nutrients_at_flower()
