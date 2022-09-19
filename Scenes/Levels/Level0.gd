@@ -1,6 +1,8 @@
 extends BaseLevel
 
-var tutorial_1_screen = preload("res://Scenes/Levels/Level0Tutorial1.tscn")
+var tutorial_1_1_screen = preload("res://Scenes/Levels/Level0Tutorial1-1.tscn")
+var tutorial_1_2_screen = preload("res://Scenes/Levels/Level0Tutorial1-2.tscn")
+var tutorial_1_3_screen = preload("res://Scenes/Levels/Level0Tutorial1-3.tscn")
 var tutorial_2_screen = preload("res://Scenes/Levels/Level0Tutorial2.tscn")
 var tutorial_3_screen = preload("res://Scenes/Levels/Level0Tutorial3.tscn")
 var tutorial_4_screen = preload("res://Scenes/Levels/Level0Tutorial4.tscn")
@@ -14,12 +16,16 @@ func _process(delta):
 	tutorial_screen_counter += 1
 	match tutorial_screen_counter:
 		1:
-			InGameMenuController.open_menu(tutorial_1_screen)
+			InGameMenuController.open_menu(tutorial_1_1_screen)
 		2:
-			InGameMenuController.open_menu(tutorial_2_screen)
+			InGameMenuController.open_menu(tutorial_1_2_screen)
 		3:
-			InGameMenuController.open_menu(tutorial_3_screen)
+			InGameMenuController.open_menu(tutorial_1_3_screen)
 		4:
+			InGameMenuController.open_menu(tutorial_2_screen)
+		5:
+			InGameMenuController.open_menu(tutorial_3_screen)
+		6:
 			InGameMenuController.open_menu(tutorial_4_screen)
 		_:
 			$Control.show()

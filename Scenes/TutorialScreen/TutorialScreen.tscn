@@ -68,6 +68,6 @@ autowrap = true
 margin_top = 177.0
 margin_right = 334.0
 margin_bottom = 217.0
-text = "Resume"
+text = "Next"
 
 [connection signal="pressed" from="Control/NinePatchRect/MarginContainer/PanelContainer/ResumeButton" to="." method="_on_ResumeButton_pressed"]
