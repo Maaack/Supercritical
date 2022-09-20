@@ -10,6 +10,8 @@ signal goals_updated(level_turn_limit, supercritical_limit, nutrient_goal_rounds
 
 const VINE_TILE = 3
 const DEAD_VINE_TILE = 2
+const NUCLEAR_DEPOSIT_TILE = 0
+const HARVEST_VINE_TILE = 2
 const NO_TILE = -1
 const VINE_TAX = 16
 const CARDINAL_DIRECTIONS : Array = [
@@ -197,11 +199,14 @@ func _is_cell_vine(cellv: Vector2) -> bool:
 func _is_cell_dead_vine(cellv: Vector2) -> bool:
 	return dead_vines.get_cellv(cellv) == DEAD_VINE_TILE
 
+func _is_cell_harvestable(cellv: Vector2) -> bool:
+	return $Deposits.get_cellv(cellv) == NUCLEAR_DEPOSIT_TILE
+
 func _vines_make_nutrients():
-	for cell_position in $Deposits.get_used_cells():
-		if _is_cell_vine(cell_position):
+	for cellv in $Deposits.get_used_cells():
+		if _is_cell_vine(cellv):
 			var nutrient_instance = nuclear_nutrient_scene.instance()
-			nutrient_instance.position = vines.map_to_world(cell_position) + half_cell_size
+			nutrient_instance.position = vines.map_to_world(cellv) + half_cell_size
 			$Nutrients.add_child(nutrient_instance)
 
 func _highlight_tile_at_position(position : Vector2):
@@ -234,10 +239,13 @@ func _get_growable_cells():
 		filter_crowd += 1
 	return growable_cells.keys()
 
-func _grow_vine(cellv : Vector2):
+func _grow_vine(cellv : Vector2, iter : int = 0):
+	if _is_cell_vine(cellv):
+		return
 	vines.set_cellv(cellv, VINE_TILE)
 	vines.update_bitmask_area(cellv)
 	vines.update()
+	vines.grow_vine(cellv * cell_size, iter)
 
 func _vines_grow(growth_max : int = 0) -> int:
 	var extra_food = _get_extra_food()
@@ -246,13 +254,13 @@ func _vines_grow(growth_max : int = 0) -> int:
 	else:
 		growth_max = min(extra_food, growth_max)
 	var grew : int = 0
-	for _i in range(growth_max):
+	for i in range(growth_max):
 		var optional_cells : Array = _get_growable_cells()
 		optional_cells = _filter_out_of_bounds(optional_cells)
 		if optional_cells.size() == 0:
 			break
 		optional_cells.shuffle()
-		_grow_vine(optional_cells.pop_front())
+		_grow_vine(optional_cells.pop_front(), i)
 		grew += 1
 	_consume_nutrients_for_growth(grew)
 	return grew
@@ -273,9 +281,17 @@ func _vines_die():
 	for cell_position in cullable_vines:
 		_kill_vine(cell_position)
 
+func _crosshair_on_target(current_goal : LevelGoals):
+	if current_goal.must_trim_vine():
+		$Crosshair.position = (current_goal.trim_vine * cell_size) + half_cell_size
+		$Crosshair.show()
+	else:
+		$Crosshair.hide()
+
 func update_goals():
 	var current_goal : LevelGoals = _get_current_level_goals()
 	stage_counter = 0
+	_crosshair_on_target(current_goal)
 	emit_signal("goals_updated", current_goal.turn_limit, current_goal.supercritical_limit, current_goal.nutrient_goal_rounds, current_goal.nutrient_goal_min, current_goal.nutrient_goal_max)
 
 func update_state():
@@ -295,7 +311,7 @@ func _complete_goal(goal : LevelGoals):
 	update_goals()
 
 func _supercritical_limit_reached():
-	$PlayerControlledCharacter.set_process_input(false)
+	set_process_unhandled_input(false)
 	$Vines.critical_failure()
 	yield(get_tree().create_timer(1), "timeout")
 	emit_signal("failure", FAILURE_REASON.NUCLEAR_EXPLOSION)
@@ -316,7 +332,7 @@ func _evauluate_goal():
 		emit_signal("failure", FAILURE_REASON.STARVATION)
 		return
 	var current_goal : LevelGoals = _get_current_level_goals()
-	$Vines/Flower.danger_zone = current_goal.check_nutrients_danger(nutrients_at_flower)
+	$Vines/Flower.danger_level = current_goal.get_nutrients_danger(nutrients_at_flower)
 	if current_goal.check_nutrient_goal(nutrients_at_flower):
 		goal_counter += 1
 		$Vines.success()
@@ -326,8 +342,17 @@ func _evauluate_goal():
 		_supercritical_limit_reached()
 	elif current_goal.check_nutrient_goal_complete(goal_counter):
 		_complete_goal(current_goal)
+	elif current_goal.must_trim_vine():
+		if not _is_cell_vine(current_goal.trim_vine):
+			_complete_goal(current_goal)
 	elif current_goal.check_turn_limit(stage_counter):
 		_turn_limit_reached(current_goal)
+
+func _update_harvest_vines():
+	$HarvestVines.clear()
+	for cellv in vines.get_used_cells():
+		if _is_cell_harvestable(cellv):
+			$HarvestVines.set_cellv(cellv, HARVEST_VINE_TILE, false, false, false, vines.get_cell_autotile_coord(cellv.x, cellv.y))
 
 func _level_takes_turn(delay : float):
 	set_process_unhandled_input(false)
@@ -340,6 +365,7 @@ func _level_takes_turn(delay : float):
 	_vines_die()
 	_consume_base_nutrients()
 	_vines_grow()
+	_update_harvest_vines()
 	_vines_move_nutrients(delay - 0.05)
 	yield(get_tree().create_timer(delay), "timeout")
 	_absorb_nutrients_at_flower()
@@ -347,25 +373,37 @@ func _level_takes_turn(delay : float):
 	_evauluate_goal()
 	set_process_unhandled_input(true)
 
-func _move_player(direction):
+func _highlight_tile_on_finished_tween(tween : SceneTreeTween, highlight_cellv : Vector2):
+	yield(tween, "finished")
+	_highlight_tile_at_position(highlight_cellv)
+
+func _can_move_player(direction) -> bool:
 	var target_position = $PlayerControlledCharacter.position + (direction * cell_size)
 	if not _is_cell_walkable(target_position / cell_size):
-		return
+		return false
+	return true
+
+func _move_player(direction) -> bool:
+	if not _can_move_player(direction):
+		return false
+	var target_position = $PlayerControlledCharacter.position + (direction * cell_size)
 	var tween = get_tree().create_tween()
 	tween.tween_property($PlayerControlledCharacter, "position", target_position, turn_time)
 	tween.play()
 	_level_takes_turn(turn_time)
-	yield(tween, "finished")
-	_highlight_tile_at_position(target_position)
+	_highlight_tile_on_finished_tween(tween, target_position)
+	return true
 
-func _ready():
-	_grow_vine(_get_flower_cellv())
-	update_goals()
-	update_state()
+func _show_on_ready_message() -> void:
 	if not onready_message == null:
-		yield(get_tree().create_timer(0.1), "timeout")
 		InGameMenuController.open_menu(onready_message)
 
+func _ready():
+	_grow_vine(_get_flower_cellv(), 0)
+	update_goals()
+	update_state()
+	yield(get_tree().create_timer(0.1), "timeout")
+	_show_on_ready_message()
 
 func _unhandled_input(event):
 	var direction : Vector2 = Vector2.ZERO
@@ -378,10 +416,15 @@ func _unhandled_input(event):
 			direction = Vector2.LEFT
 		elif event.is_action_pressed("move_right"):
 			direction = Vector2.RIGHT
-	if Input.is_action_pressed("run"):
-		direction *= 2
 	if direction != Vector2.ZERO:
-		_move_player(direction)
+		var can_move = _can_move_player(direction)
+		if can_move and Input.is_action_pressed("run"):
+			var can_move_2 = _can_move_player(direction * 2)
+			if can_move_2:
+				direction *= 2
+		var moved = _move_player(direction)
+		if moved:
+			$PlayerControlledCharacter.walk()
 	if event.is_action_pressed("skip_turn"):
 		_level_takes_turn(turn_time * 0.75)
 	if event.is_action_pressed("interact") and $TileHighlighter.visible:

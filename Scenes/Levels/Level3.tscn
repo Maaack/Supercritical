@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scenes/BaseLevel/BaseLevel.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Levels/Level3.gd" type="Script" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://Resources/Level3-2.tres" type="Resource" id=4]
 [ext_resource path="res://Scenes/NuclearNutrient/NuclearNutrient.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Scenes/Levels/Level3Tutorial.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Assets/Original/Music/Bonsai_-_Music_3_-_Demo_2_-_Loop.ogg" type="AudioStream" id=7]
 
 [node name="Level3" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
@@ -35,8 +36,12 @@ position = Vector2( 175, 147 )
 [node name="NuclearNutrient2" parent="Nutrients" index="1" instance=ExtResource( 5 )]
 position = Vector2( 203, 133 )
 
-[node name="PlayerControlledCharacter" parent="." index="6"]
+[node name="PlayerControlledCharacter" parent="." index="7"]
 position = Vector2( 147, 161 )
 
-[node name="Camera2D" parent="." index="8"]
+[node name="Camera2D" parent="." index="10"]
 position = Vector2( -21, -21 )
+
+[node name="Music" parent="." index="12"]
+stream = ExtResource( 7 )
+volume_db = -12.0

@@ -1,11 +1,16 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scenes/Player/PlayerControlledCharacter.gd" type="Script" id=1]
 [ext_resource path="res://Assets/Original/Textures/pc-1.png" type="Texture" id=2]
 [ext_resource path="res://Assets/Original/SFX/Bonsai_Vine_Cut.wav" type="AudioStream" id=3]
+[ext_resource path="res://Assets/Original/SFX/Bonsai_Movement_v1.ogg" type="AudioStream" id=4]
 
 [sub_resource type="AudioStreamRandomPitch" id=1]
 audio_stream = ExtResource( 3 )
+random_pitch = 1.05
+
+[sub_resource type="AudioStreamRandomPitch" id=2]
+audio_stream = ExtResource( 4 )
 random_pitch = 1.05
 
 [node name="PlayerControlledCharacter" type="Node2D"]
@@ -14,6 +19,10 @@ script = ExtResource( 1 )
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 2 )
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+[node name="CutVineSFX" type="AudioStreamPlayer2D" parent="."]
 stream = SubResource( 1 )
+bus = "SFX"
+
+[node name="WalkSFX" type="AudioStreamPlayer2D" parent="."]
+stream = SubResource( 2 )
 bus = "SFX"
