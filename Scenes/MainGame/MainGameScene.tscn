@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scenes/MainGame/MainGameScene.gd" type="Script" id=1]
 [ext_resource path="res://Themes/GameFont16px.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Assets/Original/Textures/menu9patch_2.png" type="Texture" id=3]
 [ext_resource path="res://Themes/GameFont24px.tres" type="DynamicFont" id=4]
 [ext_resource path="res://Scripts/PauseMenuController.gd" type="Script" id=5]
+[ext_resource path="res://Assets/Original/Textures/menu9patch_3.png" type="Texture" id=6]
 
 [node name="MainGameScene" type="Node"]
 script = ExtResource( 1 )
@@ -127,62 +129,72 @@ size_flags_vertical = 3
 custom_fonts/font = ExtResource( 2 )
 align = 1
 
-[node name="MinimumLabel" type="Label" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer"]
-margin_top = 174.0
-margin_right = 168.0
-margin_bottom = 188.0
-custom_fonts/font = ExtResource( 2 )
-text = "Stay above 0"
-align = 1
+[node name="GoalPanel" type="NinePatchRect" parent="."]
+margin_left = 105.0
+margin_top = 7.0
+margin_right = 329.0
+margin_bottom = 35.0
+texture = ExtResource( 3 )
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
 
-[node name="SupercriticalLimitLabel" type="Label" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="GoalPanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 2
+custom_constants/margin_top = 2
+custom_constants/margin_left = 2
+custom_constants/margin_bottom = 2
+
+[node name="GoalLabel" type="Label" parent="GoalPanel/MarginContainer"]
 unique_name_in_owner = true
-margin_top = 192.0
-margin_right = 168.0
-margin_bottom = 206.0
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 222.0
+margin_bottom = 26.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_colors/font_color = Color( 0.12549, 0.12549, 0.12549, 1 )
 custom_fonts/font = ExtResource( 2 )
-text = "Stay below 20"
-align = 1
-
-[node name="NextGoalLabel" type="Label" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer"]
-margin_top = 210.0
-margin_right = 168.0
-margin_bottom = 224.0
-custom_fonts/font = ExtResource( 2 )
-text = "Next Goal:"
+text = "32 - 64 nutrients for 10 turns"
 align = 1
 valign = 1
 
-[node name="NextGoalRangeLabel" type="Label" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer"]
-unique_name_in_owner = true
-visible = false
-margin_top = 216.0
-margin_right = 168.0
-margin_bottom = 228.0
-custom_fonts/font = ExtResource( 2 )
-text = " 8 - 16 nutrients"
-align = 1
-valign = 1
+[node name="TurnsPanel" type="NinePatchRect" parent="."]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 77.0
+margin_bottom = 35.0
+texture = ExtResource( 6 )
+patch_margin_left = 4
+patch_margin_top = 4
+patch_margin_right = 4
+patch_margin_bottom = 4
+__meta__ = {
+"_edit_group_": true
+}
 
-[node name="StayAliveGoalLabel" type="Label" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer"]
-unique_name_in_owner = true
-visible = false
-margin_top = 216.0
-margin_right = 168.0
-margin_bottom = 228.0
-custom_fonts/font = ExtResource( 2 )
-text = "Keep the plant alive"
-align = 1
-valign = 1
+[node name="MarginContainer" type="MarginContainer" parent="TurnsPanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 2
+custom_constants/margin_top = 2
+custom_constants/margin_left = 2
+custom_constants/margin_bottom = 2
 
-[node name="TurnGoalCountLabel" type="Label" parent="HBoxContainer/Panel/MarginContainer/Control/VBoxContainer"]
+[node name="TurnsLabel" type="Label" parent="TurnsPanel/MarginContainer"]
 unique_name_in_owner = true
-visible = false
-margin_top = 216.0
-margin_right = 168.0
-margin_bottom = 228.0
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 68.0
+margin_bottom = 26.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_colors/font_color = Color( 0.12549, 0.12549, 0.12549, 1 )
 custom_fonts/font = ExtResource( 2 )
-text = "for 4 turns"
+text = "10 / 100"
 align = 1
 valign = 1
 

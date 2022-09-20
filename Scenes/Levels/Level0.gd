@@ -12,6 +12,9 @@ var tutorial_screen_counter : int = 0
 func _vines_grow(growth_max : int = 0) -> int:
 	return ._vines_grow(max(1, growth_max))
 
+func _ready():
+	emit_signal("goals_visibility_updated", false)
+
 func _process(delta):
 	tutorial_screen_counter += 1
 	match tutorial_screen_counter:
@@ -39,6 +42,7 @@ func _complete_goal(goal : LevelGoals):
 	elif current_level_goal == 2:
 		$Control/Label2.text = "S: Skip Turn"
 		$Control/InGameMessageBox/MarginContainer/Label.text = "You will be given tasks by the great GARDENZILLA to keep her bonsai's healthy.\nFail her... at your own peril."
+		emit_signal("goals_visibility_updated", true)
 	elif current_level_goal == 3:
 		$Control/Label2.hide()
 		$Control/InGameMessageBox/MarginContainer/Label.text = "For now, keep the flower alive and do not starve it!."

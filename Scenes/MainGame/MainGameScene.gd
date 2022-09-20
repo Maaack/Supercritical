@@ -42,13 +42,14 @@ func _level_nutrients_changed(delta : int = 0, reason : String = ""):
 func _level_turn_started():
 	nutrient_change_map.clear()
 
-func _level_state_changed(current_nutrients : int, turns_left : int, goal_turns_left : int):
+func _level_state_changed(current_nutrients : int, turn_counter : int, turn_limit : int, goal_turns_left : int):
 	var nutrient_label = get_node_or_null("%NutrientCounterLabel")
 	if nutrient_label == null:
 		return
 	nutrient_label.text = "Flower: %d" % current_nutrients
 	_update_gain_loss()
-	get_node("%TurnCounterLabel").text = "Turns Left: %d" % turns_left
+	get_node("%TurnCounterLabel").text = "Turns Left: %d" % (turn_limit - turn_counter)
+	get_node("%TurnsLabel").text = "%d / %d" % [turn_counter, turn_limit]
 
 func _level_success():
 	InGameMenuController.open_menu(success_screen_packed)
@@ -58,19 +59,17 @@ func _level_failure(reason : int):
 	if InGameMenuController.current_menu.has_method("set_failure_reason"):
 		InGameMenuController.current_menu.set_failure_reason(reason)
 
-func _level_goals_updated(level_turn_limit : int, supercritical_limit : int, nutrient_goal_rounds : int, nutrient_goal_min : int, nutrient_goal_max : int):
-	get_node("%SupercriticalLimitLabel").text = "Stay below %d" % supercritical_limit
+func _level_goals_updated(level_turn_limit : int, supercritical_limit : int, nutrient_goal_rounds : int, nutrient_goal_min : int, nutrient_goal_max : int, cut_vine : Vector2):
+	get_node("%TurnsLabel").text = "0 / %d" % level_turn_limit
 	if nutrient_goal_rounds > 0:
-		get_node("%StayAliveGoalLabel").hide()
-		get_node("%NextGoalRangeLabel").show()
-		get_node("%NextGoalRangeLabel").text = "%d - %d nutrients" % [nutrient_goal_min, nutrient_goal_max]
-		get_node("%TurnGoalCountLabel").show()
-		get_node("%TurnGoalCountLabel").text = "for %d turns" % nutrient_goal_rounds
+		get_node("%GoalLabel").text = "%d - %d nutrients for %d turns" % [nutrient_goal_min, nutrient_goal_max, nutrient_goal_rounds]
+	elif cut_vine != -Vector2.ONE:
+		get_node("%GoalLabel").text = "Cut the highlighted vine"
 	else:
-		get_node("%NextGoalRangeLabel").hide()
-		get_node("%StayAliveGoalLabel").show()
-		get_node("%TurnGoalCountLabel").show()
-		get_node("%TurnGoalCountLabel").text = "for %d turns" % level_turn_limit
+		get_node("%GoalLabel").text = "Care for flower for %d turns" % [level_turn_limit]
+
+func _level_goals_visibility_updated(local_visible : bool):
+	get_node("GoalPanel").visible = local_visible
 
 func set_level_scene(value : PackedScene) -> void:
 	level_scene = value
@@ -88,6 +87,7 @@ func set_level_scene(value : PackedScene) -> void:
 	level_instance.connect("success", self, "_level_success")
 	level_instance.connect("failure", self, "_level_failure")
 	level_instance.connect("goals_updated", self, "_level_goals_updated")
+	level_instance.connect("goals_visibility_updated", self, "_level_goals_visibility_updated")
 	level_container_node.add_child(level_instance)
 
 func _ready():

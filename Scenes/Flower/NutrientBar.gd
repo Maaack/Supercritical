@@ -9,7 +9,6 @@ enum PROGRESS_STATES{
 	}
 
 export(Array, StyleBox) var style_box_states : Array = []
-export(StyleBox) var alert_style_box : StyleBox
 export(PROGRESS_STATES) var progress_state : int = PROGRESS_STATES.NORMAL setget set_progress_state
 export(Color) var hover_modulate : Color = Color.white
 

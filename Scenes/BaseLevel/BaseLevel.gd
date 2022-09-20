@@ -2,11 +2,12 @@ class_name BaseLevel
 extends Node2D
 
 signal nutrients_changed(delta, reason)
-signal state_changed(nutrients, turns_left, goal_turns_left)
+signal state_changed(nutrients, turn_counter, turn_limit, goal_turns_left)
 signal turn_started
 signal success
 signal failure(reason)
-signal goals_updated(level_turn_limit, supercritical_limit, nutrient_goal_rounds, nutrient_goal_min, nutrient_goal_max)
+signal goals_updated(level_turn_limit, supercritical_limit, nutrient_goal_rounds, nutrient_goal_min, nutrient_goal_max, cut_vine)
+signal goals_visibility_updated(local_visible)
 
 const VINE_TILE = 3
 const DEAD_VINE_TILE = 2
@@ -298,7 +299,7 @@ func update_goals():
 	stage_counter = 0
 	_update_nutrient_bar_max(current_goal)
 	_crosshair_on_target(current_goal)
-	emit_signal("goals_updated", current_goal.turn_limit, current_goal.supercritical_limit, current_goal.nutrient_goal_rounds, current_goal.nutrient_goal_min, current_goal.nutrient_goal_max)
+	emit_signal("goals_updated", current_goal.turn_limit, current_goal.supercritical_limit, current_goal.nutrient_goal_rounds, current_goal.nutrient_goal_min, current_goal.nutrient_goal_max, current_goal.trim_vine)
 
 func _get_nutrients_danger(nutrients : int, supercritical_limit : int) -> int:
 	if supercritical_limit <= 0:
@@ -334,7 +335,7 @@ func _update_nutrient_levels(current_goal : LevelGoals) -> void:
 func update_state():
 	var current_goal : LevelGoals = _get_current_level_goals()
 	_update_nutrient_levels(current_goal)
-	emit_signal("state_changed", nutrients_at_flower, current_goal.turn_limit - stage_counter, current_goal.nutrient_goal_rounds - goal_counter)
+	emit_signal("state_changed", nutrients_at_flower, stage_counter, current_goal.turn_limit, current_goal.nutrient_goal_rounds - goal_counter)
 
 func _complete_level():
 	GameLog.level_reached(level_number + 1)

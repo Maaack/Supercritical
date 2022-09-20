@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Scenes/Flower/NutrientBar.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Flower/FlatYellow.tres" type="StyleBox" id=2]
@@ -6,7 +6,6 @@
 [ext_resource path="res://Scenes/Flower/FlatBlue.tres" type="StyleBox" id=4]
 [ext_resource path="res://Scenes/Flower/FlatRed.tres" type="StyleBox" id=5]
 [ext_resource path="res://Scenes/Flower/FlatOrange.tres" type="StyleBox" id=6]
-[ext_resource path="res://Scenes/Flower/FlatDeepRed.tres" type="StyleBox" id=7]
 [ext_resource path="res://Themes/MainMenuTheme.tres" type="Theme" id=8]
 
 [sub_resource type="StyleBoxFlat" id=4]
@@ -18,14 +17,12 @@ margin_left = -27.0
 margin_top = -7.0
 margin_right = 27.0
 theme = ExtResource( 8 )
-custom_styles/fg = ExtResource( 5 )
+custom_styles/fg = ExtResource( 4 )
 custom_styles/bg = SubResource( 4 )
 value = 50.0
 percent_visible = false
 script = ExtResource( 1 )
 style_box_states = [ ExtResource( 4 ), ExtResource( 3 ), ExtResource( 2 ), ExtResource( 6 ), ExtResource( 5 ) ]
-alert_style_box = ExtResource( 7 )
-progress_state = 4
 hover_modulate = Color( 1, 1, 1, 0.501961 )
 
 [node name="Label" type="Label" parent="."]
