@@ -31,9 +31,9 @@ tile_data = PoolIntArray( -131060, 2, 4, -65524, 2, 0, 6, 2, 65536, 7, 2, 1, 8, 
 [node name="Vines" parent="." index="4"]
 tile_data = PoolIntArray( 524300, 3, 4, 589835, 3, 65541, 589836, 3, 131074, 589837, 3, 5, 655372, 3, 65540 )
 
-[node name="PlayerControlledCharacter" parent="." index="7"]
+[node name="PlayerControlledCharacter" parent="." index="8"]
 position = Vector2( 175, 203 )
 
-[node name="Music" parent="." index="11"]
+[node name="Music" parent="." index="13"]
 stream = ExtResource( 7 )
 volume_db = -16.0

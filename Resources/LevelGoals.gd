@@ -20,17 +20,6 @@ func check_nutrient_goal_complete(rounds : int) -> bool:
 func check_nutrients_supercritical(nutrients : int) -> bool:
 	return supercritical_limit > 0 and nutrients >= supercritical_limit
 
-func get_nutrients_danger(nutrients : int) -> int:
-	if supercritical_limit == 0:
-		return 0
-	elif nutrients >= round(supercritical_limit * 0.875):
-		return 3
-	elif nutrients >= round(supercritical_limit * 0.75):
-		return 2
-	elif nutrients >= round(supercritical_limit * 0.5):
-		return 1
-	return 0
-
 func check_turn_limit(turns : int) -> bool:
 	return turns >= turn_limit 
 

@@ -25,11 +25,11 @@ tile_data = PoolIntArray( 0, 1, 0, 4, 4, 0, 262145, 1, 0, 589824, 4, 0, 589828, 
 [node name="Vines" parent="." index="4"]
 tile_data = PoolIntArray( 131074, 3, 4, 196610, 3, 0, 262146, 3, 0, 327681, 3, 65541, 327682, 3, 131074, 327683, 3, 5, 393218, 3, 0, 458753, 3, 65541, 458754, 3, 131074, 458755, 3, 5, 524290, 3, 65540 )
 
-[node name="Flower" parent="Vines" index="2"]
+[node name="Flower" parent="." index="7"]
 position = Vector2( 35, 77 )
 
-[node name="PlayerControlledCharacter" parent="." index="6"]
+[node name="PlayerControlledCharacter" parent="." index="8"]
 position = Vector2( 63, 63 )
 
-[node name="Camera2D" parent="." index="8"]
+[node name="Camera2D" parent="." index="11"]
 position = Vector2( -133, -63 )

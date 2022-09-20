@@ -36,7 +36,7 @@ export(PackedScene) var onready_message : PackedScene
 # Goals
 export(Array, Resource) var level_goals : Array = []
 
-onready var flower = $Vines/Flower
+onready var flower = $Flower
 onready var vines = $Vines
 onready var dead_vines = $DeadVines
 onready var cell_size = $Vines.cell_size
@@ -131,7 +131,7 @@ func _add_nutrients_to_flower(delta : int = 1, reason : String = "") -> void:
 	emit_signal("nutrients_changed", delta, reason)
 
 func _consume_nutrients_for_flower() -> void:
-	var flower_consumption = pow(2, $Vines/Flower.current_stage)
+	var flower_consumption = pow(2, flower.current_stage)
 	_add_nutrients_to_flower(-flower_consumption, "Flower")
 
 func _consume_nutrients_for_vines() -> void:
@@ -288,23 +288,65 @@ func _crosshair_on_target(current_goal : LevelGoals):
 	else:
 		$Crosshair.hide()
 
+func _update_nutrient_bar_max(current_goal : LevelGoals):
+	var node = get_node_or_null("NutrientNode/NutrientBar")
+	if node != null:
+		node.max_value = current_goal.supercritical_limit
+
 func update_goals():
 	var current_goal : LevelGoals = _get_current_level_goals()
 	stage_counter = 0
+	_update_nutrient_bar_max(current_goal)
 	_crosshair_on_target(current_goal)
 	emit_signal("goals_updated", current_goal.turn_limit, current_goal.supercritical_limit, current_goal.nutrient_goal_rounds, current_goal.nutrient_goal_min, current_goal.nutrient_goal_max)
 
+func _get_nutrients_danger(nutrients : int, supercritical_limit : int) -> int:
+	if supercritical_limit <= 0:
+		return 0
+	elif nutrients >= round(supercritical_limit * 0.875):
+		return 3
+	elif nutrients >= round(supercritical_limit * 0.75):
+		return 2
+	elif nutrients >= round(supercritical_limit * 0.5):
+		return 1
+	return 0
+
+func _set_nutrient_bar_danger_level(danger_level : int) -> void:
+	match danger_level:
+		flower.DANGER_LEVEL.NONE:
+			$NutrientNode/NutrientBar.progress_state = $NutrientNode/NutrientBar.PROGRESS_STATES.NORMAL
+		flower.DANGER_LEVEL.LOW:
+			$NutrientNode/NutrientBar.progress_state = $NutrientNode/NutrientBar.PROGRESS_STATES.DANGER_LOW
+		flower.DANGER_LEVEL.MID:
+			$NutrientNode/NutrientBar.progress_state = $NutrientNode/NutrientBar.PROGRESS_STATES.DANGER_MID
+		flower.DANGER_LEVEL.HIGH:
+			$NutrientNode/NutrientBar.progress_state = $NutrientNode/NutrientBar.PROGRESS_STATES.DANGER_HIGH
+
+func _update_nutrient_levels(current_goal : LevelGoals) -> void:
+	var danger_level = _get_nutrients_danger(nutrients_at_flower, current_goal.supercritical_limit)
+	$NutrientNode/NutrientBar.set_value(nutrients_at_flower)
+	if current_goal.nutrient_goal_rounds > 0 and nutrients_at_flower >= current_goal.nutrient_goal_min and nutrients_at_flower <= current_goal.nutrient_goal_max:
+		$NutrientNode/NutrientBar.progress_state = $NutrientNode/NutrientBar.PROGRESS_STATES.GOAL
+	else:
+		_set_nutrient_bar_danger_level(danger_level)
+	flower.danger_level = danger_level
+
 func update_state():
 	var current_goal : LevelGoals = _get_current_level_goals()
+	_update_nutrient_levels(current_goal)
 	emit_signal("state_changed", nutrients_at_flower, current_goal.turn_limit - stage_counter, current_goal.nutrient_goal_rounds - goal_counter)
 
 func _complete_level():
 	GameLog.level_reached(level_number + 1)
 	emit_signal("success")
 
+func _update_nutrient_bar_position():
+	$NutrientNode/NutrientBar.rect_position.y = -20 + (flower.current_stage * -5)
+
 func _complete_goal(goal : LevelGoals):
 	if goal.advance_flower:
-		$Vines/Flower.current_stage += 1
+		flower.current_stage += 1
+		_update_nutrient_bar_position()
 	current_level_goal += 1
 	if current_level_goal >= level_goals.size():
 		_complete_level()
@@ -332,7 +374,6 @@ func _evauluate_goal():
 		emit_signal("failure", FAILURE_REASON.STARVATION)
 		return
 	var current_goal : LevelGoals = _get_current_level_goals()
-	$Vines/Flower.danger_level = current_goal.get_nutrients_danger(nutrients_at_flower)
 	if current_goal.check_nutrient_goal(nutrients_at_flower):
 		goal_counter += 1
 		$Vines.success()
@@ -402,6 +443,8 @@ func _ready():
 	_grow_vine(_get_flower_cellv(), 0)
 	update_goals()
 	update_state()
+	$NutrientNode.position = flower.position
+	_update_nutrient_bar_position()
 	yield(get_tree().create_timer(0.1), "timeout")
 	_show_on_ready_message()
 
