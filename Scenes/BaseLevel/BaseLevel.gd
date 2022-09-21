@@ -44,6 +44,7 @@ onready var cell_size = $Vines.cell_size
 onready var half_cell_size = $Vines.cell_size / 2
 
 var nuclear_nutrient_scene = preload("res://Scenes/NuclearNutrient/NuclearNutrient.tscn")
+var nuclear_update_scene = preload("res://Scenes/Flower/NutrientUpdate.tscn")
 var turn_counter : int = 0
 var stage_counter : int = 0
 var goal_counter : int = 0
@@ -121,11 +122,18 @@ func _get_distant_vines(desired : int):
 			break
 		distant_vines.append_array(vines)
 		offset += 1
-	return distant_vines.slice(0, desired)
+	return distant_vines.slice(0, desired-1)
 
 func _vines_move_nutrients(delay : float):
 	for nutrient in $Nutrients.get_children():
 		_move_nutrient_along_vine_to_flower(nutrient, delay)
+
+func _show_nutrient_change(amount : int, location : Vector2) -> void:
+	var change_instance = nuclear_update_scene.instance()
+	change_instance.position = location
+	change_instance.amount = amount
+	add_child(change_instance)
+	change_instance.play()
 
 func _add_nutrients_to_flower(delta : int = 1, reason : String = "") -> void:
 	nutrients_at_flower += delta
@@ -133,6 +141,7 @@ func _add_nutrients_to_flower(delta : int = 1, reason : String = "") -> void:
 
 func _consume_nutrients_for_flower() -> void:
 	var flower_consumption = pow(2, flower.current_stage)
+	_show_nutrient_change(-flower_consumption, flower.position)
 	_add_nutrients_to_flower(-flower_consumption, "Flower")
 
 func _consume_nutrients_for_vines() -> void:
@@ -147,9 +156,17 @@ func _consume_nutrients_for_vines() -> void:
 		for vine_to_kill in vines_to_kill:
 			_kill_vine(vine_to_kill)
 	_add_nutrients_to_flower(-final_vine_cost, "Vines")
+	var vines_that_cost = _get_distant_vines(final_vine_cost+2)
+	vines_that_cost.shuffle()
+	for _i in range(final_vine_cost):
+		var cellv = vines_that_cost.pop_back()
+		var vine_position = (cellv * cell_size) + half_cell_size
+		_show_nutrient_change(-1, vine_position)
 
-func _consume_nutrients_for_growth(growth : int) -> void:
-	_add_nutrients_to_flower(-growth, "Growth")
+func _consume_nutrients_for_growth(cellv : Vector2) -> void:
+	_add_nutrients_to_flower(-1, "Growth")
+	var grow_position = vines.map_to_world(cellv) + half_cell_size
+	_show_nutrient_change(-1, grow_position)
 	
 func _consume_base_nutrients() -> void:
 	_consume_nutrients_for_flower()
@@ -158,6 +175,7 @@ func _consume_base_nutrients() -> void:
 func _absorb_nutrients_at_flower():
 	for nutrient in $Nutrients.get_children():
 		if nutrient.position.floor() == flower.position.floor():
+			_show_nutrient_change(1, vines.map_to_world(nutrient.starting_cell) + half_cell_size)
 			_add_nutrients_to_flower(1, "Harvest")
 			nutrient.queue_free()
 
@@ -207,6 +225,7 @@ func _vines_make_nutrients():
 	for cellv in $Deposits.get_used_cells():
 		if _is_cell_vine(cellv):
 			var nutrient_instance = nuclear_nutrient_scene.instance()
+			nutrient_instance.starting_cell = cellv
 			nutrient_instance.position = vines.map_to_world(cellv) + half_cell_size
 			$Nutrients.add_child(nutrient_instance)
 
@@ -261,9 +280,10 @@ func _vines_grow(growth_max : int = 0) -> int:
 		if optional_cells.size() == 0:
 			break
 		optional_cells.shuffle()
-		_grow_vine(optional_cells.pop_front(), i)
+		var cellv = optional_cells.pop_back()
+		_grow_vine(cellv, i)
+		_consume_nutrients_for_growth(cellv)
 		grew += 1
-	_consume_nutrients_for_growth(grew)
 	return grew
 
 func _vines_die():
