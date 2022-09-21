@@ -401,5 +401,3 @@ position = Vector2( 175, 133 )
 [node name="NutrientBar" parent="NutrientNode" instance=ExtResource( 15 )]
 margin_top = -20.0
 margin_bottom = -13.0
-max_value = 0.0
-value = 0.0

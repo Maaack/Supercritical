@@ -1,4 +1,4 @@
-extends ProgressBar
+extends Control
 
 enum PROGRESS_STATES{
 	NORMAL,
@@ -25,5 +25,11 @@ func _on_NutrientBar_mouse_exited():
 	self.modulate = hover_modulate
 
 func set_value(local_value : float):
-	.set_value(local_value)
+	$ProgressBar.value = local_value
 	$Label.text = "%d" % int(local_value)
+
+func set_max_value(local_max_value : float):
+	$ProgressBar.max_value = local_max_value
+
+func show_target_range(range_visible : bool):
+	$GoalPanel.visible = range_visible

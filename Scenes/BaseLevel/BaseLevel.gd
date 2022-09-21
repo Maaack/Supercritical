@@ -229,16 +229,14 @@ func _vines_make_nutrients():
 			nutrient_instance.position = vines.map_to_world(cellv) + half_cell_size
 			$Nutrients.add_child(nutrient_instance)
 
-func _highlight_tile_at_position(position : Vector2):
-	var cell_position = (position / cell_size).floor()
+func _highlight_tile_at_position(local_position : Vector2):
+	var cell_position = (local_position / cell_size).floor()
 	if not _is_cell_vine(cell_position) and not _is_cell_dead_vine(cell_position):
 		$TileHighlighter.hide()
 		return
 	$TileHighlighter.cell_vector = cell_position
-	var tile_position = cell_position * cell_size
-	tile_position += half_cell_size
 	$TileHighlighter.show()
-	$TileHighlighter.position = tile_position
+	$TileHighlighter.position = local_position
 
 func _get_growable_cells():
 	var neighboring_cells : Dictionary = {}
@@ -303,21 +301,23 @@ func _vines_die():
 		_kill_vine(cell_position)
 
 func _crosshair_on_target(current_goal : LevelGoals):
-	if current_goal.must_trim_vine():
+	if current_goal.is_vine_cut_goal():
 		$Crosshair.position = (current_goal.trim_vine * cell_size) + half_cell_size
 		$Crosshair.show()
 	else:
 		$Crosshair.hide()
 
-func _update_nutrient_bar_max(current_goal : LevelGoals):
+func _update_nutrient_bar(current_goal : LevelGoals):
 	var node = get_node_or_null("NutrientNode/NutrientBar")
-	if node != null:
-		node.max_value = current_goal.supercritical_limit
+	if node == null:
+		return
+	node.set_max_value(current_goal.supercritical_limit)
+	node.show_target_range(current_goal.is_nutrient_goal())
 
 func update_goals():
 	var current_goal : LevelGoals = _get_current_level_goals()
 	stage_counter = 0
-	_update_nutrient_bar_max(current_goal)
+	_update_nutrient_bar(current_goal)
 	_crosshair_on_target(current_goal)
 	emit_signal("goals_updated", current_goal.turn_limit, current_goal.supercritical_limit, current_goal.nutrient_goal_rounds, current_goal.nutrient_goal_min, current_goal.nutrient_goal_max, current_goal.trim_vine)
 
@@ -404,7 +404,7 @@ func _evauluate_goal():
 		_supercritical_limit_reached()
 	elif current_goal.check_nutrient_goal_complete(goal_counter):
 		_complete_goal(current_goal)
-	elif current_goal.must_trim_vine():
+	elif current_goal.is_vine_cut_goal():
 		if not _is_cell_vine(current_goal.trim_vine):
 			_complete_goal(current_goal)
 	elif current_goal.check_turn_limit(stage_counter):
@@ -435,9 +435,16 @@ func _level_takes_turn(delay : float):
 	_evauluate_goal()
 	set_process_unhandled_input(true)
 
-func _highlight_tile_on_finished_tween(tween : SceneTreeTween, highlight_cellv : Vector2):
+func _hide_ui_for_pc_on_finished_tween():
+	if (($PlayerControlledCharacter.position - ($NutrientNode.position + Vector2(0, $NutrientNode/NutrientBar.rect_position.y))) * Vector2(0.5, 1)).length_squared() < pow(cell_size.x, 2):
+		$NutrientNode.modulate.a = 0.25
+	else:
+		$NutrientNode.modulate.a = 1.0
+
+func _post_player_tween_updates(tween : SceneTreeTween):
 	yield(tween, "finished")
-	_highlight_tile_at_position(highlight_cellv)
+	_hide_ui_for_pc_on_finished_tween()
+	_highlight_tile_at_position($PlayerControlledCharacter.position)
 
 func _can_move_player(direction) -> bool:
 	var target_position = $PlayerControlledCharacter.position + (direction * cell_size)
@@ -453,7 +460,7 @@ func _move_player(direction) -> bool:
 	tween.tween_property($PlayerControlledCharacter, "position", target_position, turn_time)
 	tween.play()
 	_level_takes_turn(turn_time)
-	_highlight_tile_on_finished_tween(tween, target_position)
+	_post_player_tween_updates(tween)
 	return true
 
 func _show_on_ready_message() -> void:

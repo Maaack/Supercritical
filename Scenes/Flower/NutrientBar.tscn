@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Scenes/Flower/NutrientBar.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Flower/FlatYellow.tres" type="StyleBox" id=2]
@@ -6,30 +6,53 @@
 [ext_resource path="res://Scenes/Flower/FlatBlue.tres" type="StyleBox" id=4]
 [ext_resource path="res://Scenes/Flower/FlatRed.tres" type="StyleBox" id=5]
 [ext_resource path="res://Scenes/Flower/FlatOrange.tres" type="StyleBox" id=6]
+[ext_resource path="res://Scenes/Flower/FlatGreenBorderless.tres" type="StyleBox" id=7]
 [ext_resource path="res://Themes/MainMenuTheme.tres" type="Theme" id=8]
 
 [sub_resource type="StyleBoxFlat" id=4]
 bg_color = Color( 0.12549, 0.12549, 0.12549, 1 )
 
-[node name="NutrientBar" type="ProgressBar"]
-modulate = Color( 1, 1, 1, 0.501961 )
-margin_left = -27.0
-margin_top = -7.0
-margin_right = 27.0
+[node name="NutrientBar" type="Control"]
 theme = ExtResource( 8 )
-custom_styles/fg = ExtResource( 4 )
-custom_styles/bg = SubResource( 4 )
-value = 50.0
-percent_visible = false
 script = ExtResource( 1 )
 style_box_states = [ ExtResource( 4 ), ExtResource( 3 ), ExtResource( 2 ), ExtResource( 6 ), ExtResource( 5 ) ]
 hover_modulate = Color( 1, 1, 1, 0.501961 )
 
+[node name="ProgressBar" type="ProgressBar" parent="."]
+modulate = Color( 1, 1, 1, 0.501961 )
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -25.0
+margin_top = -7.0
+margin_right = 25.0
+custom_styles/fg = ExtResource( 4 )
+custom_styles/bg = SubResource( 4 )
+max_value = 40.0
+value = 32.0
+percent_visible = false
+
+[node name="GoalPanel" type="Panel" parent="."]
+modulate = Color( 1, 1, 1, 0.501961 )
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -5.0
+margin_top = -7.0
+margin_right = 15.0
+custom_styles/panel = ExtResource( 7 )
+
 [node name="Label" type="Label" parent="."]
-margin_left = 7.0
-margin_top = -17.0
-margin_right = 47.0
-margin_bottom = -3.0
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -20.0
+margin_top = -24.0
+margin_right = 20.0
+margin_bottom = -10.0
 custom_colors/font_color = Color( 0.12549, 0.12549, 0.12549, 1 )
 text = "100"
 align = 1
