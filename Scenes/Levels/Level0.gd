@@ -40,7 +40,7 @@ func _complete_goal(goal : LevelGoals):
 		$Control/Label2.text = "Shift: Run"
 		$Control/InGameMessageBox/MarginContainer/Label.text = "Good minion. You are not as useless as you seem.\nTry cutting another."
 	elif current_level_goal == 2:
-		$Control/Label2.text = "S: Skip Turn"
+		$Control/Label2.text = "Z: Wait"
 		$Control/InGameMessageBox/MarginContainer/Label.text = "You will be given tasks by the great GARDENZILLA to keep her bonsai's healthy.\nFail her... at your own peril."
 		emit_signal("goals_visibility_updated", true)
 	elif current_level_goal == 3:
