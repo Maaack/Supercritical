@@ -1,7 +1,40 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Themes/GameFontOutlined16px.tres" type="DynamicFont" id=1]
 [ext_resource path="res://Scenes/Flower/NutrientUpdate.gd" type="Script" id=2]
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 1, 1, 1, 1 )
+
+[sub_resource type="Animation" id=4]
+resource_name = "FlashPanel"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0.752941 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.6 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "queue_free"
+} ]
+}
 
 [sub_resource type="Animation" id=1]
 resource_name = "GoUpAndFadeOut"
@@ -71,12 +104,25 @@ tracks/1/keys = {
 "update": 0,
 "values": [ Color( 1, 1, 1, 1 ) ]
 }
+tracks/2/type = "value"
+tracks/2/path = NodePath("Panel:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
 
 [node name="NutrientUpdate" type="Node2D"]
 modulate = Color( 1, 1, 1, 0.501961 )
 script = ExtResource( 2 )
-positive_font_color = Color( 0.589767, 1, 0.490196, 1 )
-negative_font_color = Color( 1, 0.490196, 0.490196, 1 )
+positive_color = Color( 0.588235, 1, 0.490196, 1 )
+negative_color = Color( 1, 0.490196, 0.490196, 1 )
+amount = 1
 
 [node name="Label" type="Label" parent="."]
 anchor_left = 0.5
@@ -87,15 +133,28 @@ margin_left = -20.0
 margin_top = -7.0
 margin_right = 20.0
 margin_bottom = 7.0
-custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color = Color( 0.588235, 1, 0.490196, 1 )
 custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
 custom_constants/shadow_as_outline = 0
 custom_fonts/font = ExtResource( 1 )
-text = "0"
+text = "1"
 align = 1
 valign = 1
 
+[node name="Panel" type="Panel" parent="."]
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -6.0
+margin_top = -6.0
+margin_right = 6.0
+margin_bottom = 6.0
+custom_styles/panel = SubResource( 3 )
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-autoplay = "GoUpAndFadeOut"
+autoplay = "FlashPanel"
+anims/FlashPanel = SubResource( 4 )
 anims/GoUpAndFadeOut = SubResource( 1 )
 anims/RESET = SubResource( 2 )

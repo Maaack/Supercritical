@@ -133,7 +133,6 @@ func _show_nutrient_change(amount : int, location : Vector2) -> void:
 	change_instance.position = location
 	change_instance.amount = amount
 	add_child(change_instance)
-	change_instance.play()
 
 func _add_nutrients_to_flower(delta : int = 1, reason : String = "") -> void:
 	nutrients_at_flower += delta
