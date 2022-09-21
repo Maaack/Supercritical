@@ -43,12 +43,7 @@ func _level_turn_started():
 	nutrient_change_map.clear()
 
 func _level_state_changed(current_nutrients : int, turn_counter : int, turn_limit : int, goal_turns_left : int):
-	var nutrient_label = get_node_or_null("%NutrientCounterLabel")
-	if nutrient_label == null:
-		return
-	nutrient_label.text = "Flower: %d" % current_nutrients
-	_update_gain_loss()
-	get_node("%TurnCounterLabel").text = "Turns Left: %d" % (turn_limit - turn_counter)
+	#_update_gain_loss()
 	get_node("%TurnsLabel").text = "%d / %d" % [turn_counter, turn_limit]
 
 func _level_success():
