@@ -8,6 +8,7 @@ signal success
 signal failure(reason)
 signal goals_updated(level_turn_limit, supercritical_limit, nutrient_goal_rounds, nutrient_goal_min, nutrient_goal_max, cut_vine)
 signal goals_visibility_updated(local_visible)
+signal ingame_message_sent(message_text)
 
 const VINE_TILE = 3
 const DEAD_VINE_TILE = 2
@@ -52,6 +53,7 @@ var current_level_goal : int = 0
 var vine_distance_map : Dictionary = {}
 var furthest_vine_distance : int = 0
 var connected_vines : Array = []
+var controls_locked = false
 
 func _controlled_autotile_dead_vine(cellv : Vector2) -> void:
 	var auto_tile_coord : Vector2 = vines.get_cell_autotile_coord(cellv.x, cellv.y)
@@ -84,7 +86,7 @@ func _map_vines_connected_to_flower():
 	connected_vines.clear()
 	vine_distance_map.clear()
 	furthest_vine_distance = 0
-	var target_cell : Vector2 = ((flower.position - half_cell_size) / cell_size).floor() * cell_size
+	var target_cell : Vector2 = _get_flower_cellv() * cell_size
 	var start_cell : Vector2
 	for cellv in vines.get_used_cells():
 		start_cell = cellv * cell_size
@@ -370,10 +372,11 @@ func _complete_goal(goal : LevelGoals):
 	current_level_goal += 1
 	if current_level_goal >= level_goals.size():
 		_complete_level()
+		return
 	update_goals()
 
 func _supercritical_limit_reached():
-	set_process_unhandled_input(false)
+	controls_locked = true
 	$Vines.critical_failure()
 	yield(get_tree().create_timer(1), "timeout")
 	emit_signal("failure", FAILURE_REASON.NUCLEAR_EXPLOSION)
@@ -466,16 +469,23 @@ func _show_on_ready_message() -> void:
 	if not onready_message == null:
 		InGameMenuController.open_menu(onready_message)
 
+func _position_camera() -> void:
+	pass
+
 func _ready():
 	_grow_vine(_get_flower_cellv(), 0)
+	_vines_make_nutrients()
 	update_goals()
 	update_state()
 	$NutrientNode.position = flower.position
+	$NutrientNode.show()
 	_update_nutrient_bar_position()
 	yield(get_tree().create_timer(0.1), "timeout")
 	_show_on_ready_message()
 
 func _unhandled_input(event):
+	if controls_locked:
+		return
 	var direction : Vector2 = Vector2.ZERO
 	if event is InputEventKey:
 		if event.is_action_pressed("move_up"):

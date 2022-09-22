@@ -29,7 +29,10 @@ tile_data = PoolIntArray( 131074, 3, 4, 196610, 3, 0, 262146, 3, 0, 327681, 3, 6
 position = Vector2( 35, 77 )
 
 [node name="PlayerControlledCharacter" parent="." index="8"]
-position = Vector2( 63, 63 )
+position = Vector2( 63, 77 )
 
 [node name="Camera2D" parent="." index="11"]
-position = Vector2( -133, -63 )
+position = Vector2( -91, -35 )
+
+[node name="NutrientNode" parent="." index="14"]
+position = Vector2( 35, 77 )

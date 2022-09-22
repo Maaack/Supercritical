@@ -28,15 +28,18 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -175.0
-margin_top = -116.0
-margin_right = 175.0
-margin_bottom = 117.0
+margin_left = -152.5
+margin_top = -120.0
+margin_right = 152.5
+margin_bottom = 120.0
 texture = ExtResource( 1 )
 patch_margin_left = 4
 patch_margin_top = 4
 patch_margin_right = 4
 patch_margin_bottom = 4
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="MarginContainer" type="MarginContainer" parent="Control/NinePatchRect"]
 anchor_right = 1.0
@@ -49,13 +52,13 @@ custom_constants/margin_bottom = 8
 [node name="PanelContainer" type="VBoxContainer" parent="Control/NinePatchRect/MarginContainer"]
 margin_left = 8.0
 margin_top = 8.0
-margin_right = 342.0
-margin_bottom = 225.0
-custom_constants/separation = 24
+margin_right = 297.0
+margin_bottom = 232.0
+custom_constants/separation = 16
 
 [node name="TutorialText" type="Label" parent="Control/NinePatchRect/MarginContainer/PanelContainer"]
-margin_right = 334.0
-margin_bottom = 153.0
+margin_right = 289.0
+margin_bottom = 182.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_colors/font_color = Color( 0, 0, 0, 1 )
@@ -65,9 +68,9 @@ valign = 1
 autowrap = true
 
 [node name="ResumeButton" parent="Control/NinePatchRect/MarginContainer/PanelContainer" instance=ExtResource( 4 )]
-margin_top = 177.0
-margin_right = 334.0
-margin_bottom = 217.0
+margin_top = 198.0
+margin_right = 289.0
+margin_bottom = 224.0
 text = "Next"
 
 [connection signal="pressed" from="Control/NinePatchRect/MarginContainer/PanelContainer/ResumeButton" to="." method="_on_ResumeButton_pressed"]

@@ -63,11 +63,11 @@ AppLogger="*res://Scripts/AppLogger.gd"
 
 [display]
 
-window/size/width=384
-window/size/height=384
+window/size/width=512
+window/size/height=512
 window/size/resizable=false
 window/size/test_width=1024
-window/size/test_height=768
+window/size/test_height=1024
 window/stretch/mode="viewport"
 window/stretch/aspect="keep"
 

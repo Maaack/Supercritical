@@ -20,17 +20,17 @@ text = "A flower needs nutrients to survive and grow.
 If a flower needs more nutrients than it can get from deposits, it will starve."
 
 [node name="Flower-small" type="TextureRect" parent="Control/NinePatchRect/MarginContainer/PanelContainer/TutorialText" index="0"]
-margin_left = 100.0
-margin_top = 52.0
-margin_right = 128.0
-margin_bottom = 80.0
+margin_left = 40.0
+margin_top = 57.0
+margin_right = 68.0
+margin_bottom = 85.0
 texture = ExtResource( 2 )
 expand = true
 
 [node name="Flower-mid" type="TextureRect" parent="Control/NinePatchRect/MarginContainer/PanelContainer/TutorialText" index="1"]
-margin_left = 184.0
-margin_top = 35.0
-margin_right = 250.0
-margin_bottom = 99.0
+margin_left = 124.0
+margin_top = 40.0
+margin_right = 190.0
+margin_bottom = 104.0
 texture = ExtResource( 3 )
 expand = true

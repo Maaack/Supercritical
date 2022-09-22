@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Scenes/Flower/NutrientBar.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Flower/FlatYellow.tres" type="StyleBox" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://Scenes/Flower/FlatOrange.tres" type="StyleBox" id=6]
 [ext_resource path="res://Scenes/Flower/FlatGreenBorderless.tres" type="StyleBox" id=7]
 [ext_resource path="res://Themes/MainMenuTheme.tres" type="Theme" id=8]
+[ext_resource path="res://Themes/GameFont6px.tres" type="DynamicFont" id=9]
 
 [sub_resource type="StyleBoxFlat" id=4]
 bg_color = Color( 0.12549, 0.12549, 0.12549, 1 )
@@ -24,13 +25,13 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -25.0
-margin_top = -7.0
-margin_right = 25.0
+margin_left = -21.0
+margin_top = -5.0
+margin_right = 21.0
 custom_styles/fg = ExtResource( 4 )
 custom_styles/bg = SubResource( 4 )
 max_value = 40.0
-value = 32.0
+value = 40.0
 percent_visible = false
 
 [node name="GoalPanel" type="Panel" parent="."]
@@ -39,9 +40,9 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -5.0
-margin_top = -7.0
-margin_right = 15.0
+margin_left = -4.0
+margin_top = -5.0
+margin_right = 13.0
 custom_styles/panel = ExtResource( 7 )
 
 [node name="Label" type="Label" parent="."]
@@ -50,11 +51,12 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 margin_left = -20.0
-margin_top = -24.0
+margin_top = -12.0
 margin_right = 20.0
-margin_bottom = -10.0
+margin_bottom = -6.0
 custom_colors/font_color = Color( 0.12549, 0.12549, 0.12549, 1 )
-text = "100"
+custom_fonts/font = ExtResource( 9 )
+text = "64"
 align = 1
 valign = 1
 

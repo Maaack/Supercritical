@@ -1,10 +1,9 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Scenes/BaseLevel/BaseLevel.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Levels/Level3.gd" type="Script" id=2]
 [ext_resource path="res://Resources/Level3-1.tres" type="Resource" id=3]
 [ext_resource path="res://Resources/Level3-2.tres" type="Resource" id=4]
-[ext_resource path="res://Scenes/NuclearNutrient/NuclearNutrient.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Scenes/Levels/Level3Tutorial.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Assets/Original/Music/Bonsai_-_Music_3_-_Demo_2_-_Loop.ogg" type="AudioStream" id=7]
 
@@ -29,12 +28,6 @@ tile_data = PoolIntArray( 6, 2, 65541, 7, 2, 65537, 11, 2, 65536, 12, 2, 5, 6553
 
 [node name="Vines" parent="." index="4"]
 tile_data = PoolIntArray( 393226, 3, 65541, 393227, 3, 1, 393228, 3, 65537, 458764, 3, 0, 524300, 3, 0, 589836, 3, 2, 589837, 3, 1, 589838, 3, 5, 655372, 3, 65540 )
-
-[node name="NuclearNutrient" parent="Nutrients" index="0" instance=ExtResource( 5 )]
-position = Vector2( 175, 147 )
-
-[node name="NuclearNutrient2" parent="Nutrients" index="1" instance=ExtResource( 5 )]
-position = Vector2( 203, 133 )
 
 [node name="PlayerControlledCharacter" parent="." index="8"]
 position = Vector2( 147, 161 )

@@ -1,5 +1,5 @@
 tool
-extends Node
+extends Control
 
 export(PackedScene) var level_scene : PackedScene setget set_level_scene
 
@@ -56,6 +56,7 @@ func _level_failure(reason : int):
 
 func _level_goals_updated(level_turn_limit : int, supercritical_limit : int, nutrient_goal_rounds : int, nutrient_goal_min : int, nutrient_goal_max : int, cut_vine : Vector2):
 	get_node("%TurnsLabel").text = "0 / %d" % level_turn_limit
+	get_node("%InGameMessageBox").visible = false
 	if nutrient_goal_rounds > 0:
 		get_node("%GoalLabel").text = "%d - %d nutrients for %d turns" % [nutrient_goal_min, nutrient_goal_max, nutrient_goal_rounds]
 	elif cut_vine != -Vector2.ONE:
@@ -64,7 +65,11 @@ func _level_goals_updated(level_turn_limit : int, supercritical_limit : int, nut
 		get_node("%GoalLabel").text = "Care for flower for %d turns" % [level_turn_limit]
 
 func _level_goals_visibility_updated(local_visible : bool):
-	get_node("GoalPanel").visible = local_visible
+	get_node("%GoalInfoContainer").visible = local_visible
+
+func _level_ingame_message_sent(message_text : String):
+	get_node("%InGameMessageBox").visible = true
+	get_node("%MessageLabel").text = message_text
 
 func set_level_scene(value : PackedScene) -> void:
 	level_scene = value
@@ -83,6 +88,7 @@ func set_level_scene(value : PackedScene) -> void:
 	level_instance.connect("failure", self, "_level_failure")
 	level_instance.connect("goals_updated", self, "_level_goals_updated")
 	level_instance.connect("goals_visibility_updated", self, "_level_goals_visibility_updated")
+	level_instance.connect("ingame_message_sent", self, "_level_ingame_message_sent")
 	level_container_node.add_child(level_instance)
 
 func _ready():

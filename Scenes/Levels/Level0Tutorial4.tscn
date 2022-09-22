@@ -25,7 +25,9 @@
 [node name="Level0Tutorial1" instance=ExtResource( 1 )]
 
 [node name="TutorialText" parent="Control/NinePatchRect/MarginContainer/PanelContainer" index="0"]
+margin_bottom = 184.0
 text = "The more vines a flower has, the more nutrients it will spend.
+
 
 
 
@@ -36,23 +38,26 @@ Trimming unused vines can prevent a plant from starving."
 tile_set = SubResource( 1 )
 cell_size = Vector2( 14, 14 )
 format = 1
-tile_data = PoolIntArray( 196613, 0, 0, 327683, 0, 0, 327687, 0, 0, 327691, 0, 0, 393222, 0, 0 )
+tile_data = PoolIntArray( 327687, 0, 0, 393217, 0, 0, 393219, 0, 0, 458756, 0, 0 )
 
 [node name="DeadVines" type="TileMap" parent="Control/NinePatchRect/MarginContainer/PanelContainer/TutorialText" index="1"]
 tile_set = ExtResource( 4 )
 cell_size = Vector2( 14, 14 )
 format = 1
-tile_data = PoolIntArray( 262163, 2, 65536, 262164, 2, 5, 327697, 2, 65536, 327698, 2, 1, 327699, 2, 131073, 393230, 2, 65541, 393231, 2, 1, 393232, 2, 1, 393233, 2, 131073 )
+tile_data = PoolIntArray( 262156, 2, 4, 327689, 2, 65541, 327690, 2, 1, 327691, 2, 3, 327692, 2, 65538, 327693, 2, 5, 393227, 2, 0, 393230, 2, 65536, 393231, 2, 5, 458763, 2, 131072, 458764, 2, 1, 458765, 2, 1, 458766, 2, 131073 )
 
 [node name="Vines" type="TileMap" parent="Control/NinePatchRect/MarginContainer/PanelContainer/TutorialText" index="2"]
 tile_set = ExtResource( 5 )
 cell_size = Vector2( 14, 14 )
 format = 1
-tile_data = PoolIntArray( 196613, 3, 65541, 196614, 3, 65537, 262150, 3, 0, 327683, 3, 65541, 327684, 3, 1, 327685, 3, 1, 327686, 3, 131074, 327687, 3, 1, 327688, 3, 1, 327689, 3, 1, 327690, 3, 1, 327691, 3, 1, 327692, 3, 65537, 393222, 3, 65540, 393228, 3, 131072, 393229, 3, 1, 393230, 3, 1, 393231, 3, 5 )
+tile_data = PoolIntArray( 262148, 3, 4, 262150, 3, 4, 327680, 3, 65536, 327681, 3, 1, 327682, 3, 65537, 327684, 3, 0, 327686, 3, 2, 327687, 3, 1, 327688, 3, 1, 327689, 3, 5, 393216, 3, 65540, 393218, 3, 131072, 393219, 3, 1, 393220, 3, 131074, 393221, 3, 1, 393222, 3, 131073, 458756, 3, 0, 524292, 3, 65540 )
 
 [node name="Flower-small" type="TextureRect" parent="Control/NinePatchRect/MarginContainer/PanelContainer/TutorialText" index="3"]
-margin_left = 82.0
-margin_top = 68.0
-margin_right = 100.0
-margin_bottom = 86.0
+margin_left = 54.0
+margin_top = 82.0
+margin_right = 72.0
+margin_bottom = 100.0
 texture = ExtResource( 2 )
+
+[node name="ResumeButton" parent="Control/NinePatchRect/MarginContainer/PanelContainer" index="1"]
+margin_top = 200.0
