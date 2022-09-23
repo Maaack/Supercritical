@@ -473,6 +473,7 @@ func _position_camera() -> void:
 	pass
 
 func _ready():
+	set_process(false)
 	_grow_vine(_get_flower_cellv(), 0)
 	_vines_make_nutrients()
 	update_goals()
@@ -482,6 +483,7 @@ func _ready():
 	_update_nutrient_bar_position()
 	yield(get_tree().create_timer(0.1), "timeout")
 	_show_on_ready_message()
+	set_process(true)
 
 func _unhandled_input(event):
 	if controls_locked:

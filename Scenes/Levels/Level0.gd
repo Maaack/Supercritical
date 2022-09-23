@@ -10,8 +10,7 @@ var tutorial_1_2_screen = preload("res://Scenes/Levels/Level0Tutorial1-2.tscn")
 var tutorial_1_3_screen = preload("res://Scenes/Levels/Level0Tutorial1-3.tscn")
 var tutorial_2_screen = preload("res://Scenes/Levels/Level0Tutorial2.tscn")
 var tutorial_3_screen = preload("res://Scenes/Levels/Level0Tutorial3.tscn")
-var tutorial_4_screen = preload("res://Scenes/Levels/Level0Tutorial4.tscn")
-var tutorial_5_screen = preload("res://Scenes/Levels/Level0Tutorial5.tscn")
+
 var tutorial_screen_counter : int = 0
 
 func _ready():
@@ -30,10 +29,6 @@ func _process(delta):
 			InGameMenuController.open_menu(tutorial_2_screen)
 		5:
 			InGameMenuController.open_menu(tutorial_3_screen)
-		6:
-			InGameMenuController.open_menu(tutorial_4_screen)
-		7:
-			InGameMenuController.open_menu(tutorial_5_screen)
 		_:
 			emit_signal("ingame_message_sent", MESSAGE_0)
 			$Control.show()

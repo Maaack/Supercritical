@@ -12,7 +12,7 @@ text = "The bar above the flower displays the current nutrient count, and someti
 Othertimes, it may warn of the critical limits of the bonsai.
 
 
-Alright... good luck!"
+What critical limits? Well..."
 
 [node name="NutrientBar" parent="Control/NinePatchRect/MarginContainer/PanelContainer/TutorialText" index="0" instance=ExtResource( 2 )]
 margin_left = 199.5

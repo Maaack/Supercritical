@@ -5,7 +5,7 @@
 [node name="TutorialScreen" instance=ExtResource( 1 )]
 
 [node name="TutorialText" parent="Control/NinePatchRect/MarginContainer/PanelContainer" index="0"]
-text = "Uh oh! This flower is about to go...
+text = "This flower is about to go...
 Supercritical!
 It's packing too many nuclear nutrients into a small flower.
 
