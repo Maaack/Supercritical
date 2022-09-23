@@ -5,16 +5,18 @@
 [node name="Level0Tutorial1" instance=ExtResource( 1 )]
 
 [node name="NinePatchRect" parent="Control" index="0"]
-margin_top = -31.0
+margin_left = -152.0
+margin_top = 3.0
+margin_right = 153.0
 
 [node name="PanelContainer" parent="Control/NinePatchRect/MarginContainer" index="0"]
-margin_bottom = 140.0
+margin_bottom = 109.0
 
 [node name="TutorialText" parent="Control/NinePatchRect/MarginContainer/PanelContainer" index="0"]
-margin_bottom = 68.0
+margin_bottom = 57.0
 text = "Welcome, minion, to the nuclear gardens of...
 GARDENZILLA."
 
 [node name="ResumeButton" parent="Control/NinePatchRect/MarginContainer/PanelContainer" index="1"]
-margin_top = 92.0
-margin_bottom = 132.0
+margin_top = 65.0
+margin_bottom = 101.0

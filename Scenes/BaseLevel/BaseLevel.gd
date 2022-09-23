@@ -2,11 +2,13 @@ class_name BaseLevel
 extends Node2D
 
 signal nutrients_changed(delta, reason)
-signal state_changed(nutrients, turns_left, goal_turns_left)
+signal state_changed(nutrients, turn_counter, turn_limit, goal_turns_left)
 signal turn_started
 signal success
 signal failure(reason)
-signal goals_updated(level_turn_limit, supercritical_limit, nutrient_goal_rounds, nutrient_goal_min, nutrient_goal_max)
+signal goals_updated(level_turn_limit, supercritical_limit, nutrient_goal_rounds, nutrient_goal_min, nutrient_goal_max, cut_vine)
+signal goals_visibility_updated(local_visible)
+signal ingame_message_sent(message_text)
 
 const VINE_TILE = 3
 const DEAD_VINE_TILE = 2
@@ -36,13 +38,14 @@ export(PackedScene) var onready_message : PackedScene
 # Goals
 export(Array, Resource) var level_goals : Array = []
 
-onready var flower = $Vines/Flower
+onready var flower = $Flower
 onready var vines = $Vines
 onready var dead_vines = $DeadVines
 onready var cell_size = $Vines.cell_size
 onready var half_cell_size = $Vines.cell_size / 2
 
 var nuclear_nutrient_scene = preload("res://Scenes/NuclearNutrient/NuclearNutrient.tscn")
+var nuclear_update_scene = preload("res://Scenes/Flower/NutrientUpdate.tscn")
 var turn_counter : int = 0
 var stage_counter : int = 0
 var goal_counter : int = 0
@@ -50,6 +53,7 @@ var current_level_goal : int = 0
 var vine_distance_map : Dictionary = {}
 var furthest_vine_distance : int = 0
 var connected_vines : Array = []
+var controls_locked = false
 
 func _controlled_autotile_dead_vine(cellv : Vector2) -> void:
 	var auto_tile_coord : Vector2 = vines.get_cell_autotile_coord(cellv.x, cellv.y)
@@ -82,7 +86,7 @@ func _map_vines_connected_to_flower():
 	connected_vines.clear()
 	vine_distance_map.clear()
 	furthest_vine_distance = 0
-	var target_cell : Vector2 = ((flower.position - half_cell_size) / cell_size).floor() * cell_size
+	var target_cell : Vector2 = _get_flower_cellv() * cell_size
 	var start_cell : Vector2
 	for cellv in vines.get_used_cells():
 		start_cell = cellv * cell_size
@@ -120,18 +124,25 @@ func _get_distant_vines(desired : int):
 			break
 		distant_vines.append_array(vines)
 		offset += 1
-	return distant_vines.slice(0, desired)
+	return distant_vines.slice(0, desired-1)
 
 func _vines_move_nutrients(delay : float):
 	for nutrient in $Nutrients.get_children():
 		_move_nutrient_along_vine_to_flower(nutrient, delay)
+
+func _show_nutrient_change(amount : int, location : Vector2) -> void:
+	var change_instance = nuclear_update_scene.instance()
+	change_instance.position = location
+	change_instance.amount = amount
+	add_child(change_instance)
 
 func _add_nutrients_to_flower(delta : int = 1, reason : String = "") -> void:
 	nutrients_at_flower += delta
 	emit_signal("nutrients_changed", delta, reason)
 
 func _consume_nutrients_for_flower() -> void:
-	var flower_consumption = pow(2, $Vines/Flower.current_stage)
+	var flower_consumption = pow(2, flower.current_stage)
+	_show_nutrient_change(-flower_consumption, flower.position)
 	_add_nutrients_to_flower(-flower_consumption, "Flower")
 
 func _consume_nutrients_for_vines() -> void:
@@ -146,9 +157,17 @@ func _consume_nutrients_for_vines() -> void:
 		for vine_to_kill in vines_to_kill:
 			_kill_vine(vine_to_kill)
 	_add_nutrients_to_flower(-final_vine_cost, "Vines")
+	var vines_that_cost = _get_distant_vines(final_vine_cost+2)
+	vines_that_cost.shuffle()
+	for _i in range(final_vine_cost):
+		var cellv = vines_that_cost.pop_back()
+		var vine_position = (cellv * cell_size) + half_cell_size
+		_show_nutrient_change(-1, vine_position)
 
-func _consume_nutrients_for_growth(growth : int) -> void:
-	_add_nutrients_to_flower(-growth, "Growth")
+func _consume_nutrients_for_growth(cellv : Vector2) -> void:
+	_add_nutrients_to_flower(-1, "Growth")
+	var grow_position = vines.map_to_world(cellv) + half_cell_size
+	_show_nutrient_change(-1, grow_position)
 	
 func _consume_base_nutrients() -> void:
 	_consume_nutrients_for_flower()
@@ -157,6 +176,7 @@ func _consume_base_nutrients() -> void:
 func _absorb_nutrients_at_flower():
 	for nutrient in $Nutrients.get_children():
 		if nutrient.position.floor() == flower.position.floor():
+			_show_nutrient_change(1, vines.map_to_world(nutrient.starting_cell) + half_cell_size)
 			_add_nutrients_to_flower(1, "Harvest")
 			nutrient.queue_free()
 
@@ -206,19 +226,18 @@ func _vines_make_nutrients():
 	for cellv in $Deposits.get_used_cells():
 		if _is_cell_vine(cellv):
 			var nutrient_instance = nuclear_nutrient_scene.instance()
+			nutrient_instance.starting_cell = cellv
 			nutrient_instance.position = vines.map_to_world(cellv) + half_cell_size
 			$Nutrients.add_child(nutrient_instance)
 
-func _highlight_tile_at_position(position : Vector2):
-	var cell_position = (position / cell_size).floor()
+func _highlight_tile_at_position(local_position : Vector2):
+	var cell_position = (local_position / cell_size).floor()
 	if not _is_cell_vine(cell_position) and not _is_cell_dead_vine(cell_position):
 		$TileHighlighter.hide()
 		return
 	$TileHighlighter.cell_vector = cell_position
-	var tile_position = cell_position * cell_size
-	tile_position += half_cell_size
 	$TileHighlighter.show()
-	$TileHighlighter.position = tile_position
+	$TileHighlighter.position = local_position
 
 func _get_growable_cells():
 	var neighboring_cells : Dictionary = {}
@@ -260,9 +279,10 @@ func _vines_grow(growth_max : int = 0) -> int:
 		if optional_cells.size() == 0:
 			break
 		optional_cells.shuffle()
-		_grow_vine(optional_cells.pop_front(), i)
+		var cellv = optional_cells.pop_back()
+		_grow_vine(cellv, i)
+		_consume_nutrients_for_growth(cellv)
 		grew += 1
-	_consume_nutrients_for_growth(grew)
 	return grew
 
 func _vines_die():
@@ -282,36 +302,81 @@ func _vines_die():
 		_kill_vine(cell_position)
 
 func _crosshair_on_target(current_goal : LevelGoals):
-	if current_goal.must_trim_vine():
+	if current_goal.is_vine_cut_goal():
 		$Crosshair.position = (current_goal.trim_vine * cell_size) + half_cell_size
 		$Crosshair.show()
 	else:
 		$Crosshair.hide()
 
+func _update_nutrient_bar(current_goal : LevelGoals):
+	var node = get_node_or_null("NutrientNode/NutrientBar")
+	if node == null:
+		return
+	node.set_max_value(current_goal.supercritical_limit)
+	node.set_range_visible(current_goal.is_nutrient_goal())
+
 func update_goals():
 	var current_goal : LevelGoals = _get_current_level_goals()
 	stage_counter = 0
+	_update_nutrient_bar(current_goal)
 	_crosshair_on_target(current_goal)
-	emit_signal("goals_updated", current_goal.turn_limit, current_goal.supercritical_limit, current_goal.nutrient_goal_rounds, current_goal.nutrient_goal_min, current_goal.nutrient_goal_max)
+	emit_signal("goals_updated", current_goal.turn_limit, current_goal.supercritical_limit, current_goal.nutrient_goal_rounds, current_goal.nutrient_goal_min, current_goal.nutrient_goal_max, current_goal.trim_vine)
+
+func _get_nutrients_danger(nutrients : int, supercritical_limit : int) -> int:
+	if supercritical_limit <= 0:
+		return 0
+	elif nutrients >= round(supercritical_limit * 0.875):
+		return 3
+	elif nutrients >= round(supercritical_limit * 0.75):
+		return 2
+	elif nutrients >= round(supercritical_limit * 0.5):
+		return 1
+	return 0
+
+func _set_nutrient_bar_danger_level(danger_level : int) -> void:
+	match danger_level:
+		flower.DANGER_LEVEL.NONE:
+			$NutrientNode/NutrientBar.progress_state = $NutrientNode/NutrientBar.PROGRESS_STATES.NORMAL
+		flower.DANGER_LEVEL.LOW:
+			$NutrientNode/NutrientBar.progress_state = $NutrientNode/NutrientBar.PROGRESS_STATES.DANGER_LOW
+		flower.DANGER_LEVEL.MID:
+			$NutrientNode/NutrientBar.progress_state = $NutrientNode/NutrientBar.PROGRESS_STATES.DANGER_MID
+		flower.DANGER_LEVEL.HIGH:
+			$NutrientNode/NutrientBar.progress_state = $NutrientNode/NutrientBar.PROGRESS_STATES.DANGER_HIGH
+
+func _update_nutrient_levels(current_goal : LevelGoals) -> void:
+	var danger_level = _get_nutrients_danger(nutrients_at_flower, current_goal.supercritical_limit)
+	$NutrientNode/NutrientBar.set_value(nutrients_at_flower)
+	if current_goal.nutrient_goal_rounds > 0 and nutrients_at_flower >= current_goal.nutrient_goal_min and nutrients_at_flower <= current_goal.nutrient_goal_max:
+		$NutrientNode/NutrientBar.progress_state = $NutrientNode/NutrientBar.PROGRESS_STATES.GOAL
+	else:
+		_set_nutrient_bar_danger_level(danger_level)
+	flower.danger_level = danger_level
 
 func update_state():
 	var current_goal : LevelGoals = _get_current_level_goals()
-	emit_signal("state_changed", nutrients_at_flower, current_goal.turn_limit - stage_counter, current_goal.nutrient_goal_rounds - goal_counter)
+	_update_nutrient_levels(current_goal)
+	emit_signal("state_changed", nutrients_at_flower, stage_counter, current_goal.turn_limit, current_goal.nutrient_goal_rounds - goal_counter)
 
 func _complete_level():
 	GameLog.level_reached(level_number + 1)
 	emit_signal("success")
 
+func _update_nutrient_bar_position():
+	$NutrientNode/NutrientBar.rect_position.y = -20 + (flower.current_stage * -5)
+
 func _complete_goal(goal : LevelGoals):
 	if goal.advance_flower:
-		$Vines/Flower.current_stage += 1
+		flower.current_stage += 1
+		_update_nutrient_bar_position()
 	current_level_goal += 1
 	if current_level_goal >= level_goals.size():
 		_complete_level()
+		return
 	update_goals()
 
 func _supercritical_limit_reached():
-	set_process_unhandled_input(false)
+	controls_locked = true
 	$Vines.critical_failure()
 	yield(get_tree().create_timer(1), "timeout")
 	emit_signal("failure", FAILURE_REASON.NUCLEAR_EXPLOSION)
@@ -332,7 +397,6 @@ func _evauluate_goal():
 		emit_signal("failure", FAILURE_REASON.STARVATION)
 		return
 	var current_goal : LevelGoals = _get_current_level_goals()
-	$Vines/Flower.danger_level = current_goal.get_nutrients_danger(nutrients_at_flower)
 	if current_goal.check_nutrient_goal(nutrients_at_flower):
 		goal_counter += 1
 		$Vines.success()
@@ -342,7 +406,7 @@ func _evauluate_goal():
 		_supercritical_limit_reached()
 	elif current_goal.check_nutrient_goal_complete(goal_counter):
 		_complete_goal(current_goal)
-	elif current_goal.must_trim_vine():
+	elif current_goal.is_vine_cut_goal():
 		if not _is_cell_vine(current_goal.trim_vine):
 			_complete_goal(current_goal)
 	elif current_goal.check_turn_limit(stage_counter):
@@ -373,9 +437,16 @@ func _level_takes_turn(delay : float):
 	_evauluate_goal()
 	set_process_unhandled_input(true)
 
-func _highlight_tile_on_finished_tween(tween : SceneTreeTween, highlight_cellv : Vector2):
+func _hide_ui_for_pc_on_finished_tween():
+	if (($PlayerControlledCharacter.position - ($NutrientNode.position + Vector2(0, $NutrientNode/NutrientBar.rect_position.y))) * Vector2(0.5, 1)).length_squared() < pow(cell_size.x, 2):
+		$NutrientNode.modulate.a = 0.25
+	else:
+		$NutrientNode.modulate.a = 1.0
+
+func _post_player_tween_updates(tween : SceneTreeTween):
 	yield(tween, "finished")
-	_highlight_tile_at_position(highlight_cellv)
+	_hide_ui_for_pc_on_finished_tween()
+	_highlight_tile_at_position($PlayerControlledCharacter.position)
 
 func _can_move_player(direction) -> bool:
 	var target_position = $PlayerControlledCharacter.position + (direction * cell_size)
@@ -391,21 +462,32 @@ func _move_player(direction) -> bool:
 	tween.tween_property($PlayerControlledCharacter, "position", target_position, turn_time)
 	tween.play()
 	_level_takes_turn(turn_time)
-	_highlight_tile_on_finished_tween(tween, target_position)
+	_post_player_tween_updates(tween)
 	return true
 
 func _show_on_ready_message() -> void:
 	if not onready_message == null:
 		InGameMenuController.open_menu(onready_message)
 
+func _position_camera() -> void:
+	pass
+
 func _ready():
+	set_process(false)
 	_grow_vine(_get_flower_cellv(), 0)
+	_vines_make_nutrients()
 	update_goals()
 	update_state()
+	$NutrientNode.position = flower.position
+	$NutrientNode.show()
+	_update_nutrient_bar_position()
 	yield(get_tree().create_timer(0.1), "timeout")
 	_show_on_ready_message()
+	set_process(true)
 
 func _unhandled_input(event):
+	if controls_locked:
+		return
 	var direction : Vector2 = Vector2.ZERO
 	if event is InputEventKey:
 		if event.is_action_pressed("move_up"):

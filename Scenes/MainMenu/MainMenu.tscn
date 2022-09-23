@@ -5,10 +5,11 @@
 [ext_resource path="res://Scenes/OptionsMenu/MasterOptionsMenu.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Themes/MainMenuTheme.tres" type="Theme" id=4]
 [ext_resource path="res://Scenes/UI/SoundButton/SoundButton.tscn" type="PackedScene" id=5]
-[ext_resource path="res://Themes/Bitfantasy.ttf" type="DynamicFontData" id=6]
+[ext_resource path="res://Themes/TitleFont32px.tres" type="DynamicFont" id=6]
 [ext_resource path="res://Themes/TitleFont48px.tres" type="DynamicFont" id=7]
 [ext_resource path="res://Scenes/Credits/Credits.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Assets/Original/Music/Bonsai_-_Music_4_-_Demo_2_Loopable_ShortLF.ogg" type="AudioStream" id=9]
+[ext_resource path="res://Assets/Original/Textures/menu-bg.png" type="Texture" id=10]
 
 [sub_resource type="Animation" id=5]
 resource_name = "CloseSubMenu"
@@ -288,21 +289,19 @@ start_node = "Intro"
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=9]
 
-[sub_resource type="DynamicFont" id=17]
-size = 32
-font_data = ExtResource( 6 )
-
 [node name="MainMenu" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme = ExtResource( 4 )
 script = ExtResource( 1 )
 game_scene = "res://Scenes/MainGame/MainGameScene.tscn"
-version_name = "0.1.3"
+version_name = "0.3.1"
 
-[node name="Panel" type="Panel" parent="."]
+[node name="Panel" type="TextureRect" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+texture = ExtResource( 10 )
+expand = true
 
 [node name="MenuAnimationPlayer" type="AnimationPlayer" parent="."]
 anims/CloseSubMenu = SubResource( 5 )
@@ -332,7 +331,7 @@ custom_constants/margin_bottom = 16
 margin_left = 32.0
 margin_top = 16.0
 margin_right = 480.0
-margin_bottom = 368.0
+margin_bottom = 496.0
 mouse_filter = 2
 
 [node name="TitlesContainer" type="VBoxContainer" parent="TitleContainer/Titles"]
@@ -354,7 +353,7 @@ align = 1
 margin_top = 54.0
 margin_right = 832.0
 margin_bottom = 80.0
-custom_fonts/font = SubResource( 17 )
+custom_fonts/font = ExtResource( 6 )
 text = "A Post-Apocalyptic Bonsai"
 align = 1
 
@@ -370,39 +369,41 @@ margin_top = -14.0
 [node name="MenuContainer" type="MarginContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_constants/margin_right = 128
-custom_constants/margin_top = 64
-custom_constants/margin_left = 128
-custom_constants/margin_bottom = 8
+custom_constants/margin_right = 8
+custom_constants/margin_top = 32
+custom_constants/margin_left = 8
+custom_constants/margin_bottom = 4
 __meta__ = {
 "_edit_lock_": true
 }
 
 [node name="MainMenuButtons" parent="MenuContainer" instance=ExtResource( 2 )]
-margin_top = 64.0
-margin_right = 384.0
-margin_bottom = 376.0
+margin_left = 8.0
+margin_top = 32.0
+margin_right = 504.0
+margin_bottom = 508.0
 
 [node name="ButtonsContainer" parent="MenuContainer/MainMenuButtons" index="0"]
-anchor_top = 1.0
-anchor_bottom = 1.0
-margin_top = -264.0
-margin_bottom = 0.0
+margin_top = -72.0
+margin_bottom = 72.0
+
+[node name="PlayButton" parent="MenuContainer/MainMenuButtons/ButtonsContainer" index="0"]
+margin_bottom = 36.0
 
 [node name="TutorialButton" parent="MenuContainer/MainMenuButtons/ButtonsContainer" index="1"]
 visible = false
 
 [node name="OptionsButton" parent="MenuContainer/MainMenuButtons/ButtonsContainer" index="2"]
-margin_top = 56.0
-margin_bottom = 96.0
+margin_top = 52.0
+margin_bottom = 88.0
 
 [node name="CreditsButton" parent="MenuContainer/MainMenuButtons/ButtonsContainer" index="3"]
-margin_top = 112.0
-margin_bottom = 152.0
+margin_top = 104.0
+margin_bottom = 140.0
 
 [node name="ExitButton" parent="MenuContainer/MainMenuButtons/ButtonsContainer" index="4"]
-margin_top = 168.0
-margin_bottom = 208.0
+margin_top = 156.0
+margin_bottom = 192.0
 
 [node name="MasterOptionsMenu" parent="." instance=ExtResource( 3 )]
 visible = false
@@ -424,7 +425,7 @@ anchor_right = 0.0
 anchor_bottom = 0.0
 margin_top = 128.0
 margin_right = 512.0
-margin_bottom = 352.0
+margin_bottom = 480.0
 
 [node name="FlowControlContainer" type="MarginContainer" parent="."]
 anchor_right = 1.0
@@ -443,7 +444,7 @@ __meta__ = {
 margin_left = 16.0
 margin_top = 16.0
 margin_right = 496.0
-margin_bottom = 368.0
+margin_bottom = 496.0
 mouse_filter = 2
 
 [node name="BackButton" parent="FlowControlContainer/FlowControl" instance=ExtResource( 5 )]

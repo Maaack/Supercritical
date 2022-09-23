@@ -11,6 +11,12 @@ export(int) var growth_nutrient_divider : int = 4
 export(bool) var advance_flower : bool = false
 export(Vector2) var trim_vine : Vector2 = -Vector2.ONE
 
+func is_nutrient_goal() -> bool:
+	return nutrient_goal_rounds > 0
+
+func is_vine_cut_goal() -> bool:
+	return trim_vine != -Vector2.ONE
+
 func check_nutrient_goal(nutrients : int) -> bool:
 	return nutrient_goal_rounds > 0 and nutrients <= nutrient_goal_max and nutrients >= nutrient_goal_min
 
@@ -20,19 +26,6 @@ func check_nutrient_goal_complete(rounds : int) -> bool:
 func check_nutrients_supercritical(nutrients : int) -> bool:
 	return supercritical_limit > 0 and nutrients >= supercritical_limit
 
-func get_nutrients_danger(nutrients : int) -> int:
-	if supercritical_limit == 0:
-		return 0
-	elif nutrients >= round(supercritical_limit * 0.875):
-		return 3
-	elif nutrients >= round(supercritical_limit * 0.75):
-		return 2
-	elif nutrients >= round(supercritical_limit * 0.5):
-		return 1
-	return 0
-
 func check_turn_limit(turns : int) -> bool:
 	return turns >= turn_limit 
 
-func must_trim_vine() -> bool:
-	return trim_vine != -Vector2.ONE

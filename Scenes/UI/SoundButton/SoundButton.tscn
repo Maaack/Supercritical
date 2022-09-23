@@ -13,7 +13,7 @@ audio_stream = ExtResource( 2 )
 random_pitch = 1.05
 
 [node name="SoundButton" type="Button"]
-rect_min_size = Vector2( 0, 40 )
+rect_min_size = Vector2( 0, 24 )
 script = ExtResource( 1 )
 
 [node name="AudioStreamPlayers" type="Node" parent="."]
