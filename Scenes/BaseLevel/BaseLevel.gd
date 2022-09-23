@@ -313,7 +313,7 @@ func _update_nutrient_bar(current_goal : LevelGoals):
 	if node == null:
 		return
 	node.set_max_value(current_goal.supercritical_limit)
-	node.show_target_range(current_goal.is_nutrient_goal())
+	node.set_range_visible(current_goal.is_nutrient_goal())
 
 func update_goals():
 	var current_goal : LevelGoals = _get_current_level_goals()

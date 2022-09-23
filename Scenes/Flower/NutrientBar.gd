@@ -13,6 +13,7 @@ export(Array, StyleBox) var style_box_states : Array = []
 export(PROGRESS_STATES) var progress_state : int = PROGRESS_STATES.NORMAL setget set_progress_state
 export(Color) var hover_modulate : Color = Color.white
 export(int) var value : int = 64 setget set_value
+export(bool) var range_visible = true setget set_range_visible
 
 func set_progress_state(local_value : int) -> void:
 	progress_state = local_value
@@ -37,5 +38,6 @@ func set_value(local_value : int):
 func set_max_value(local_max_value : int):
 	$ProgressBar.max_value = local_max_value
 
-func show_target_range(range_visible : bool):
+func set_range_visible(value : bool):
+	range_visible = value
 	$GoalPanel.visible = range_visible

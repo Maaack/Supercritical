@@ -385,22 +385,22 @@ margin_top = -72.0
 margin_bottom = 72.0
 
 [node name="PlayButton" parent="MenuContainer/MainMenuButtons/ButtonsContainer" index="0"]
-margin_bottom = 26.0
+margin_bottom = 36.0
 
 [node name="TutorialButton" parent="MenuContainer/MainMenuButtons/ButtonsContainer" index="1"]
 visible = false
 
 [node name="OptionsButton" parent="MenuContainer/MainMenuButtons/ButtonsContainer" index="2"]
-margin_top = 42.0
-margin_bottom = 68.0
+margin_top = 52.0
+margin_bottom = 88.0
 
 [node name="CreditsButton" parent="MenuContainer/MainMenuButtons/ButtonsContainer" index="3"]
-margin_top = 84.0
-margin_bottom = 110.0
+margin_top = 104.0
+margin_bottom = 140.0
 
 [node name="ExitButton" parent="MenuContainer/MainMenuButtons/ButtonsContainer" index="4"]
-margin_top = 126.0
-margin_bottom = 152.0
+margin_top = 156.0
+margin_bottom = 192.0
 
 [node name="MasterOptionsMenu" parent="." instance=ExtResource( 3 )]
 visible = false

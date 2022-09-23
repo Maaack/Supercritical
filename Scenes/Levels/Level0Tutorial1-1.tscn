@@ -13,10 +13,10 @@ margin_right = 153.0
 margin_bottom = 109.0
 
 [node name="TutorialText" parent="Control/NinePatchRect/MarginContainer/PanelContainer" index="0"]
-margin_bottom = 59.0
+margin_bottom = 57.0
 text = "Welcome, minion, to the nuclear gardens of...
 GARDENZILLA."
 
 [node name="ResumeButton" parent="Control/NinePatchRect/MarginContainer/PanelContainer" index="1"]
-margin_top = 75.0
+margin_top = 65.0
 margin_bottom = 101.0
