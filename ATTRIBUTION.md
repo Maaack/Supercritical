@@ -1,19 +1,14 @@
 # Attribution
 ## Collaborators
 
-### Role
-Person 1  
-Person 2  
-[Person w/ Link]()  
+### Team Lead
+[Marek](https://maaack.itch.io/) 
 
+### Pixel Art
+mikoolec  
 
-## Sourced / Unaffiliated
-### Asset Type
-#### Use Case
-Author: [Name]()  
-Source: [Domain : webpage.html]()  
-License: [License]()
-
+### Music and SFX
+Mike
 
 ## Tools
 #### Godot

@@ -1,12 +1,20 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=7 format=2]
 
+[ext_resource path="res://Themes/GameFont24px.tres" type="DynamicFont" id=1]
+[ext_resource path="res://Themes/GameFont16px.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Themes/GameFont32px.tres" type="DynamicFont" id=3]
 [ext_resource path="res://Scenes/Credits/Credits.gd" type="Script" id=4]
+[ext_resource path="res://Themes/GameFont48px.tres" type="DynamicFont" id=5]
 [ext_resource path="res://Scenes/Credits/HiddenScrollBar.tres" type="Theme" id=6]
 
 [node name="Credits" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 4 )
+h1_font = ExtResource( 5 )
+h2_font = ExtResource( 3 )
+h3_font = ExtResource( 1 )
+h4_font = ExtResource( 2 )
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 anchor_right = 1.0
@@ -18,7 +26,7 @@ scroll_horizontal_enabled = false
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer"]
 margin_right = 512.0
-margin_bottom = 413.0
+margin_bottom = 512.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
