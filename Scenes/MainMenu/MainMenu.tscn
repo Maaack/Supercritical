@@ -295,7 +295,7 @@ anchor_bottom = 1.0
 theme = ExtResource( 4 )
 script = ExtResource( 1 )
 game_scene = "res://Scenes/MainGame/MainGameScene.tscn"
-version_name = "0.3.1"
+version_name = "0.4.0"
 
 [node name="Panel" type="TextureRect" parent="."]
 anchor_right = 1.0

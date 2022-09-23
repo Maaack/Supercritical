@@ -5,8 +5,8 @@
 [node name="TutorialScreen" instance=ExtResource( 1 )]
 
 [node name="TutorialText" parent="Control/NinePatchRect/MarginContainer/PanelContainer" index="0"]
-text = "You've reached the end!
+text = "You've reached the end of the sneak peek!
 
-GARDENZILLA is pleased. She will not burn you to a crisp today. Maybe tomorrow.
+More levels will be available when we release the game for Godot Wild Jam on September 25th!
 
 Thanks for playing :-)"
