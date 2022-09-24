@@ -77,6 +77,7 @@ func _cull_vine(cellv : Vector2) -> void:
 func _clear_dead_vine(cellv : Vector2) -> void:
 	$PlayerControlledCharacter.cut_vine()
 	dead_vines.set_cellv(cellv, NO_TILE)
+	vines.update_bitmask_area(cellv)
 
 func _get_flower_cellv() -> Vector2:
 	return ((flower.position - half_cell_size) / cell_size).floor()
