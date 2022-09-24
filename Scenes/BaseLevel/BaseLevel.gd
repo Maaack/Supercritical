@@ -8,7 +8,7 @@ signal success
 signal failure(reason)
 signal goals_updated(level_turn_limit, supercritical_limit, nutrient_goal_rounds, nutrient_goal_min, nutrient_goal_max, cut_vine)
 signal goals_visibility_updated(local_visible)
-signal ingame_message_sent(message_text)
+signal ingame_message_sent(message_text, message_counter)
 
 const VINE_TILE = 3
 const DEAD_VINE_TILE = 2
@@ -29,7 +29,6 @@ enum FAILURE_REASON{
 	TIMEOUT
 }
 
-export(int, 0, 20) var level_number : int
 export(Vector2) var level_size : Vector2 = Vector2(24, 27)
 export(int) var nutrients_at_flower : int = 6
 export(float, 0.05, 2) var turn_time : float = 0.5
@@ -359,7 +358,6 @@ func update_state():
 	emit_signal("state_changed", nutrients_at_flower, stage_counter, current_goal.turn_limit, current_goal.nutrient_goal_rounds - goal_counter)
 
 func _complete_level():
-	GameLog.level_reached(level_number + 1)
 	emit_signal("success")
 
 func _update_nutrient_bar_position():

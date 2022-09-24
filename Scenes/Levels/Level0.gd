@@ -12,6 +12,8 @@ var tutorial_2_screen = preload("res://Scenes/Levels/Level0Tutorial2.tscn")
 var tutorial_3_screen = preload("res://Scenes/Levels/Level0Tutorial3.tscn")
 
 var tutorial_screen_counter : int = 0
+var event_turn_counter : int = 0
+var finished_goals : bool = false
 
 func _ready():
 	emit_signal("goals_visibility_updated", false)
@@ -43,6 +45,13 @@ func _complete_goal(goal : LevelGoals):
 		$Control/Label2.text = "Z: Wait"
 		emit_signal("ingame_message_sent", MESSAGE_2)
 		emit_signal("goals_visibility_updated", true)
-	elif current_level_goal == 3:
+		finished_goals = true
+
+func _level_takes_turn(delay: float):
+	._level_takes_turn(delay)
+	if not finished_goals:
+		return
+	event_turn_counter += 1
+	if event_turn_counter == 4:
 		$Control/Label2.hide()
-		emit_signal("ingame_message_sent", MESSAGE_3)
+		emit_signal("ingame_message_sent", MESSAGE_3, 4)

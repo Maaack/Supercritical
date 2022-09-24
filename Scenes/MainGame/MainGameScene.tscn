@@ -134,6 +134,7 @@ valign = 1
 
 [node name="InGameMessageBox" type="NinePatchRect" parent="MarginContainer/Control/VBoxContainer"]
 unique_name_in_owner = true
+visible = false
 margin_top = 32.0
 margin_right = 498.0
 margin_bottom = 92.0

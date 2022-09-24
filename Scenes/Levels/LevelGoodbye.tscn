@@ -7,7 +7,6 @@
 [ext_resource path="res://Resources/LevelGoodbye-3.tres" type="Resource" id=5]
 
 [node name="LevelGoodbye" instance=ExtResource( 1 )]
-level_number = 6
 nutrients_at_flower = 15
 onready_message = ExtResource( 3 )
 level_goals = [ ExtResource( 2 ), ExtResource( 4 ), ExtResource( 5 ) ]

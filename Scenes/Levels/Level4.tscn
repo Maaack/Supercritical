@@ -8,7 +8,6 @@
 
 [node name="Level4" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
-level_number = 4
 level_size = Vector2( 14, 14 )
 nutrients_at_flower = 15
 onready_message = ExtResource( 6 )
