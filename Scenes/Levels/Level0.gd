@@ -53,5 +53,7 @@ func _level_takes_turn(delay: float):
 		return
 	event_turn_counter += 1
 	if event_turn_counter == 4:
-		$Control/Label2.hide()
+		$Control/Label2.text = "P: Pause"
 		emit_signal("ingame_message_sent", MESSAGE_3, 4)
+	elif event_turn_counter == 8:
+		$Control/Label2.hide()

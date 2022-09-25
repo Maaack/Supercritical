@@ -9,7 +9,7 @@ func _gui_input(event):
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func _input(event):
-	if event is InputEventKey and event.is_action_pressed("ui_cancel") and can_pause:
+	if event is InputEventKey and (event.is_action_pressed("ui_cancel") or event.is_action_pressed("pause")) and can_pause:
 		can_pause = false
 		InGameMenuController.open_menu(pause_menu_packed)
 	else:

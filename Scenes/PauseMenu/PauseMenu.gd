@@ -1,5 +1,10 @@
 extends CanvasLayer
 
+
+func _close_options_menu():
+	$Control/OptionsMenu.visible = false
+	$Control/ButtonsContainer.visible = true
+
 func _input(event):
 	if event.is_action_pressed("ui_cancel"):
 		if $Control/ConfirmExit.visible:
@@ -7,10 +12,11 @@ func _input(event):
 		elif $Control/ConfirmMainMenu.visible:
 			$Control/ConfirmMainMenu.hide()
 		elif $Control/OptionsMenu.visible:
-			$Control/OptionsMenu.visible = false
-			$Control/ButtonsContainer.visible = true
+			_close_options_menu()
 		else:
 			InGameMenuController.close_menu()
+	if event.is_action_pressed("pause"):
+		InGameMenuController.close_menu()
 
 
 func _on_ResumeBtn_pressed():
@@ -50,3 +56,6 @@ func _setup_for_web():
 
 func _ready():
 	_setup_for_web()
+
+func _on_OptionsMenu_return_button_pressed():
+	_close_options_menu()
