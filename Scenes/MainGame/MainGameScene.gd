@@ -8,6 +8,7 @@ var levels : Array = [
 	preload("res://Scenes/Levels/Level1.tscn"),
 	preload("res://Scenes/Levels/Level2.tscn"),
 	preload("res://Scenes/Levels/Level3.tscn"),
+	preload("res://Scenes/Levels/LevelIntroCrowding.tscn"),
 	preload("res://Scenes/Levels/Level4.tscn"),
 	preload("res://Scenes/Levels/Level5.tscn"),
 	preload("res://Scenes/Levels/LevelGoodbye.tscn"),

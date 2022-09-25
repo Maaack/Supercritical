@@ -10,7 +10,6 @@
 
 [node name="Level0" instance=ExtResource( 1 )]
 script = ExtResource( 3 )
-level_number = null
 nutrients_at_flower = 60
 level_goals = [ ExtResource( 2 ), ExtResource( 5 ), ExtResource( 9 ) ]
 

@@ -408,7 +408,7 @@ func _evauluate_goal():
 	elif current_goal.is_vine_cut_goal():
 		if not _is_cell_vine(current_goal.trim_vine):
 			_complete_goal(current_goal)
-	elif current_goal.check_turn_limit(stage_counter):
+	if current_goal.check_turn_limit(stage_counter):
 		_turn_limit_reached(current_goal)
 
 func _update_harvest_vines():
