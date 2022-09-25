@@ -2,17 +2,7 @@ tool
 extends Control
 
 export(PackedScene) var level_scene : PackedScene setget set_level_scene
-
-var levels : Array = [
-	preload("res://Scenes/Levels/Level0.tscn"),
-	preload("res://Scenes/Levels/Level1.tscn"),
-	preload("res://Scenes/Levels/Level2.tscn"),
-	preload("res://Scenes/Levels/Level3.tscn"),
-	preload("res://Scenes/Levels/LevelIntroCrowding.tscn"),
-	preload("res://Scenes/Levels/LevelBiggerCrowd.tscn"),
-	preload("res://Scenes/Levels/Level5.tscn"),
-	preload("res://Scenes/Levels/LevelGoodbye.tscn"),
-]
+export(Array, PackedScene) var levels : Array =  []
 
 var success_screen_packed = preload("res://Scenes/SuccessScreen/SuccessScreen.tscn")
 var failure_screen_packed = preload("res://Scenes/FailureScreen/FailureScreen.tscn")
