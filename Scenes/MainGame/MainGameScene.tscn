@@ -11,7 +11,7 @@
 [ext_resource path="res://Scenes/Levels/LevelSupercriticalLimit.tscn" type="PackedScene" id=9]
 [ext_resource path="res://Scenes/Levels/LevelSuffocatedFlower.tscn" type="PackedScene" id=10]
 [ext_resource path="res://Scenes/Levels/LevelIntroCrowding.tscn" type="PackedScene" id=11]
-[ext_resource path="res://Scenes/Levels/LevelBiggerCrowd.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Scenes/Levels/LevelCompactGrowth.tscn" type="PackedScene" id=12]
 [ext_resource path="res://Scenes/Levels/LevelGrowYourOwn.tscn" type="PackedScene" id=13]
 [ext_resource path="res://Scenes/Levels/LevelGoodbye.tscn" type="PackedScene" id=14]
 

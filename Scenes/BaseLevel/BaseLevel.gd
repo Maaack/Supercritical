@@ -211,7 +211,7 @@ func _is_cell_walkable(cellv : Vector2) -> bool:
 	return _is_in_bounds(cellv) and $Obstacles.get_cellv(cellv) == -1
 
 func _is_cell_growable(cellv : Vector2) -> bool:
-	return vines.get_cellv(cellv) == -1 and dead_vines.get_cellv(cellv) == -1 and $Obstacles.get_cellv(cellv) == -1
+	return _is_in_bounds(cellv) and vines.get_cellv(cellv) == -1 and dead_vines.get_cellv(cellv) == -1 and $Obstacles.get_cellv(cellv) == -1
 
 func _is_cell_vine(cellv: Vector2) -> bool:
 	return vines.get_cellv(cellv) == VINE_TILE

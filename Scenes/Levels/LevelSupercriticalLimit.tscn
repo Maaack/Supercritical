@@ -1,17 +1,18 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Scenes/BaseLevel/BaseLevel.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Levels/LevelSupercriticalLimit.gd" type="Script" id=2]
-[ext_resource path="res://Resources/Level2-1.tres" type="Resource" id=3]
-[ext_resource path="res://Scenes/Tutorials/Level2Tutorial1.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Scenes/Tutorials/Level2Tutorial2.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Resources/GoalStage1CareFor32Turns.tres" type="Resource" id=3]
+[ext_resource path="res://Scenes/Tutorials/TutorialSupercriticalLimit-1.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scenes/Tutorials/TutorialSupercriticalLimit-2.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Assets/Original/Music/Bonsai_-_Music_3_-_Demo_2_-_Loop.ogg" type="AudioStream" id=6]
+[ext_resource path="res://Scenes/Tutorials/TutorialSupercriticalLimit-3.tscn" type="PackedScene" id=7]
 
 [node name="LevelSupercriticalLimit" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 level_size = Vector2( 12, 12 )
 nutrients_at_flower = 16
-opening_tutorials = [ ExtResource( 4 ), ExtResource( 5 ) ]
+opening_tutorials = [ ExtResource( 4 ), ExtResource( 5 ), ExtResource( 7 ) ]
 level_goals = [ ExtResource( 3 ) ]
 
 [node name="Ground" parent="." index="0"]

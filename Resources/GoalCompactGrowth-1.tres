@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource( 1 )
-turn_limit = 60
+turn_limit = 80
 turn_limit_success = false
 nutrient_goal_rounds = 8
 nutrient_goal_min = 8

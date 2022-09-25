@@ -5,11 +5,11 @@
 [resource]
 script = ExtResource( 1 )
 turn_limit = 10
-turn_limit_success = true
+turn_limit_success = false
 nutrient_goal_rounds = 0
 nutrient_goal_min = 8
 nutrient_goal_max = 16
-supercritical_limit = 80
-growth_nutrient_divider = 16
-advance_flower = false
+supercritical_limit = 40
+growth_nutrient_divider = 8
+advance_flower = true
 trim_vine = Vector2( -1, -1 )
