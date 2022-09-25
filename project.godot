@@ -52,6 +52,7 @@ _global_script_class_icons={
 
 config/name="Supercritical: A Post-Apocalypic Bonsai"
 run/main_scene="res://Scenes/InitApp/InitApp.tscn"
+boot_splash/image="res://Assets/Original/Textures/Supercritical-AI-Art.png"
 config/icon="res://icon.png"
 
 [autoload]
