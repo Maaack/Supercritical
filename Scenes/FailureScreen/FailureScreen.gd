@@ -11,6 +11,7 @@ func _input(event):
 			$Control/ConfirmExit.hide()
 		elif $Control/ConfirmMainMenu.visible:
 			$Control/ConfirmMainMenu.hide()
+		get_tree().set_input_as_handled()
 
 func set_failure_reason(rest_stops : int = 0) -> void:
 	match(rest_stops):

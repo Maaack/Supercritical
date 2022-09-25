@@ -274,6 +274,7 @@ __meta__ = {
 }
 
 [node name="Crosshair" parent="." instance=ExtResource( 13 )]
+visible = false
 __meta__ = {
 "_edit_lock_": true
 }
