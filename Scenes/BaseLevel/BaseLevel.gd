@@ -29,7 +29,7 @@ enum FAILURE_REASON{
 	TIMEOUT
 }
 
-export(Vector2) var level_size : Vector2 = Vector2(24, 27)
+export(Vector2) var level_size : Vector2 = Vector2(18, 18)
 export(int) var nutrients_at_flower : int = 6
 export(float, 0.05, 2) var turn_time : float = 0.5
 export(Array, PackedScene) var opening_tutorials : Array = []
