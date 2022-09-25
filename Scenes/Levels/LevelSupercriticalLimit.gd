@@ -1,6 +1,6 @@
 extends BaseLevel
 
-const MESSAGE_0 = "Stop the flower from getting more than 20 nutrients.\nDon't trim too many vines and starve it, either."
+const MESSAGE_0 = "Stop the flower from getting 20 (or more) nutrients.\nDon't trim too many vines and starve it, either."
 
 func _finish_tutorials():
 	._finish_tutorials()
