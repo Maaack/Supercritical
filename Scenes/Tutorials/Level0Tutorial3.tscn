@@ -12,7 +12,7 @@
 [node name="Level0Tutorial1" instance=ExtResource( 3 )]
 
 [node name="TutorialText" parent="Control/NinePatchRect/MarginContainer/PanelContainer" index="0"]
-text = "A flower needs to grow a vine over a deposit to make nutrients there.
+text = "A flower needs to grow a vine over a deposit to harves nutrients there.
 
 
 

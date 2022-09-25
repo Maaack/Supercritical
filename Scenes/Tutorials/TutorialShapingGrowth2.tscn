@@ -5,6 +5,4 @@
 [node name="TutorialScreen" instance=ExtResource( 1 )]
 
 [node name="TutorialText" parent="Control/NinePatchRect/MarginContainer/PanelContainer" index="0"]
-text = "Oh no! The seed found itself in a barren area. The flower will never fully bloom, but we still don't want it to starve.
-
-Trim the vines that grow away from the nuclear fuel to encourage the flower to grow toward it."
+text = "Trim the vines that grow away from the nuclear fuel to encourage the flower to grow toward it."
