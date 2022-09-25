@@ -8,7 +8,7 @@
 
 [node name="LevelGoodbye" instance=ExtResource( 1 )]
 nutrients_at_flower = 15
-onready_message = ExtResource( 3 )
+opening_tutorials = [ ExtResource( 3 ) ]
 level_goals = [ ExtResource( 2 ), ExtResource( 4 ), ExtResource( 5 ) ]
 
 [node name="Ground" parent="." index="0"]

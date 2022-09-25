@@ -10,12 +10,12 @@ margin_top = 3.0
 margin_right = 153.0
 
 [node name="PanelContainer" parent="Control/NinePatchRect/MarginContainer" index="0"]
-margin_bottom = 109.0
+margin_bottom = 115.0
 
 [node name="TutorialText" parent="Control/NinePatchRect/MarginContainer/PanelContainer" index="0"]
-margin_bottom = 59.0
+margin_bottom = 63.0
 text = "It will be your job to care for plants like this and keep them from dying... or worse!"
 
 [node name="ResumeButton" parent="Control/NinePatchRect/MarginContainer/PanelContainer" index="1"]
-margin_top = 75.0
-margin_bottom = 101.0
+margin_top = 71.0
+margin_bottom = 107.0

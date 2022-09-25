@@ -32,9 +32,7 @@ enum FAILURE_REASON{
 export(Vector2) var level_size : Vector2 = Vector2(24, 27)
 export(int) var nutrients_at_flower : int = 6
 export(float, 0.05, 2) var turn_time : float = 0.5
-export(PackedScene) var onready_message : PackedScene
-
-# Goals
+export(Array, PackedScene) var opening_tutorials : Array = []
 export(Array, Resource) var level_goals : Array = []
 
 onready var flower = $Flower
@@ -48,11 +46,13 @@ var nuclear_update_scene = preload("res://Scenes/Flower/NutrientUpdate.tscn")
 var turn_counter : int = 0
 var stage_counter : int = 0
 var goal_counter : int = 0
+var tutorial_counter : int = 0
 var current_level_goal : int = 0
 var vine_distance_map : Dictionary = {}
 var furthest_vine_distance : int = 0
 var connected_vines : Array = []
 var controls_locked = false
+var finished_tutorials = false
 
 func _controlled_autotile_dead_vine(cellv : Vector2) -> void:
 	var auto_tile_coord : Vector2 = vines.get_cell_autotile_coord(cellv.x, cellv.y)
@@ -464,12 +464,22 @@ func _move_player(direction) -> bool:
 	_post_player_tween_updates(tween)
 	return true
 
-func _show_on_ready_message() -> void:
-	if not onready_message == null:
-		InGameMenuController.open_menu(onready_message)
-
 func _position_camera() -> void:
 	pass
+
+func _finish_tutorials():
+	finished_tutorials = true
+	set_process(false)
+
+func _play_opening_tutorials():
+	if finished_tutorials:
+		return
+	if tutorial_counter >= opening_tutorials.size():
+		_finish_tutorials()
+		return
+	var tutorial = opening_tutorials[tutorial_counter]
+	tutorial_counter += 1
+	InGameMenuController.open_menu(tutorial)
 
 func _ready():
 	set_process(false)
@@ -481,8 +491,10 @@ func _ready():
 	$NutrientNode.show()
 	_update_nutrient_bar_position()
 	yield(get_tree().create_timer(0.1), "timeout")
-	_show_on_ready_message()
 	set_process(true)
+
+func _process(_delta):
+	_play_opening_tutorials()
 
 func _unhandled_input(event):
 	if controls_locked:

@@ -15,7 +15,7 @@ text = "Pruning vines that crowd tiles increase the likelihood for new growth to
 
 
 
-Try to help this flower grow out of the corner its gotten itself into."
+Help this flower grow out of the corner its gotten itself into."
 
 [node name="Deposits" type="TileMap" parent="Control/NinePatchRect/MarginContainer/PanelContainer/TutorialText" index="0"]
 position = Vector2( 35.5, 10 )

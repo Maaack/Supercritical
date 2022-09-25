@@ -8,12 +8,12 @@
 margin_top = 19.0
 
 [node name="PanelContainer" parent="Control/NinePatchRect/MarginContainer" index="0"]
-margin_bottom = 93.0
+margin_bottom = 99.0
 
 [node name="TutorialText" parent="Control/NinePatchRect/MarginContainer/PanelContainer" index="0"]
-margin_bottom = 43.0
+margin_bottom = 47.0
 text = "Bask in this beauty of her bonsai, minion."
 
 [node name="ResumeButton" parent="Control/NinePatchRect/MarginContainer/PanelContainer" index="1"]
-margin_top = 59.0
-margin_bottom = 85.0
+margin_top = 55.0
+margin_bottom = 91.0

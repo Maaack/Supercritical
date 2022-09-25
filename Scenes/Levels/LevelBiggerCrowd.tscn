@@ -10,7 +10,7 @@
 script = ExtResource( 2 )
 level_size = Vector2( 14, 14 )
 nutrients_at_flower = 15
-onready_message = ExtResource( 3 )
+opening_tutorials = [ ExtResource( 3 ) ]
 level_goals = [ ExtResource( 5 ), ExtResource( 4 ) ]
 
 [node name="Ground" parent="." index="0"]

@@ -11,7 +11,7 @@
 [node name="Level5" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 nutrients_at_flower = 10
-onready_message = ExtResource( 6 )
+opening_tutorials = [ ExtResource( 6 ) ]
 level_goals = [ ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ) ]
 
 [node name="Ground" parent="." index="0"]

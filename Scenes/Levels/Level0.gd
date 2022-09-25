@@ -5,12 +5,6 @@ const MESSAGE_1 = "Good minion. You are not as useless as you seem.\nTry cutting
 const MESSAGE_2 = "You will be given tasks by the great GARDENZILLA to keep her bonsai's healthy.\nFail her... at your own peril."
 const MESSAGE_3 = "For now, keep the flower alive and do not starve it!."
 
-var tutorial_1_1_screen = preload("res://Scenes/Levels/Level0Tutorial1-1.tscn")
-var tutorial_1_2_screen = preload("res://Scenes/Levels/Level0Tutorial1-2.tscn")
-var tutorial_1_3_screen = preload("res://Scenes/Levels/Level0Tutorial1-3.tscn")
-var tutorial_2_screen = preload("res://Scenes/Levels/Level0Tutorial2.tscn")
-var tutorial_3_screen = preload("res://Scenes/Levels/Level0Tutorial3.tscn")
-
 var tutorial_screen_counter : int = 0
 var event_turn_counter : int = 0
 var finished_goals : bool = false
@@ -18,23 +12,10 @@ var finished_goals : bool = false
 func _ready():
 	emit_signal("goals_visibility_updated", false)
 
-func _process(delta):
-	tutorial_screen_counter += 1
-	match tutorial_screen_counter:
-		1:
-			InGameMenuController.open_menu(tutorial_1_1_screen)
-		2:
-			InGameMenuController.open_menu(tutorial_1_2_screen)
-		3:
-			InGameMenuController.open_menu(tutorial_1_3_screen)
-		4:
-			InGameMenuController.open_menu(tutorial_2_screen)
-		5:
-			InGameMenuController.open_menu(tutorial_3_screen)
-		_:
-			emit_signal("ingame_message_sent", MESSAGE_0)
-			$Control.show()
-			set_process(false)
+func _finish_tutorials():
+	._finish_tutorials()
+	emit_signal("ingame_message_sent", MESSAGE_0)
+	$Control.show()
 
 func _complete_goal(goal : LevelGoals):
 	._complete_goal(goal)
