@@ -6,6 +6,8 @@ func _input(event):
 			$Control/ConfirmExit.hide()
 		elif $Control/ConfirmMainMenu.visible:
 			$Control/ConfirmMainMenu.hide()
+	if event.is_action_pressed("interact"):
+		SceneLoader.reload_current_scene()
 
 func _on_ConfirmMainMenu_confirmed():
 	InGameMenuController.close_menu()
