@@ -2,7 +2,7 @@
 
 [ext_resource path="res://Scenes/BaseLevel/BaseLevel.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Levels/LevelBiggerCrowd.gd" type="Script" id=2]
-[ext_resource path="res://Scenes/Levels/LevelBiggerCrowdOpening.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/Tutorials/LevelBiggerCrowdOpening.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Resources/Level4-2.tres" type="Resource" id=4]
 [ext_resource path="res://Resources/Level4-1.tres" type="Resource" id=5]
 

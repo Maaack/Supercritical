@@ -4,8 +4,8 @@
 [ext_resource path="res://Scenes/Levels/Level3.gd" type="Script" id=2]
 [ext_resource path="res://Resources/Level3-1.tres" type="Resource" id=3]
 [ext_resource path="res://Resources/Level3-2.tres" type="Resource" id=4]
-[ext_resource path="res://Scenes/Levels/Level3Tutorial1.tscn" type="PackedScene" id=5]
-[ext_resource path="res://Scenes/Levels/Level3Tutorial2.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Scenes/Tutorials/Level3Tutorial1.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Scenes/Tutorials/Level3Tutorial2.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Assets/Original/Music/Bonsai_-_Music_3_-_Demo_2_-_Loop.ogg" type="AudioStream" id=7]
 
 [node name="Level3" instance=ExtResource( 1 )]

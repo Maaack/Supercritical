@@ -3,7 +3,7 @@
 [ext_resource path="res://Scenes/BaseLevel/BaseLevel.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scenes/Levels/Level1.gd" type="Script" id=2]
 [ext_resource path="res://Resources/Level1-1.tres" type="Resource" id=3]
-[ext_resource path="res://Scenes/Levels/Level1Tutorial.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scenes/Tutorials/Level1Tutorial.tscn" type="PackedScene" id=4]
 
 [node name="Level1" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
