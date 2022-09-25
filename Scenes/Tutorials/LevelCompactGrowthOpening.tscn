@@ -1,0 +1,61 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Themes/LivingVinesTileset.tres" type="TileSet" id=1]
+[ext_resource path="res://Scenes/TutorialScreen/TutorialScreen.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Themes/DeadVinesTileset.tres" type="TileSet" id=3]
+[ext_resource path="res://Assets/Original/Textures/flower-small.png" type="Texture" id=4]
+[ext_resource path="res://Themes/DepositTileset.tres" type="TileSet" id=5]
+[ext_resource path="res://Themes/ObstaclesTileset.tres" type="TileSet" id=6]
+
+[node name="TutorialScreen" instance=ExtResource( 2 )]
+
+[node name="TutorialText" parent="Control/NinePatchRect/MarginContainer/PanelContainer" index="0"]
+text = "New growth prefers spots with no neighboring living vines. 
+
+
+
+
+
+
+A flower will fill in tight spaces only when it has no other options."
+
+[node name="Deposits" type="TileMap" parent="Control/NinePatchRect/MarginContainer/PanelContainer/TutorialText" index="0"]
+position = Vector2( 35.5, -4 )
+tile_set = ExtResource( 5 )
+cell_size = Vector2( 14, 14 )
+format = 1
+tile_data = PoolIntArray( 327683, 0, 0, 327691, 0, 0, 393220, 0, 0, 393228, 0, 0, 458754, 0, 0, 458762, 0, 0 )
+
+[node name="Obstacles" type="TileMap" parent="Control/NinePatchRect/MarginContainer/PanelContainer/TutorialText" index="1"]
+position = Vector2( 35.5, -4 )
+tile_set = ExtResource( 6 )
+cell_size = Vector2( 14, 14 )
+format = 1
+tile_data = PoolIntArray( 262145, 0, 0, 262146, 4, 0, 262147, 0, 0, 262148, 0, 0, 262149, 4, 0, 262153, 0, 0, 262154, 4, 0, 262155, 0, 0, 262156, 0, 0, 262157, 4, 0, 327681, 1, 0, 327685, 2, 0, 327689, 1, 0, 327693, 2, 0, 393217, 0, 0, 393221, 0, 0, 393225, 0, 0, 393229, 0, 0, 458753, 0, 0, 458757, 1, 0, 458761, 0, 0, 458765, 1, 0, 524289, 2, 0, 524290, 0, 0, 524291, 0, 0, 524292, 0, 0, 524293, 0, 0, 524297, 2, 0, 524298, 0, 0, 524299, 0, 0, 524300, 0, 0, 524301, 4, 0 )
+
+[node name="DeadVines" type="TileMap" parent="Control/NinePatchRect/MarginContainer/PanelContainer/TutorialText" index="2"]
+position = Vector2( 35.5, -4 )
+tile_set = ExtResource( 3 )
+cell_size = Vector2( 14, 14 )
+format = 1
+
+[node name="Vines" type="TileMap" parent="Control/NinePatchRect/MarginContainer/PanelContainer/TutorialText" index="3"]
+position = Vector2( 35.5, -4 )
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 14, 14 )
+format = 1
+tile_data = PoolIntArray( 327683, 3, 4, 327691, 3, 65536, 327692, 3, 65537, 393218, 3, 65541, 393219, 3, 131074, 393220, 3, 5, 393226, 3, 65536, 393227, 3, 131074, 393228, 3, 131073, 458755, 3, 65540, 458762, 3, 131072, 458763, 3, 131073 )
+
+[node name="Flower-small" type="TextureRect" parent="Control/NinePatchRect/MarginContainer/PanelContainer/TutorialText" index="4"]
+margin_left = 74.5
+margin_top = 78.0
+margin_right = 92.5
+margin_bottom = 96.0
+texture = ExtResource( 4 )
+
+[node name="Flower-small2" type="TextureRect" parent="Control/NinePatchRect/MarginContainer/PanelContainer/TutorialText" index="5"]
+margin_left = 186.5
+margin_top = 78.0
+margin_right = 204.5
+margin_bottom = 96.0
+texture = ExtResource( 4 )

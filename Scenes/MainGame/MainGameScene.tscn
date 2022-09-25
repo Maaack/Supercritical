@@ -1,17 +1,26 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Scenes/MainGame/MainGameScene.gd" type="Script" id=1]
+[ext_resource path="res://Scenes/Levels/LevelShapingGrowth.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Assets/Original/Textures/menu9patch_2.png" type="Texture" id=3]
 [ext_resource path="res://Themes/MainMenuTheme.tres" type="Theme" id=4]
 [ext_resource path="res://Scripts/PauseMenuController.gd" type="Script" id=5]
 [ext_resource path="res://Assets/Original/Textures/menu9patch_3.png" type="Texture" id=6]
 [ext_resource path="res://Assets/Original/Textures/menu9patch.png" type="Texture" id=7]
+[ext_resource path="res://Scenes/Levels/LevelWelcome.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Scenes/Levels/LevelSupercriticalLimit.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Scenes/Levels/LevelSuffocatedFlower.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Scenes/Levels/LevelIntroCrowding.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Scenes/Levels/LevelCompactGrowth.tscn" type="PackedScene" id=12]
+[ext_resource path="res://Scenes/Levels/LevelGrowYourOwn.tscn" type="PackedScene" id=13]
+[ext_resource path="res://Scenes/Levels/LevelGoodbye.tscn" type="PackedScene" id=14]
 
 [node name="MainGameScene" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme = ExtResource( 4 )
 script = ExtResource( 1 )
+levels = [ ExtResource( 8 ), ExtResource( 2 ), ExtResource( 9 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 10 ), ExtResource( 13 ), ExtResource( 14 ) ]
 
 [node name="Control" type="Control" parent="."]
 margin_right = 40.0
@@ -134,6 +143,7 @@ valign = 1
 
 [node name="InGameMessageBox" type="NinePatchRect" parent="MarginContainer/Control/VBoxContainer"]
 unique_name_in_owner = true
+visible = false
 margin_top = 32.0
 margin_right = 498.0
 margin_bottom = 92.0

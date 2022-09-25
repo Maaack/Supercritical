@@ -1,0 +1,46 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Themes/LivingVinesTileset.tres" type="TileSet" id=1]
+[ext_resource path="res://Scenes/TutorialScreen/TutorialScreen.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Themes/DeadVinesTileset.tres" type="TileSet" id=3]
+[ext_resource path="res://Themes/DepositTileset.tres" type="TileSet" id=4]
+[ext_resource path="res://Themes/ObstaclesTileset.tres" type="TileSet" id=5]
+
+[node name="TutorialScreen" instance=ExtResource( 2 )]
+
+[node name="TutorialText" parent="Control/NinePatchRect/MarginContainer/PanelContainer" index="0"]
+text = "Pruning vines that crowd tiles increase the likelihood for new growth to occur there.
+
+
+
+
+
+Help this flower grow out of the corner its gotten itself into."
+
+[node name="Deposits" type="TileMap" parent="Control/NinePatchRect/MarginContainer/PanelContainer/TutorialText" index="0"]
+position = Vector2( 35.5, 10 )
+tile_set = ExtResource( 4 )
+cell_size = Vector2( 14, 14 )
+format = 1
+tile_data = PoolIntArray( 393219, 0, 0, 393228, 0, 0 )
+
+[node name="Obstacles" type="TileMap" parent="Control/NinePatchRect/MarginContainer/PanelContainer/TutorialText" index="1"]
+position = Vector2( 35.5, 10 )
+tile_set = ExtResource( 5 )
+cell_size = Vector2( 14, 14 )
+format = 1
+tile_data = PoolIntArray( 262147, 0, 0, 262156, 0, 0, 393218, 2, 0, 393227, 2, 0, 458755, 0, 0, 458756, 1, 0, 458757, 2, 0, 458764, 0, 0, 458765, 1, 0, 458766, 2, 0 )
+
+[node name="DeadVines" type="TileMap" parent="Control/NinePatchRect/MarginContainer/PanelContainer/TutorialText" index="2"]
+position = Vector2( 35.5, 10 )
+tile_set = ExtResource( 3 )
+cell_size = Vector2( 14, 14 )
+format = 1
+tile_data = PoolIntArray( 327692, 2, 65541, 327693, 2, 65537, 393229, 2, 65540 )
+
+[node name="Vines" type="TileMap" parent="Control/NinePatchRect/MarginContainer/PanelContainer/TutorialText" index="3"]
+position = Vector2( 35.5, 10 )
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 14, 14 )
+format = 1
+tile_data = PoolIntArray( 327680, 3, 65541, 327681, 3, 1, 327682, 3, 1, 327683, 3, 1, 327684, 3, 65537, 327689, 3, 65541, 327690, 3, 1, 327691, 3, 1, 327692, 3, 3, 327693, 3, 5, 393220, 3, 65540, 393228, 3, 65540 )

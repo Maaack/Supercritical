@@ -36,7 +36,7 @@ custom_constants/margin_bottom = 16
 margin_left = 64.0
 margin_top = 16.0
 margin_right = 448.0
-margin_bottom = 368.0
+margin_bottom = 496.0
 texture = ExtResource( 1 )
 patch_margin_left = 4
 patch_margin_top = 4
@@ -55,7 +55,7 @@ custom_constants/margin_bottom = 12
 margin_left = 8.0
 margin_top = 12.0
 margin_right = 376.0
-margin_bottom = 340.0
+margin_bottom = 468.0
 
 [node name="Title" type="Label" parent="Control/MarginContainer/NinePatchRect/MarginContainer/Control"]
 unique_name_in_owner = true
@@ -82,20 +82,20 @@ __meta__ = {
 
 [node name="RestartButton" parent="Control/MarginContainer/NinePatchRect/MarginContainer/Control/ButtonsContainer" instance=ExtResource( 4 )]
 margin_right = 233.0
-margin_bottom = 40.0
+margin_bottom = 36.0
 text = "Restart"
 
 [node name="MainMenuButton" parent="Control/MarginContainer/NinePatchRect/MarginContainer/Control/ButtonsContainer" instance=ExtResource( 4 )]
-margin_top = 64.0
+margin_top = 60.0
 margin_right = 233.0
-margin_bottom = 104.0
+margin_bottom = 96.0
 text = "Return to Main Menu"
 
 [node name="ExitButton" parent="Control/MarginContainer/NinePatchRect/MarginContainer/Control/ButtonsContainer" instance=ExtResource( 4 )]
 unique_name_in_owner = true
-margin_top = 128.0
+margin_top = 120.0
 margin_right = 233.0
-margin_bottom = 168.0
+margin_bottom = 156.0
 text = "Exit Game"
 
 [node name="ConfirmMainMenu" type="ConfirmationDialog" parent="Control"]

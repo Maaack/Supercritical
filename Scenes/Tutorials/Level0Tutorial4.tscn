@@ -1,0 +1,46 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Themes/LivingVinesTileset.tres" type="TileSet" id=1]
+[ext_resource path="res://Scenes/TutorialScreen/TutorialScreen.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Themes/DeadVinesTileset.tres" type="TileSet" id=3]
+[ext_resource path="res://Assets/Original/Textures/flower-small.png" type="Texture" id=4]
+[ext_resource path="res://Themes/DepositTileset.tres" type="TileSet" id=5]
+
+[node name="Level0Tutorial1" instance=ExtResource( 2 )]
+
+[node name="TutorialText" parent="Control/NinePatchRect/MarginContainer/PanelContainer" index="0"]
+text = "A flower will use extra nutrients to grow its vines.
+
+
+
+
+
+However, long vines also costs the plant extra nutrients. Trimming excess vines can help it survive."
+
+[node name="Deposits" type="TileMap" parent="Control/NinePatchRect/MarginContainer/PanelContainer/TutorialText" index="0"]
+position = Vector2( 35.5, -4 )
+tile_set = ExtResource( 5 )
+cell_size = Vector2( 14, 14 )
+format = 1
+tile_data = PoolIntArray( 327687, 0, 0, 393217, 0, 0, 393219, 0, 0, 458756, 0, 0 )
+
+[node name="DeadVines" type="TileMap" parent="Control/NinePatchRect/MarginContainer/PanelContainer/TutorialText" index="1"]
+position = Vector2( 35.5, -4 )
+tile_set = ExtResource( 3 )
+cell_size = Vector2( 14, 14 )
+format = 1
+tile_data = PoolIntArray( 262156, 2, 4, 327689, 2, 65541, 327690, 2, 1, 327691, 2, 3, 327692, 2, 65538, 327693, 2, 5, 393227, 2, 0, 393230, 2, 65536, 393231, 2, 5, 458763, 2, 131072, 458764, 2, 1, 458765, 2, 1, 458766, 2, 131073 )
+
+[node name="Vines" type="TileMap" parent="Control/NinePatchRect/MarginContainer/PanelContainer/TutorialText" index="2"]
+position = Vector2( 35.5, -4 )
+tile_set = ExtResource( 1 )
+cell_size = Vector2( 14, 14 )
+format = 1
+tile_data = PoolIntArray( 262148, 3, 4, 262150, 3, 4, 327680, 3, 65536, 327681, 3, 1, 327682, 3, 65537, 327684, 3, 0, 327686, 3, 2, 327687, 3, 1, 327688, 3, 1, 327689, 3, 5, 393216, 3, 65540, 393218, 3, 131072, 393219, 3, 1, 393220, 3, 131074, 393221, 3, 1, 393222, 3, 131073, 458756, 3, 0, 524292, 3, 65540 )
+
+[node name="Flower-small" type="TextureRect" parent="Control/NinePatchRect/MarginContainer/PanelContainer/TutorialText" index="3"]
+margin_left = 89.5
+margin_top = 78.0
+margin_right = 107.5
+margin_bottom = 96.0
+texture = ExtResource( 4 )

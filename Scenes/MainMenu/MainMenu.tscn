@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://Scenes/MainMenu/MainMenu.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/MainMenu/MainMenuButtons.tscn" type="PackedScene" id=2]
@@ -9,7 +9,8 @@
 [ext_resource path="res://Themes/TitleFont48px.tres" type="DynamicFont" id=7]
 [ext_resource path="res://Scenes/Credits/Credits.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Assets/Original/Music/Bonsai_-_Music_4_-_Demo_2_Loopable_ShortLF.ogg" type="AudioStream" id=9]
-[ext_resource path="res://Assets/Original/Textures/menu-bg.png" type="Texture" id=10]
+[ext_resource path="res://Assets/Original/Textures/menu-bg-bigger.png" type="Texture" id=10]
+[ext_resource path="res://Scenes/MainMenu/MenuBackground.gd" type="Script" id=11]
 
 [sub_resource type="Animation" id=5]
 resource_name = "CloseSubMenu"
@@ -294,14 +295,23 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 theme = ExtResource( 4 )
 script = ExtResource( 1 )
+__meta__ = {
+"_edit_horizontal_guides_": [ 544.0 ],
+"_edit_vertical_guides_": [ 544.0 ]
+}
 game_scene = "res://Scenes/MainGame/MainGameScene.tscn"
-version_name = "0.3.1"
+version_name = "1.0.0"
 
-[node name="Panel" type="TextureRect" parent="."]
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="MenuBackground" type="ParallaxBackground" parent="."]
+script = ExtResource( 11 )
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="MenuBackground"]
+motion_mirroring = Vector2( 544, 0 )
+
+[node name="Sprite" type="Sprite" parent="MenuBackground/ParallaxLayer"]
+scale = Vector2( 4, 4 )
 texture = ExtResource( 10 )
-expand = true
+centered = false
 
 [node name="MenuAnimationPlayer" type="AnimationPlayer" parent="."]
 anims/CloseSubMenu = SubResource( 5 )

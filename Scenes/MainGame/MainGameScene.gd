@@ -2,51 +2,31 @@ tool
 extends Control
 
 export(PackedScene) var level_scene : PackedScene setget set_level_scene
-
-var levels : Array = [
-	preload("res://Scenes/Levels/Level0.tscn"),
-	preload("res://Scenes/Levels/Level1.tscn"),
-	preload("res://Scenes/Levels/Level2.tscn"),
-	preload("res://Scenes/Levels/Level3.tscn"),
-	preload("res://Scenes/Levels/Level4.tscn"),
-	preload("res://Scenes/Levels/Level5.tscn"),
-	preload("res://Scenes/Levels/LevelGoodbye.tscn"),
-]
+export(Array, PackedScene) var levels : Array =  []
 
 var success_screen_packed = preload("res://Scenes/SuccessScreen/SuccessScreen.tscn")
 var failure_screen_packed = preload("res://Scenes/FailureScreen/FailureScreen.tscn")
-var nutrient_change_map : Dictionary = {}
+var message_counter : int = 0
+var level_number : int = 0
 
-func _clear_gain_loss():
-	get_node("%GainList").text = ""
-	get_node("%LossList").text = ""
+func _level_nutrients_changed(_delta : int = 0, _reason : String = ""):
+	pass
 
-func _update_gain_loss():
-	_clear_gain_loss()
-	for reason in nutrient_change_map:
-		var delta = nutrient_change_map[reason]
-		var delta_list : Label
-		if delta > 0:
-			delta_list = get_node_or_null("%GainList")
-		elif delta < 0:
-			delta_list = get_node_or_null("%LossList")
-		if delta_list == null:
-			continue
-		delta_list.text += "%s : %+d\n" % [reason, delta] 
-
-func _level_nutrients_changed(delta : int = 0, reason : String = ""):
-	if not reason in nutrient_change_map:
-		nutrient_change_map[reason] = 0
-	nutrient_change_map[reason] += delta
+func _countdown_message():
+	if message_counter <= 0:
+		return
+	message_counter -= 1
+	if message_counter == 0:
+		get_node("%InGameMessageBox").visible = false
 
 func _level_turn_started():
-	nutrient_change_map.clear()
+	_countdown_message()
 
 func _level_state_changed(current_nutrients : int, turn_counter : int, turn_limit : int, goal_turns_left : int):
-	#_update_gain_loss()
 	get_node("%TurnsLabel").text = "%d / %d" % [turn_counter, turn_limit]
 
 func _level_success():
+	GameLog.level_reached(level_number + 1)
 	InGameMenuController.open_menu(success_screen_packed)
 
 func _level_failure(reason : int):
@@ -56,7 +36,6 @@ func _level_failure(reason : int):
 
 func _level_goals_updated(level_turn_limit : int, supercritical_limit : int, nutrient_goal_rounds : int, nutrient_goal_min : int, nutrient_goal_max : int, cut_vine : Vector2):
 	get_node("%TurnsLabel").text = "0 / %d" % level_turn_limit
-	get_node("%InGameMessageBox").visible = false
 	if nutrient_goal_rounds > 0:
 		get_node("%GoalLabel").text = "%d - %d nutrients for %d turns" % [nutrient_goal_min, nutrient_goal_max, nutrient_goal_rounds]
 	elif cut_vine != -Vector2.ONE:
@@ -67,9 +46,10 @@ func _level_goals_updated(level_turn_limit : int, supercritical_limit : int, nut
 func _level_goals_visibility_updated(local_visible : bool):
 	get_node("%GoalInfoContainer").visible = local_visible
 
-func _level_ingame_message_sent(message_text : String):
+func _level_ingame_message_sent(text : String, counter: int = 0):
 	get_node("%InGameMessageBox").visible = true
-	get_node("%MessageLabel").text = message_text
+	get_node("%MessageLabel").text = text
+	message_counter = counter
 
 func set_level_scene(value : PackedScene) -> void:
 	level_scene = value
@@ -93,8 +73,8 @@ func set_level_scene(value : PackedScene) -> void:
 
 func _ready():
 	if level_scene == null:
-		var next_level : int = GameLog.get_max_level_reached()
-		if next_level >= levels.size():
-			next_level = levels.size() - 1
-		level_scene = levels[next_level]
+		level_number = GameLog.get_max_level_reached()
+		if level_number >= levels.size():
+			level_number = levels.size() - 1
+		level_scene = levels[level_number]
 	self.level_scene = level_scene

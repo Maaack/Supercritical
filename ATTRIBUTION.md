@@ -1,7 +1,7 @@
 # Attribution
 ## Collaborators
 
-### Team Lead
+### Team Lead / Programmer
 [Marek](https://maaack.itch.io/) 
 
 ### Pixel Art

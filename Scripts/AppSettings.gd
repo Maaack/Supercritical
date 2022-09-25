@@ -48,19 +48,22 @@ static func reset_input_config() -> void:
 		if action_event is InputEventKey:
 			set_action_scancode(action_name, get_input_event_scancode(action_event))
 
+static func set_input_from_config(action_name : String) -> void:
+	var scancode = get_action_scancode(action_name)
+	var event = InputEventKey.new()
+	event.scancode = scancode
+	for old_event in InputMap.get_action_list(action_name):
+		if old_event is InputEventKey:
+			InputMap.action_erase_event(action_name, old_event)
+	InputMap.action_add_event(action_name, event)
+
 static func set_inputs_from_config() -> void:
 	for action_name in get_input_actions():
-		var scancode = get_action_scancode(action_name)
-		var event = InputEventKey.new()
-		event.scancode = scancode
-		for old_event in InputMap.get_action_list(action_name):
-			if old_event is InputEventKey:
-				InputMap.action_erase_event(action_name, old_event)
-		InputMap.action_add_event(action_name, event)
+		set_input_from_config(action_name)
 
 static func init_input_config() -> void:
 	if not Config.has_section(INPUT_SECTION):
-		reset_input_config()
+		# reset_input_config()
 		return
 	set_inputs_from_config()
 
@@ -116,7 +119,7 @@ static func set_audio_from_config():
 
 static func init_audio_config() -> void:
 	if not Config.has_section(AUDIO_SECTION):
-		reset_audio_config()
+		# reset_audio_config()
 		return
 	set_audio_from_config()
 
@@ -136,7 +139,7 @@ static func set_video_from_config() -> void:
 
 static func init_video_config() -> void:
 	if not Config.has_section(VIDEO_SECTION):
-		reset_video_config()
+		# reset_video_config()
 		return
 	set_video_from_config()
 

@@ -8,7 +8,7 @@ signal success
 signal failure(reason)
 signal goals_updated(level_turn_limit, supercritical_limit, nutrient_goal_rounds, nutrient_goal_min, nutrient_goal_max, cut_vine)
 signal goals_visibility_updated(local_visible)
-signal ingame_message_sent(message_text)
+signal ingame_message_sent(message_text, message_counter)
 
 const VINE_TILE = 3
 const DEAD_VINE_TILE = 2
@@ -29,13 +29,10 @@ enum FAILURE_REASON{
 	TIMEOUT
 }
 
-export(int, 0, 20) var level_number : int
-export(Vector2) var level_size : Vector2 = Vector2(24, 27)
+export(Vector2) var level_size : Vector2 = Vector2(18, 18)
 export(int) var nutrients_at_flower : int = 6
 export(float, 0.05, 2) var turn_time : float = 0.5
-export(PackedScene) var onready_message : PackedScene
-
-# Goals
+export(Array, PackedScene) var opening_tutorials : Array = []
 export(Array, Resource) var level_goals : Array = []
 
 onready var flower = $Flower
@@ -49,11 +46,13 @@ var nuclear_update_scene = preload("res://Scenes/Flower/NutrientUpdate.tscn")
 var turn_counter : int = 0
 var stage_counter : int = 0
 var goal_counter : int = 0
+var tutorial_counter : int = 0
 var current_level_goal : int = 0
 var vine_distance_map : Dictionary = {}
 var furthest_vine_distance : int = 0
 var connected_vines : Array = []
 var controls_locked = false
+var finished_tutorials = false
 
 func _controlled_autotile_dead_vine(cellv : Vector2) -> void:
 	var auto_tile_coord : Vector2 = vines.get_cell_autotile_coord(cellv.x, cellv.y)
@@ -78,6 +77,7 @@ func _cull_vine(cellv : Vector2) -> void:
 func _clear_dead_vine(cellv : Vector2) -> void:
 	$PlayerControlledCharacter.cut_vine()
 	dead_vines.set_cellv(cellv, NO_TILE)
+	vines.update_bitmask_area(cellv)
 
 func _get_flower_cellv() -> Vector2:
 	return ((flower.position - half_cell_size) / cell_size).floor()
@@ -211,7 +211,7 @@ func _is_cell_walkable(cellv : Vector2) -> bool:
 	return _is_in_bounds(cellv) and $Obstacles.get_cellv(cellv) == -1
 
 func _is_cell_growable(cellv : Vector2) -> bool:
-	return vines.get_cellv(cellv) == -1 and dead_vines.get_cellv(cellv) == -1 and $Obstacles.get_cellv(cellv) == -1
+	return _is_in_bounds(cellv) and vines.get_cellv(cellv) == -1 and dead_vines.get_cellv(cellv) == -1 and $Obstacles.get_cellv(cellv) == -1
 
 func _is_cell_vine(cellv: Vector2) -> bool:
 	return vines.get_cellv(cellv) == VINE_TILE
@@ -359,7 +359,6 @@ func update_state():
 	emit_signal("state_changed", nutrients_at_flower, stage_counter, current_goal.turn_limit, current_goal.nutrient_goal_rounds - goal_counter)
 
 func _complete_level():
-	GameLog.level_reached(level_number + 1)
 	emit_signal("success")
 
 func _update_nutrient_bar_position():
@@ -409,7 +408,7 @@ func _evauluate_goal():
 	elif current_goal.is_vine_cut_goal():
 		if not _is_cell_vine(current_goal.trim_vine):
 			_complete_goal(current_goal)
-	elif current_goal.check_turn_limit(stage_counter):
+	if current_goal.check_turn_limit(stage_counter):
 		_turn_limit_reached(current_goal)
 
 func _update_harvest_vines():
@@ -465,12 +464,22 @@ func _move_player(direction) -> bool:
 	_post_player_tween_updates(tween)
 	return true
 
-func _show_on_ready_message() -> void:
-	if not onready_message == null:
-		InGameMenuController.open_menu(onready_message)
-
 func _position_camera() -> void:
 	pass
+
+func _finish_tutorials():
+	finished_tutorials = true
+	set_process(false)
+
+func _play_opening_tutorials():
+	if finished_tutorials:
+		return
+	if tutorial_counter >= opening_tutorials.size():
+		_finish_tutorials()
+		return
+	var tutorial = opening_tutorials[tutorial_counter]
+	tutorial_counter += 1
+	InGameMenuController.open_menu(tutorial)
 
 func _ready():
 	set_process(false)
@@ -482,8 +491,10 @@ func _ready():
 	$NutrientNode.show()
 	_update_nutrient_bar_position()
 	yield(get_tree().create_timer(0.1), "timeout")
-	_show_on_ready_message()
 	set_process(true)
+
+func _process(_delta):
+	_play_opening_tutorials()
 
 func _unhandled_input(event):
 	if controls_locked:
